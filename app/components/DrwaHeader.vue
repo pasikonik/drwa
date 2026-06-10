@@ -37,13 +37,16 @@
                 :key="child.label"
                 class="nav__sub"
                 role="menuitem"
-                @click="go(child.to)"
+                @click="go(child.to, child.route)"
               >
                 <span class="nav__sub-title">{{ child.label }}</span>
                 <span class="nav__sub-desc">{{ child.desc }}</span>
               </button>
             </div>
           </div>
+          <NuxtLink v-else-if="item.route" :to="item.route" class="nav__link nav__item">
+            {{ item.label }}
+          </NuxtLink>
           <button v-else class="nav__link nav__item" @click="jumpTo(item.id)">
             {{ item.label }}
           </button>
@@ -61,20 +64,12 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const NAV = [
-  { id: 'warsztaty', label: 'Warsztaty stacjonarne', children: [
-    { to: 'warsztaty', label: 'Warsztaty 2026', desc: 'Terminy i lista' },
-    { to: 'warsztaty', label: 'Informacje i oferta', desc: 'Ogólne informacje' },
-    { to: 'opinie', label: 'Relacje i opinie', desc: 'Co mówią kursanci' },
-  ] },
+  { id: 'warsztaty', label: 'Warsztaty stacjonarne', route: '/warsztaty' },
   { id: 'kursy', label: 'Kursy online', children: [
     { to: 'kursy', label: 'Od wiaty do chaty', desc: 'Pełny kurs wideo' },
     { to: 'kursy', label: 'Minikurs podstaw', desc: 'Praca z drewnem od zera' },
   ] },
-  { id: 'onas', label: 'O nas', children: [
-    { to: 'onas', label: 'Ludzie DRWA', desc: 'Kto za tym stoi' },
-    { to: 'onas', label: 'Społeczność', desc: 'Wspólna praca i nauka' },
-    { to: 'onas', label: 'Realizacje', desc: 'Co zbudowaliśmy' },
-  ] },
+  { id: 'onas', label: 'O nas' },
   { id: 'blog', label: 'Blog' },
   { id: 'kontakt', label: 'Kontakt' },
 ]
@@ -101,9 +96,11 @@ function toggleOpen(id) {
   openId.value = openId.value === id ? null : id
 }
 
-function go(id) {
+const router = useRouter()
+
+function go(id, route) {
   openId.value = null
-  jumpTo(id)
+  if (route) { router.push(route) } else { jumpTo(id) }
 }
 
 function onKey(e) {

@@ -6,14 +6,15 @@
       <p>Przyjdź na warsztat, ucz się online albo poznaj nas bliżej. Każda droga prowadzi do tego samego — robienia rzeczy z drewna własnymi rękami.</p>
     </div>
     <div class="tiles">
-      <a
+      <component
+        :is="tile.to ? 'NuxtLink' : 'a'"
         v-for="tile in TILES"
         :key="tile.title"
         :id="tile.anchor"
         class="tile io"
-        href="#"
+        v-bind="tile.to ? { to: tile.to } : { href: '#' }"
         :ref="el => tileRefs.push(el)"
-        @click.prevent="scrollTo(tile.href)"
+        @click="tile.to ? null : ($event.preventDefault(), scrollTo(tile.href))"
       >
         <div class="tile__img">
           <img :src="tile.img" :alt="tile.title" :style="{ objectPosition: tile.pos }" />
@@ -30,7 +31,7 @@
             </svg>
           </span>
         </div>
-      </a>
+      </component>
     </div>
   </section>
 </template>
@@ -40,7 +41,7 @@ import { ref, onMounted } from 'vue'
 
 const TILES = [
   {
-    href: 'warsztaty', img: '/assets/forest-1.png', pos: '50% 50%',
+    to: '/warsztaty', img: '/assets/forest-1.png', pos: '50% 50%',
     eyebrow: 'Stacjonarnie · 2026', title: 'Warsztaty 2026',
     desc: 'Łączenia ciesielskie, więźby i konstrukcje — przy realnym drewnie i ognisku.',
   },
