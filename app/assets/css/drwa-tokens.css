@@ -1,0 +1,200 @@
+/* DRWA Design System — merged tokens */
+
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* ---- Pine / forest green ---- */
+  --pine-950: #131d18;
+  --pine-900: #18271f;
+  --pine-800: #1f3328;
+  --pine-700: #243a30;
+  --pine-600: #2f4a3c;
+  --pine-500: #3c5b4a;
+  --pine-400: #54765f;
+  --pine-300: #7d9a86;
+  --pine-200: #abc0b1;
+  --pine-100: #d3e0d6;
+  --pine-50:  #eef3ee;
+
+  /* ---- Timber / wood ---- */
+  --timber-900: #3f2c1c;
+  --timber-700: #6b4a2c;
+  --timber-600: #835a35;
+  --timber-500: #a3743f;
+  --timber-400: #bd9059;
+  --timber-300: #d4ad7d;
+  --timber-200: #e6cda8;
+  --timber-100: #f1e2cb;
+
+  /* ---- Ember ---- */
+  --ember-600: #b4561f;
+  --ember-500: #cc6a2a;
+  --ember-400: #dd864a;
+
+  /* ---- Paper / cream ---- */
+  --cream-50:  #faf6ee;
+  --cream-100: #f5efe2;
+  --cream-200: #ece3d1;
+  --cream-300: #ddd0b8;
+
+  /* ---- Fog / stone ---- */
+  --fog-50:  #f3f4f2;
+  --fog-100: #e7e9e6;
+  --fog-200: #d2d6d1;
+  --fog-300: #b4bbb5;
+  --stone-500: #828a82;
+  --stone-600: #69706a;
+  --stone-700: #4f554f;
+
+  /* ---- Ink ---- */
+  --ink-900: #141915;
+  --ink-800: #1d231e;
+  --ink-700: #2a312b;
+
+  /* ---- Pure ---- */
+  --white: #ffffff;
+  --black: #0c0f0d;
+
+  /* ---- Status ---- */
+  --moss:   #5c7c4f;
+  --honey:  #c7912a;
+  --rust:   #a8432c;
+  --sky:    #3f6f86;
+
+  /* ---- Surfaces ---- */
+  --surface-page:      var(--cream-100);
+  --surface-raised:    var(--cream-50);
+  --surface-card:      var(--white);
+  --surface-sunken:    var(--cream-200);
+  --surface-inverse:   var(--pine-800);
+  --surface-inverse-2: var(--pine-950);
+
+  /* ---- Text ---- */
+  --text-strong:        var(--ink-900);
+  --text-body:          var(--ink-800);
+  --text-muted:         var(--stone-600);
+  --text-faint:         var(--stone-500);
+  --text-on-dark:       var(--cream-100);
+  --text-on-dark-muted: var(--pine-200);
+  --text-brand:         var(--pine-700);
+  --text-accent:        var(--timber-600);
+
+  /* ---- Borders ---- */
+  --border-soft:    var(--cream-300);
+  --border-default: var(--fog-200);
+  --border-strong:  var(--stone-500);
+  --border-on-dark: #39513f;
+  --hairline:       rgba(20, 25, 21, 0.10);
+
+  /* ---- Brand actions ---- */
+  --brand:        var(--pine-700);
+  --brand-hover:  var(--pine-800);
+  --brand-active: var(--pine-900);
+  --accent:       var(--timber-500);
+  --accent-hover: var(--timber-600);
+  --focus-ring:   var(--timber-400);
+
+  /* ---- Typography ---- */
+  --font-serif: 'Spectral', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --font-sans:  'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:  'Spline Sans Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --font-display: var(--font-serif);
+  --font-heading: var(--font-serif);
+  --font-body:    var(--font-sans);
+  --font-ui:      var(--font-sans);
+  --font-label:   var(--font-mono);
+
+  --fw-light:    300;
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+  --fw-black:    800;
+
+  --text-2xs:  0.6875rem;
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-md:   1.125rem;
+  --text-lg:   1.375rem;
+  --text-xl:   1.75rem;
+  --text-2xl:  2.25rem;
+  --text-3xl:  3rem;
+  --text-4xl:  3.875rem;
+
+  --leading-tight:   1.08;
+  --leading-snug:    1.22;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.7;
+
+  --tracking-tight:   -0.02em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;
+  --tracking-wider:   0.12em;
+  --tracking-widest:  0.28em;
+
+  /* ---- Spacing ---- */
+  --space-0:  0;
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.5rem;
+  --space-6:  2rem;
+  --space-7:  2.5rem;
+  --space-8:  3rem;
+  --space-9:  4rem;
+  --space-10: 6rem;
+  --space-11: 8rem;
+
+  --container-max:   1200px;
+  --container-prose: 680px;
+  --gutter:          var(--space-5);
+
+  /* ---- Radii ---- */
+  --radius-xs:     3px;
+  --radius-sm:     6px;
+  --radius-md:     10px;
+  --radius-lg:     16px;
+  --radius-xl:     24px;
+  --radius-pill:   999px;
+  --radius-circle: 50%;
+
+  /* ---- Shadows ---- */
+  --shadow-xs: 0 1px 2px rgba(20, 25, 21, 0.06);
+  --shadow-sm: 0 1px 3px rgba(20, 25, 21, 0.08), 0 1px 2px rgba(20, 25, 21, 0.04);
+  --shadow-md: 0 4px 14px rgba(20, 25, 21, 0.08), 0 2px 4px rgba(20, 25, 21, 0.04);
+  --shadow-lg: 0 12px 30px rgba(20, 25, 21, 0.12), 0 4px 8px rgba(20, 25, 21, 0.05);
+  --shadow-xl: 0 24px 60px rgba(20, 25, 21, 0.18);
+
+  /* ---- Focus ---- */
+  --ring-width: 3px;
+  --ring-color: rgba(189, 144, 89, 0.55);
+
+  /* ---- Motion ---- */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:       cubic-bezier(0.4, 0, 1, 1);
+  --dur-fast:   120ms;
+  --dur-base:   200ms;
+  --dur-slow:   360ms;
+  --dur-slower: 600ms;
+}
+
+/* ---- Base reset ---- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--text-body);
+  background-color: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img { max-width: 100%; display: block; }
+::selection { background: var(--timber-200); color: var(--ink-900); }
+:focus-visible { outline: var(--ring-width) solid var(--ring-color); outline-offset: 2px; }

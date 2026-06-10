@@ -5,10 +5,15 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2026-06-09',
   devtools: { enabled: true },
-  
-  // POPRAWKA: Usunęliśmy podwójne /app
+
   plugins: [
     '~/plugins/directus.ts'
+  ],
+
+  css: [
+    '~/assets/css/drwa-tokens.css',
+    '~/assets/css/site.css',
+    '~/assets/css/warsztat.css',
   ],
 
   runtimeConfig: {
