@@ -1,0 +1,38 @@
+name: Automated Deployment to VPS (PM2)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH and rebuild Nuxt on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            # 1. Wejdź do katalogu frontendu i pobierz kod
+            cd ~/apps/drwa-frontend
+            git pull origin main
+
+            # 2. Załaduj NVM, Node i pnpm (wymagane w nieinteraktywnej sesji SSH)
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            export PATH="$HOME/.local/share/pnpm:$PATH"
+
+            # 3. Zainstaluj czyste zależności i zbuduj aplikację
+            pnpm install
+            pnpm run build
+
+            # 4. Zrestartuj proces w PM2
+            pm2 restart ecosystem.config.cjs --env production
