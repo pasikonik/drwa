@@ -13,7 +13,7 @@
           <a class="nav__link nav__item nav__link--current" href="#">O nas</a>
           <NuxtLink class="nav__link nav__item" to="/sklep">Sklep</NuxtLink>
           <NuxtLink class="nav__link nav__item" to="/blog">Blog</NuxtLink>
-          <a class="nav__link nav__item" href="/#kontakt">Kontakt</a>
+          <NuxtLink class="nav__link nav__item" to="/kontakt">Kontakt</NuxtLink>
         </nav>
         <div class="nav__spacer" />
         <div class="nav__actions">

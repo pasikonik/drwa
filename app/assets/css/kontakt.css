@@ -1,0 +1,70 @@
+/* DRWA — Kontakt. Zbudowane na tokenach DRWA + site.css. */
+
+/* ============ Pagehead (forest register) ============ */
+.contact-head {
+  background: var(--surface-inverse); color: var(--cream-50);
+  padding: var(--space-9) 0 var(--space-8);
+}
+.contact-head h1 {
+  font-family: var(--font-display); font-weight: 500; font-size: clamp(36px, 4.6vw, 54px);
+  color: var(--cream-50); margin: 12px 0 10px; letter-spacing: -0.02em; line-height: 1.05; text-wrap: balance;
+}
+.contact-head p { color: var(--pine-100); max-width: 52ch; margin: 0; font-size: var(--text-md); line-height: 1.6; }
+
+/* ============ Układ: info + formularz ============ */
+.contact { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-8); align-items: start; }
+@media (max-width: 900px) { .contact { grid-template-columns: 1fr; } }
+
+/* ---- kolumna informacji ---- */
+.cinfo { display: flex; flex-direction: column; gap: var(--space-5); }
+.cinfo__item { display: flex; gap: 14px; align-items: flex-start; }
+.cinfo__ic {
+  flex: none; width: 44px; height: 44px; border-radius: var(--radius-md);
+  background: var(--pine-100); color: var(--pine-700); font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+}
+.cinfo__t { font-family: var(--font-ui); font-weight: 600; font-size: var(--text-sm); color: var(--text-strong); margin: 0 0 3px; }
+.cinfo__d { font-size: var(--text-sm); color: var(--text-muted); margin: 0; line-height: 1.55; }
+.cinfo__d a { color: var(--text-brand); text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: 1px; }
+.cinfo__d .mono { font-family: var(--font-mono); }
+
+.cinfo__note {
+  margin-top: var(--space-2); padding: var(--space-5);
+  background: var(--surface-raised); border: 1px solid var(--border-soft); border-radius: var(--radius-md);
+}
+.cinfo__note p { margin: 0; font-family: var(--font-serif); font-style: italic; font-size: var(--text-sm); line-height: 1.6; color: var(--text-body); }
+
+.cinfo__social { display: flex; gap: var(--space-2); margin-top: var(--space-2); }
+.cinfo__social a {
+  width: 42px; height: 42px; border-radius: var(--radius-md); font-size: 19px;
+  border: 1px solid var(--border-soft); color: var(--text-muted); background: var(--surface-card);
+  display: flex; align-items: center; justify-content: center;
+  transition: color var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard);
+}
+.cinfo__social a:hover { color: var(--text-brand); border-color: var(--pine-300); }
+
+/* ---- formularz ---- */
+.cform {
+  background: var(--surface-card); border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+  padding: var(--space-7);
+}
+.cform h2 { font-family: var(--font-display); font-weight: 600; font-size: var(--text-xl); color: var(--text-strong); margin: 0 0 var(--space-2); letter-spacing: -0.01em; }
+.cform > p { font-size: var(--text-sm); color: var(--text-muted); margin: 0 0 var(--space-6); line-height: 1.55; }
+.cform__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+.cform__grid .full { grid-column: 1 / -1; }
+.cform__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; margin-top: var(--space-5); }
+@media (max-width: 560px) { .cform__grid { grid-template-columns: 1fr; } .cform { padding: var(--space-5); } }
+
+/* ---- potwierdzenie ---- */
+.cform__sent { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); padding: var(--space-4) 0; }
+.cform__sent-ic {
+  width: 52px; height: 52px; border-radius: 999px; font-size: 24px;
+  background: var(--pine-100); color: var(--pine-700);
+  display: flex; align-items: center; justify-content: center;
+}
+.cform__sent h3 { font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg); color: var(--text-strong); margin: 0; }
+.cform__sent p { margin: 0; font-size: var(--text-sm); color: var(--text-muted); line-height: 1.6; max-width: 44ch; }
+
+/* ============ FAQ ============ */
+.contact-faq { max-width: 760px; margin: 0 auto; }

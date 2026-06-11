@@ -15,8 +15,11 @@ export default defineNuxtConfig({
     '~/assets/css/site.css',
     '~/assets/css/warsztat.css',
     '~/assets/css/sklep.css',
+    '~/assets/css/produkt.css',
     '~/assets/css/blog.css',
     '~/assets/css/onas.css',
+    '~/assets/css/kontakt.css',
+    '~/assets/css/kurs.css',
   ],
 
   runtimeConfig: {

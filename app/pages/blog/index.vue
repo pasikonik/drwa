@@ -13,7 +13,7 @@
           <NuxtLink class="nav__link nav__item" to="/o-nas">O nas</NuxtLink>
           <NuxtLink class="nav__link nav__item" to="/sklep">Sklep</NuxtLink>
           <a class="nav__link nav__item nav__link--current" href="#">Blog</a>
-          <a class="nav__link nav__item" href="/#kontakt">Kontakt</a>
+          <NuxtLink class="nav__link nav__item" to="/kontakt">Kontakt</NuxtLink>
         </nav>
         <div class="nav__spacer" />
         <div class="nav__actions">
@@ -119,7 +119,7 @@
             <ul>
               <li><NuxtLink to="/blog">Wszystkie wpisy</NuxtLink></li>
               <li><NuxtLink to="/blog/dlaczego-budujemy-z-drewna">Dlaczego budujemy z drewna</NuxtLink></li>
-              <li><a href="/#kontakt">Napisz do nas</a></li>
+              <li><NuxtLink to="/kontakt">Napisz do nas</NuxtLink></li>
             </ul>
           </div>
           <div>

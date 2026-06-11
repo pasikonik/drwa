@@ -78,6 +78,9 @@
   background: var(--surface-inverse); color: var(--cream-50);
 }
 .mcard__badge--ember { background: var(--ember-500); color: var(--white); }
+.mcard__cover { position: absolute; inset: 0; z-index: 1; }
+.mcard__link { color: inherit; text-decoration: none; }
+.mcard__link:hover { color: var(--text-brand); }
 
 .mcard__body { display: flex; flex-direction: column; gap: 8px; padding: var(--space-5); flex: 1; }
 .mcard__eyebrow {

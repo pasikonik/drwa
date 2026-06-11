@@ -66,13 +66,13 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const NAV = [
   { id: 'warsztaty', label: 'Warsztaty stacjonarne', route: '/warsztaty' },
   { id: 'kursy', label: 'Kursy online', children: [
-    { to: 'kursy', label: 'Od wiaty do chaty', desc: 'Pełny kurs wideo' },
+    { to: '/kursy/od-wiaty-do-chaty', label: 'Od wiaty do chaty', desc: 'Pełny kurs wideo' },
     { to: 'kursy', label: 'Minikurs podstaw', desc: 'Praca z drewnem od zera' },
   ] },
   { id: 'onas', label: 'O nas', route: '/o-nas' },
   { id: 'sklep', label: 'Sklep', route: '/sklep' },
   { id: 'blog', label: 'Blog', route: '/blog' },
-  { id: 'kontakt', label: 'Kontakt' },
+  { id: 'kontakt', label: 'Kontakt', route: '/kontakt' },
 ]
 
 const openId = ref(null)
