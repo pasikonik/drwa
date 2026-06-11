@@ -69,7 +69,7 @@ const NAV = [
     { to: 'kursy', label: 'Od wiaty do chaty', desc: 'Pełny kurs wideo' },
     { to: 'kursy', label: 'Minikurs podstaw', desc: 'Praca z drewnem od zera' },
   ] },
-  { id: 'onas', label: 'O nas' },
+  { id: 'onas', label: 'O nas', route: '/o-nas' },
   { id: 'sklep', label: 'Sklep', route: '/sklep' },
   { id: 'blog', label: 'Blog', route: '/blog' },
   { id: 'kontakt', label: 'Kontakt' },

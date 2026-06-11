@@ -23,7 +23,7 @@
           <ul>
             <li><a @click="jump('kursy')">Od wiaty do chaty</a></li>
             <li><a @click="jump('kursy')">Minikurs podstaw</a></li>
-            <li><a @click="jump('onas')">O nas</a></li>
+            <li><NuxtLink to="/o-nas">O nas</NuxtLink></li>
           </ul>
         </div>
         <div>

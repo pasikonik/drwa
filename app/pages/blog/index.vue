@@ -10,7 +10,7 @@
         <nav class="nav__links" aria-label="Główne">
           <NuxtLink class="nav__link nav__item" to="/warsztaty">Warsztaty stacjonarne</NuxtLink>
           <a class="nav__link nav__item" href="/#kursy">Kursy online</a>
-          <a class="nav__link nav__item" href="/#onas">O nas</a>
+          <NuxtLink class="nav__link nav__item" to="/o-nas">O nas</NuxtLink>
           <NuxtLink class="nav__link nav__item" to="/sklep">Sklep</NuxtLink>
           <a class="nav__link nav__item nav__link--current" href="#">Blog</a>
           <a class="nav__link nav__item" href="/#kontakt">Kontakt</a>
@@ -127,7 +127,7 @@
             <ul>
               <li><NuxtLink to="/warsztaty">Warsztaty 2026</NuxtLink></li>
               <li><a href="/#kursy">Kursy online</a></li>
-              <li><a href="/#onas">O nas</a></li>
+              <li><NuxtLink to="/o-nas">O nas</NuxtLink></li>
               <li><NuxtLink to="/sklep">Sklep · Merch</NuxtLink></li>
             </ul>
           </div>

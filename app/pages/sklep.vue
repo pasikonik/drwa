@@ -11,7 +11,7 @@
           <NuxtLink class="nav__link nav__item" to="/">Strona główna</NuxtLink>
           <NuxtLink class="nav__link nav__item" to="/warsztaty">Warsztaty 2026</NuxtLink>
           <a class="nav__link nav__item" href="/#kursy">Kursy online</a>
-          <a class="nav__link nav__item" href="/#onas">O nas</a>
+          <NuxtLink class="nav__link nav__item" to="/o-nas">O nas</NuxtLink>
           <a class="nav__link nav__item nav__link--current" href="#">Sklep</a>
           <NuxtLink class="nav__link nav__item" to="/blog">Blog</NuxtLink>
         </nav>
@@ -148,7 +148,7 @@
             <ul>
               <li><NuxtLink to="/warsztaty">Warsztaty 2026</NuxtLink></li>
               <li><a href="/#kursy">Kursy online</a></li>
-              <li><a href="/#onas">O nas</a></li>
+              <li><NuxtLink to="/o-nas">O nas</NuxtLink></li>
             </ul>
           </div>
           <div>

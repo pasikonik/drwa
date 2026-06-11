@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '~/assets/css/warsztat.css',
     '~/assets/css/sklep.css',
     '~/assets/css/blog.css',
+    '~/assets/css/onas.css',
   ],
 
   runtimeConfig: {

@@ -296,7 +296,7 @@
             <ul>
               <li><NuxtLink to="/">Strona główna</NuxtLink></li>
               <li><NuxtLink to="/warsztaty">Warsztaty 2026</NuxtLink></li>
-              <li><NuxtLink to="/">O nas</NuxtLink></li>
+              <li><NuxtLink to="/o-nas">O nas</NuxtLink></li>
               <li><NuxtLink to="/blog">Blog</NuxtLink></li>
             </ul>
           </div>
