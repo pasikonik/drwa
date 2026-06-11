@@ -14,6 +14,8 @@ export default defineNuxtConfig({
     '~/assets/css/drwa-tokens.css',
     '~/assets/css/site.css',
     '~/assets/css/warsztat.css',
+    '~/assets/css/sklep.css',
+    '~/assets/css/blog.css',
   ],
 
   runtimeConfig: {

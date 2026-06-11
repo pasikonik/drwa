@@ -15,6 +15,7 @@
             <li><a @click="jump('warsztaty')">Warsztaty 2026</a></li>
             <li><a @click="jump('warsztaty')">Informacje i oferta</a></li>
             <li><a @click="jump('opinie')">Relacje i opinie</a></li>
+            <li><NuxtLink to="/blog">Blog · Z lasu</NuxtLink></li>
           </ul>
         </div>
         <div>

@@ -1,0 +1,128 @@
+/* DRWA — Blog (lista wpisów + pojedynczy wpis). Zbudowane na tokenach DRWA + site.css. */
+
+/* ============ Page header (forest register) ============ */
+.pagehead {
+  background: var(--surface-inverse); color: var(--cream-50);
+  padding: var(--space-9) 0 var(--space-8); position: relative; overflow: hidden;
+}
+.pagehead h1 {
+  font-family: var(--font-display); font-weight: 500; font-size: clamp(36px, 4.6vw, 54px);
+  color: var(--cream-50); margin: 12px 0 10px; letter-spacing: -0.02em; line-height: 1.05;
+}
+.pagehead p { color: var(--pine-100); max-width: 52ch; margin: 0; font-size: var(--text-md); line-height: 1.6; }
+
+/* ============ Filters ============ */
+.bfilters { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; margin: var(--space-7) 0 var(--space-6); }
+.bfilters__tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.bfilters__count { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); }
+
+/* ============ Tag (z design systemu) ============ */
+.drwa-tag {
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 11px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border-default);
+  background: var(--surface-card); color: var(--text-muted);
+  cursor: default;
+  transition: background-color var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
+}
+.drwa-tag--interactive { cursor: pointer; }
+.drwa-tag--interactive:hover { border-color: var(--brand); color: var(--text-brand); }
+.drwa-tag--active { background: var(--pine-700); border-color: var(--pine-700); color: var(--cream-50); }
+.drwa-tag--active:hover { color: var(--cream-50); }
+
+/* ============ Featured band ============ */
+.band { position: relative; border-radius: var(--radius-lg); overflow: hidden; display: block; text-decoration: none; box-shadow: var(--shadow-sm); transition: box-shadow var(--dur-base) var(--ease-standard), transform var(--dur-base) var(--ease-standard); }
+.band:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+.band__bg { position: absolute; inset: 0; }
+.band__bg img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-standard); }
+.band:hover .band__bg img { transform: scale(1.03); }
+.band__scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(19,29,24,0.92) 0%, rgba(19,29,24,0.62) 55%, rgba(19,29,24,0.28) 100%); }
+.band__inner { position: relative; padding: var(--space-9) var(--space-8); color: var(--cream-50); max-width: 600px; }
+.band__inner h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(28px, 3.4vw, 42px); color: var(--cream-50); margin: 12px 0 12px; letter-spacing: -0.02em; line-height: 1.1; text-wrap: balance; }
+.band__inner p { color: var(--pine-100); margin: 0 0 var(--space-6); line-height: 1.6; max-width: 50ch; }
+.band__eyebrow { color: var(--timber-300); }
+@media (max-width: 700px) { .band__inner { padding: var(--space-7) var(--space-5); } }
+
+/* ============ Posts grid ============ */
+.bgrid { display: grid; grid-template-columns: repeat(var(--bcols, 3), 1fr); gap: var(--space-5); margin-top: var(--space-6); }
+@media (max-width: 980px) { .bgrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px) { .bgrid { grid-template-columns: 1fr; } }
+.bgrid .drwa-pcard { text-decoration: none; }
+.bcard__go { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-ui); font-weight: 600; font-size: var(--text-sm); color: var(--text-brand); }
+.bcard__go svg { transition: transform var(--dur-base) var(--ease-out); }
+.drwa-pcard:hover .bcard__go svg { transform: translateX(4px); }
+
+/* ============ Karta wpisu (ProductCard z design systemu) ============ */
+.drwa-pcard { background: var(--surface-card); border: 1px solid var(--border-soft); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: box-shadow var(--dur-base) var(--ease-standard), transform var(--dur-base) var(--ease-standard); }
+.drwa-pcard:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.drwa-pcard__media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--cream-200); }
+.drwa-pcard__media img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-standard); }
+.drwa-pcard:hover .drwa-pcard__media img { transform: scale(1.04); }
+.drwa-pcard__body { padding: var(--space-5); display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.drwa-pcard__eyebrow { font-family: var(--font-label); font-size: var(--text-2xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-accent); }
+.drwa-pcard__title { font-family: var(--font-heading); font-size: var(--text-lg); line-height: 1.18; color: var(--text-strong); margin: 0; letter-spacing: -0.01em; }
+.drwa-pcard__desc { font-size: var(--text-sm); color: var(--text-muted); margin: 0; line-height: 1.5; }
+.drwa-pcard__foot { margin-top: auto; padding-top: var(--space-3); display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.drwa-pcard__meta { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-faint); }
+@media (prefers-reduced-motion: reduce) {
+  .drwa-pcard, .drwa-pcard__media img { transition: none; }
+  .drwa-pcard:hover { transform: none; }
+  .drwa-pcard:hover .drwa-pcard__media img { transform: none; }
+}
+
+/* ============ Breadcrumb (z design systemu) ============ */
+.drwa-crumb { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-family: var(--font-label); font-size: var(--text-xs); letter-spacing: 0.04em; text-transform: uppercase; }
+.drwa-crumb a { color: var(--text-muted); text-decoration: none; transition: color var(--dur-fast) var(--ease-standard); }
+.drwa-crumb a:hover { color: var(--text-brand); }
+.drwa-crumb__sep { color: var(--text-faint); user-select: none; }
+.drwa-crumb__current { color: var(--text-strong); }
+
+/* ============ Avatar (z design systemu) ============ */
+.drwa-avatar { display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; overflow: hidden; background: var(--pine-600); color: var(--cream-50); font-family: var(--font-ui); font-weight: var(--fw-semibold); flex: none; user-select: none; }
+.drwa-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.drwa-avatar--ring { box-shadow: 0 0 0 2px var(--surface-card), 0 0 0 4px var(--timber-400); }
+
+/* ============ Article ============ */
+.article-head { max-width: var(--container-prose); margin: 0 auto; text-align: center; padding-top: var(--space-7); }
+.article-head h1 {
+  font-family: var(--font-display); font-weight: 600; font-size: clamp(34px, 5vw, 54px);
+  line-height: 1.06; letter-spacing: -0.02em; margin: 16px 0 18px; color: var(--text-strong); text-wrap: balance;
+}
+.byline { display: flex; align-items: center; justify-content: center; gap: 12px; color: var(--text-muted); font-size: var(--text-sm); flex-wrap: wrap; }
+.byline > span { white-space: nowrap; }
+.byline .dot { color: var(--text-faint); }
+.byline__author { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-ui); font-weight: 600; color: var(--text-strong); }
+
+.article-hero { max-width: 980px; margin: var(--space-7) auto; border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 16 / 8; }
+.article-hero img { width: 100%; height: 100%; object-fit: cover; }
+.article-hero figcaption { display: none; }
+
+.prose { max-width: var(--container-prose); margin: 0 auto; }
+.prose p { font-family: var(--font-serif); font-size: var(--prose-size, 19px); line-height: 1.75; color: var(--text-body); margin: 0 0 var(--space-5); }
+.prose p.lede { font-size: calc(var(--prose-size, 19px) + 2px); color: var(--text-strong); }
+.prose h2 { font-family: var(--font-display); font-weight: 600; font-size: var(--text-xl); margin: var(--space-7) 0 var(--space-4); color: var(--text-strong); letter-spacing: -0.01em; }
+.prose blockquote {
+  margin: var(--space-6) 0; padding-left: var(--space-5); border-left: 3px solid var(--timber-400);
+  font-style: italic; font-family: var(--font-serif); font-size: var(--text-lg); line-height: 1.55; color: var(--text-strong);
+}
+.prose figure { margin: var(--space-6) 0; }
+.prose figure .img { border-radius: var(--radius-md); overflow: hidden; }
+.prose figure img { width: 100%; display: block; }
+.prose figcaption { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-top: 10px; }
+
+.article-tags { display: flex; gap: 8px; flex-wrap: wrap; max-width: var(--container-prose); margin: var(--space-7) auto 0; }
+
+.author-card {
+  max-width: var(--container-prose); margin: var(--space-6) auto 0;
+  display: flex; gap: var(--space-5); align-items: center; flex-wrap: wrap;
+  padding: var(--space-5); background: var(--surface-card);
+  border: 1px solid var(--border-soft); border-radius: var(--radius-md);
+}
+.author-card h4 { font-family: var(--font-display); margin: 0 0 4px; font-size: var(--text-md); color: var(--text-strong); }
+.author-card p { margin: 0; font-size: var(--text-sm); color: var(--text-muted); line-height: 1.5; }
+
+/* ============ Czytaj dalej ============ */
+.more { border-top: 1px solid var(--border-soft); margin-top: var(--space-9); padding-top: var(--space-8); }

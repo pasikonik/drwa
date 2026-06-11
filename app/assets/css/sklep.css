@@ -1,0 +1,157 @@
+/* DRWA — Sklep / Merch */
+
+/* ============ Shop hero ============ */
+.shop-hero {
+  position: relative; min-height: 46vh;
+  display: flex; align-items: center; overflow: hidden;
+  background: var(--surface-inverse);
+}
+.shop-hero__bg { position: absolute; inset: 0; }
+.shop-hero__bg img { width: 100%; height: 100%; object-fit: cover; }
+.shop-hero__scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(19,29,24,0.50) 0%, rgba(19,29,24,0.30) 45%, rgba(19,29,24,0.90) 100%);
+}
+.shop-hero__inner {
+  position: relative; color: var(--cream-50);
+  max-width: 720px; padding: var(--space-10) 0;
+}
+.shop-hero h1 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(34px, 5vw, 58px); line-height: 1.05; letter-spacing: -0.02em;
+  color: var(--cream-50); margin: 14px 0 0; text-wrap: balance;
+}
+.shop-hero p {
+  font-size: var(--text-md); line-height: 1.65; color: var(--pine-100);
+  max-width: 50ch; margin: var(--space-5) 0 0;
+}
+
+/* ============ Shop body ============ */
+.shop { padding: var(--space-9) 0 var(--space-10); }
+.shop__bar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-7);
+}
+.shop__count {
+  font-family: var(--font-mono); font-size: var(--text-xs);
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint);
+}
+.shop__filters { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.filt {
+  font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  background: var(--surface-raised); border: 1px solid var(--border-soft); color: var(--text-muted);
+  transition: color var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard), background var(--dur-fast) var(--ease-standard);
+}
+.filt:hover { color: var(--text-brand); border-color: var(--pine-300); }
+.filt.is-on { background: var(--surface-inverse); color: var(--cream-50); border-color: var(--surface-inverse); }
+
+/* ============ Product grid ============ */
+.mgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+@media (max-width: 1000px) { .mgrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px)  { .mgrid { grid-template-columns: 1fr; } }
+
+.mcard {
+  display: flex; flex-direction: column;
+  background: var(--surface-card); border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--dur-base) var(--ease-standard), transform var(--dur-base) var(--ease-standard);
+}
+.mcard:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+
+.mcard__media {
+  position: relative; aspect-ratio: 4 / 5;
+  background: var(--pine-50);
+  display: flex; align-items: center; justify-content: center;
+}
+.mcard__placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; color: var(--pine-300); font-family: var(--font-mono);
+  font-size: var(--text-2xs); letter-spacing: 0.1em; text-transform: uppercase; text-align: center;
+  padding: var(--space-6);
+}
+.mcard__placeholder svg { opacity: 0.4; }
+.mcard__badge {
+  position: absolute; top: 12px; left: 12px; z-index: 2;
+  font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 5px 10px; border-radius: 999px;
+  background: var(--surface-inverse); color: var(--cream-50);
+}
+.mcard__badge--ember { background: var(--ember-500); color: var(--white); }
+
+.mcard__body { display: flex; flex-direction: column; gap: 8px; padding: var(--space-5); flex: 1; }
+.mcard__eyebrow {
+  font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--accent);
+}
+.mcard__title {
+  font-family: var(--font-display); font-weight: 500; font-size: var(--text-lg);
+  letter-spacing: -0.01em; color: var(--text-strong); margin: 0; line-height: 1.15;
+}
+.mcard__desc { font-size: var(--text-sm); color: var(--text-muted); margin: 0; line-height: 1.5; }
+
+.sizes { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.size {
+  min-width: 38px; height: 34px; padding: 0 8px; cursor: pointer;
+  font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.04em;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm); border: 1px solid var(--border-soft);
+  background: var(--surface-raised); color: var(--text-body);
+  transition: color var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard), background var(--dur-fast) var(--ease-standard);
+}
+.size:hover { border-color: var(--pine-300); }
+.size.is-on { background: var(--surface-inverse); color: var(--cream-50); border-color: var(--surface-inverse); }
+
+.mcard__foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-3); margin-top: auto; padding-top: var(--space-4);
+}
+.mcard__price {
+  font-family: var(--font-mono); font-size: var(--text-md); font-weight: 500;
+  color: var(--text-strong); white-space: nowrap;
+}
+
+/* ============ Reassurance strip ============ */
+.assur {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);
+  margin-top: var(--space-9); padding-top: var(--space-8);
+  border-top: 1px solid var(--border-soft);
+}
+.assur__item { display: flex; gap: 14px; align-items: flex-start; }
+.assur__ic {
+  flex: none; width: 44px; height: 44px; border-radius: var(--radius-md);
+  background: var(--pine-100); color: var(--pine-700);
+  display: flex; align-items: center; justify-content: center;
+}
+.assur__t { font-family: var(--font-ui); font-weight: 600; font-size: var(--text-sm); color: var(--text-strong); margin: 0; }
+.assur__d { font-size: var(--text-sm); color: var(--text-muted); margin: 4px 0 0; line-height: 1.5; }
+@media (max-width: 760px) { .assur { grid-template-columns: 1fr; gap: var(--space-5); } }
+
+/* ============ Cart button ============ */
+.cartbtn { position: relative; display: inline-flex; align-items: center; gap: 7px; }
+.cartbtn__count {
+  position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; padding: 0 4px;
+  border-radius: 999px; background: var(--accent); color: var(--white);
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; line-height: 1;
+}
+
+/* ============ Toast ============ */
+.toast {
+  position: fixed; left: 50%; bottom: 28px;
+  transform: translate(-50%, 12px); z-index: 200;
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface-inverse); color: var(--cream-50);
+  border: 1px solid var(--border-on-dark); border-radius: var(--radius-md);
+  padding: 12px 18px; box-shadow: var(--shadow-lg);
+  font-family: var(--font-ui); font-size: var(--text-sm);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.toast.is-on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.toast__check { color: var(--timber-300); flex: none; }
+
+/* ============ Nav tweaks for shop ============ */
+.nav a.nav__link { text-decoration: none; display: inline-flex; align-items: center; }
+.nav__link--current { color: var(--text-brand); }
+.nav__link--current::after { transform: scaleX(1); }

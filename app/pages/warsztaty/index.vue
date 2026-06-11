@@ -253,7 +253,7 @@
               <li><NuxtLink to="/">Strona główna</NuxtLink></li>
               <li><NuxtLink to="/">Kursy online</NuxtLink></li>
               <li><NuxtLink to="/">O nas</NuxtLink></li>
-              <li><NuxtLink to="/">Blog</NuxtLink></li>
+              <li><NuxtLink to="/blog">Blog</NuxtLink></li>
             </ul>
           </div>
           <div>

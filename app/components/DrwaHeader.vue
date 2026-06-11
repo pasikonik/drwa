@@ -70,7 +70,8 @@ const NAV = [
     { to: 'kursy', label: 'Minikurs podstaw', desc: 'Praca z drewnem od zera' },
   ] },
   { id: 'onas', label: 'O nas' },
-  { id: 'blog', label: 'Blog' },
+  { id: 'sklep', label: 'Sklep', route: '/sklep' },
+  { id: 'blog', label: 'Blog', route: '/blog' },
   { id: 'kontakt', label: 'Kontakt' },
 ]
 

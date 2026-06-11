@@ -1,0 +1,273 @@
+<template>
+  <div class="site">
+    <!-- ===== Nawigacja ===== -->
+    <header class="nav">
+      <div class="container nav__row">
+        <NuxtLink class="brand" to="/">
+          <img src="/assets/drwa-mark-ink.png" alt="DRWA" />
+          <span class="brand__wm">DRWA</span>
+        </NuxtLink>
+        <nav class="nav__links" aria-label="Główne">
+          <NuxtLink class="nav__link nav__item" to="/warsztaty">Warsztaty stacjonarne</NuxtLink>
+          <a class="nav__link nav__item" href="/#kursy">Kursy online</a>
+          <a class="nav__link nav__item" href="/#onas">O nas</a>
+          <NuxtLink class="nav__link nav__item" to="/sklep">Sklep</NuxtLink>
+          <a class="nav__link nav__item nav__link--current" href="#">Blog</a>
+          <a class="nav__link nav__item" href="/#kontakt">Kontakt</a>
+        </nav>
+        <div class="nav__spacer" />
+        <div class="nav__actions">
+          <NuxtLink class="btn btn--primary btn--sm" to="/warsztaty">Zapisz się</NuxtLink>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== Nagłówek strony ===== -->
+    <div class="pagehead">
+      <div class="container">
+        <span class="eyebrow eyebrow--ondark">Blog · Z lasu</span>
+        <h1>Notatki zza warsztatu</h1>
+        <p>O pracy z drewnem, naturalnym budownictwie i ludziach, których spotykamy przy wspólnym stole. Pisane powoli, jak schnie dobre drewno.</p>
+      </div>
+    </div>
+
+    <main class="container">
+      <!-- Filtry kategorii -->
+      <div class="bfilters io">
+        <div class="bfilters__tags" role="group" aria-label="Filtruj wpisy">
+          <button
+            v-for="c in CATS"
+            :key="c"
+            class="drwa-tag drwa-tag--interactive"
+            :class="{ 'drwa-tag--active': cat === c }"
+            @click="cat = c"
+          >{{ c }}</button>
+        </div>
+        <span class="bfilters__count">{{ count }} {{ countLabel }}</span>
+      </div>
+
+      <!-- Wpis wyróżniony -->
+      <NuxtLink v-if="showFeatured" class="band io" :to="FEATURED.route">
+        <div class="band__bg"><img :src="FEATURED.img" :alt="FEATURED.title" /></div>
+        <div class="band__scrim" />
+        <div class="band__inner">
+          <span class="eyebrow band__eyebrow">{{ FEATURED.cat }} · {{ FEATURED.read }}</span>
+          <h2>{{ FEATURED.title }}</h2>
+          <p>{{ FEATURED.excerpt }}</p>
+          <span class="btn btn--on-dark btn--md">
+            Czytaj artykuł
+            <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </span>
+        </div>
+      </NuxtLink>
+
+      <!-- Siatka wpisów -->
+      <section class="section--tight" style="padding-top: 0">
+        <div class="bgrid">
+          <article v-for="a in list" :key="a.id" class="drwa-pcard io">
+            <div class="drwa-pcard__media">
+              <img :src="a.img" :alt="a.title" :style="a.pos ? { objectPosition: a.pos } : undefined" />
+            </div>
+            <div class="drwa-pcard__body">
+              <span class="drwa-pcard__eyebrow">{{ a.cat }} · {{ a.read }}</span>
+              <h3 class="drwa-pcard__title">{{ a.title }}</h3>
+              <p class="drwa-pcard__desc">{{ a.excerpt }}</p>
+              <div class="drwa-pcard__foot">
+                <span class="drwa-pcard__meta">{{ a.date }}</span>
+                <span class="bcard__go">
+                  Czytaj
+                  <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== Newsletter ===== -->
+    <section class="section container" style="padding-top: 0">
+      <div class="news io">
+        <span class="eyebrow eyebrow--ondark">Newsletter</span>
+        <h2>Listy z lasu</h2>
+        <p>Nowe wpisy, terminy warsztatów i krótkie historie zza warsztatu — raz w miesiącu, bez spamu.</p>
+        <p v-if="sent" class="news__sent">Dziękujemy — do zobaczenia w lesie.</p>
+        <form v-else class="news__form" @submit.prevent="subscribe">
+          <input v-model="email" type="email" required placeholder="twój@email.pl" aria-label="E-mail" />
+          <button class="btn btn--accent btn--md" type="submit">Zapisz się</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== Stopka ===== -->
+    <footer class="foot">
+      <div class="container">
+        <div class="foot__top">
+          <div class="foot__brand">
+            <div class="brandrow">
+              <img src="/assets/drwa-mark.png" alt="DRWA" />
+              <span class="wm">DRWA</span>
+            </div>
+            <p>Drewno, rzemiosło i szkolenia. Pracujemy z drewnem i budujemy wokół niego społeczność — w duchu natury i ekologii.</p>
+          </div>
+          <div>
+            <h4>Blog</h4>
+            <ul>
+              <li><NuxtLink to="/blog">Wszystkie wpisy</NuxtLink></li>
+              <li><NuxtLink to="/blog/dlaczego-budujemy-z-drewna">Dlaczego budujemy z drewna</NuxtLink></li>
+              <li><a href="/#kontakt">Napisz do nas</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>DRWA</h4>
+            <ul>
+              <li><NuxtLink to="/warsztaty">Warsztaty 2026</NuxtLink></li>
+              <li><a href="/#kursy">Kursy online</a></li>
+              <li><a href="/#onas">O nas</a></li>
+              <li><NuxtLink to="/sklep">Sklep · Merch</NuxtLink></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Kontakt</h4>
+            <ul>
+              <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
+              <li><a href="tel:+48600100200">+48 600 100 200</a></li>
+              <li><NuxtLink to="/">Strona główna</NuxtLink></li>
+            </ul>
+          </div>
+        </div>
+        <div class="foot__bottom">
+          <span>© 2026 DRWA · Drewno · Rzemiosło · Szkolenia</span>
+          <div class="foot__social">
+            <a aria-label="Instagram" href="#">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="20" x="2" y="2" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>
+              </svg>
+            </a>
+            <a aria-label="Facebook" href="#">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+            </a>
+            <a aria-label="YouTube" href="#">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>
+                <path d="m9.75 15.02 5.75-3.27-5.75-3.27v6.54z"/>
+              </svg>
+            </a>
+            <a aria-label="E-mail" href="mailto:czesc@drwa.pl">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
+
+useHead({
+  title: 'Blog · Z lasu — DRWA',
+  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
+})
+
+const CATS = ['Wszystkie', 'Z lasu', 'Rzemiosło', 'Eko-budownictwo', 'Społeczność']
+
+const FEATURED = {
+  cat: 'Eko-budownictwo', read: '6 min czytania', date: '2 czerwca 2026',
+  title: 'Dlaczego budujemy z drewna',
+  excerpt: 'Drewno wiąże węgiel, starzeje się z godnością i uczy pokory. O tym, dlaczego po latach betonu wracamy do najstarszego materiału świata — nie z sentymentu, lecz z rozsądku.',
+  img: '/assets/mist-hero.png',
+  route: '/blog/dlaczego-budujemy-z-drewna',
+}
+
+const ARTICLES = [
+  {
+    id: 'dluto', cat: 'Rzemiosło', read: '4 min', date: '18 maja 2026',
+    title: 'Czego uczy pierwsze dłuto',
+    excerpt: 'Pierwsze cięcie zawsze idzie krzywo. I dobrze — o początkach, błędach i ostrzeniu.',
+    img: '/assets/timber-2.png',
+  },
+  {
+    id: 'sloje', cat: 'Z lasu', read: '5 min', date: '4 maja 2026',
+    title: 'Słoje, czyli pamięć suchych lat',
+    excerpt: 'Jak czytać przekrój pnia: wąskie słoje suszy, szerokie lata deszczu i blizny po wiatrach.',
+    img: '/assets/forest-1.png',
+  },
+  {
+    id: 'glina', cat: 'Eko-budownictwo', read: '7 min', date: '21 kwietnia 2026',
+    title: 'Glina, słoma i drewno',
+    excerpt: 'Trzy materiały, które budowały polskie wsie przez wieki — i wracają w nowych domach.',
+    img: '/assets/forest-3.png',
+  },
+  {
+    id: 'ognisko', cat: 'Społeczność', read: '3 min', date: '7 kwietnia 2026',
+    title: 'Ognisko po warsztacie',
+    excerpt: 'Najważniejsze rozmowy zaczynają się po zmroku, gdy narzędzia są już schowane.',
+    img: '/assets/forest-band.png',
+  },
+  {
+    id: 'drewno', cat: 'Z lasu', read: '5 min', date: '23 marca 2026',
+    title: 'Skąd bierzemy drewno',
+    excerpt: 'O tartakach, z którymi pracujemy, certyfikatach i tym, czemu nie kupujemy „okazji”.',
+    img: '/assets/forest-1.png', pos: '20% 70%',
+  },
+]
+
+const cat = ref('Wszystkie')
+
+const list = computed(() =>
+  cat.value === 'Wszystkie' ? ARTICLES : ARTICLES.filter(a => a.cat === cat.value)
+)
+const showFeatured = computed(() => cat.value === 'Wszystkie' || FEATURED.cat === cat.value)
+const count = computed(() => list.value.length + (showFeatured.value ? 1 : 0))
+const countLabel = computed(() => {
+  if (count.value === 1) return 'wpis'
+  if (count.value >= 2 && count.value <= 4) return 'wpisy'
+  return 'wpisów'
+})
+
+const email = ref('')
+const sent = ref(false)
+
+function subscribe() {
+  if (email.value.trim()) sent.value = true
+}
+
+let observer = null
+
+function observeIo() {
+  const els = document.querySelectorAll('.io:not(.io--in)')
+  if (!observer) {
+    els.forEach(el => el.classList.add('io--in'))
+    return
+  }
+  els.forEach(el => observer.observe(el))
+}
+
+onMounted(() => {
+  if ('IntersectionObserver' in window) {
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) { en.target.classList.add('io--in'); observer.unobserve(en.target) }
+      })
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
+  }
+  observeIo()
+})
+
+// Zmiana filtra tworzy nowe elementy .io — trzeba je dopiąć do obserwatora
+watch(cat, () => nextTick(observeIo))
+
+onUnmounted(() => {
+  if (observer) observer.disconnect()
+})
+</script>
