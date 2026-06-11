@@ -21,18 +21,14 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            # 1. Wejdź do katalogu frontendu i pobierz kod
             cd ~/apps/drwa-frontend
             git pull origin main
 
-            # 2. Załaduj NVM, Node i pnpm (wymagane w nieinteraktywnej sesji SSH)
+            # Pewne załadowanie NVM i globalnych binariów NPM/PNPM na Debianie:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            export PATH="$HOME/.local/share/pnpm:$PATH"
+            export PATH="$HOME/.nvm/versions/node/$(node -v)/bin:$PATH"
 
-            # 3. Zainstaluj czyste zależności i zbuduj aplikację
             pnpm install
             pnpm run build
-
-            # 4. Zrestartuj proces w PM2
             pm2 restart ecosystem.config.cjs --env production
