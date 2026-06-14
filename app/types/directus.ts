@@ -75,6 +75,7 @@ export interface BlogPost {
   title: string
   slug: string
   content: string
+  category: string | null
   featured_image: string | DirectusFile | null
   publish_date: string  // ISO datetime
 }

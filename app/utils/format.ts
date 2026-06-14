@@ -38,11 +38,11 @@ export const stripHtml = (html: string, maxLen = 160): string => {
   return text.slice(0, cut > 0 ? cut : maxLen) + '…'
 }
 
-/** Rough reading-time estimate — ~200 wpm. */
-export const readTime = (html: string): string => {
+/** Rough reading-time estimate — ~200 wpm. Pass short=true for "4 min" (no suffix). */
+export const readTime = (html: string, short = false): string => {
   const words = html.replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length
   const mins = Math.max(1, Math.round(words / 200))
-  return `${mins} min czytania`
+  return short ? `${mins} min` : `${mins} min czytania`
 }
 
 /** Derive spots label and tone from capacity/booked fields. */

@@ -45,7 +45,9 @@
         </div>
         <div class="band__scrim" />
         <div class="band__inner">
-          <span class="eyebrow band__eyebrow">{{ formatDate(featured.publish_date) }} · {{ readTime(featured.content) }}</span>
+          <span class="eyebrow band__eyebrow">
+            <template v-if="featured.category">{{ featured.category }} · </template>{{ readTime(featured.content) }}
+          </span>
           <h2>{{ featured.title }}</h2>
           <p>{{ stripHtml(featured.content, 200) }}</p>
           <span class="btn btn--on-dark btn--md">
@@ -66,7 +68,7 @@
               <img v-else src="/assets/forest-1.png" :alt="a.title" />
             </div>
             <div class="drwa-pcard__body">
-              <span class="drwa-pcard__eyebrow">{{ readTime(a.content) }}</span>
+              <span class="drwa-pcard__eyebrow"><template v-if="a.category">{{ a.category }} · </template>{{ readTime(a.content, true) }}</span>
               <h3 class="drwa-pcard__title">{{ a.title }}</h3>
               <p class="drwa-pcard__desc">{{ stripHtml(a.content, 140) }}</p>
               <div class="drwa-pcard__foot">
