@@ -32,8 +32,17 @@
     </div>
 
     <main class="container">
-      <!-- Licznik wpisów -->
+      <!-- Filtry kategorii -->
       <div class="bfilters io">
+        <div class="bfilters__tags" role="group" aria-label="Filtruj wpisy">
+          <button
+            v-for="c in CATS"
+            :key="c"
+            class="drwa-tag drwa-tag--interactive"
+            :class="{ 'drwa-tag--active': cat === c }"
+            @click="cat = c"
+          >{{ c }}</button>
+        </div>
         <span class="bfilters__count">{{ count }} {{ countLabel }}</span>
       </div>
 
@@ -169,7 +178,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { formatDate, stripHtml, readTime } from '~/utils/format'
 
 useHead({
@@ -181,10 +190,31 @@ const { assetUrl } = useDirectus()
 const { data } = await useBlogPosts()
 
 const allPosts = computed(() => data.value ?? [])
-const featured = computed(() => allPosts.value[0] ?? null)
-const list = computed(() => allPosts.value.slice(1))
 
-const count = computed(() => allPosts.value.length)
+// Kategorie pobrane z realnych wpisów (unikalne, w kolejności pojawienia się)
+const categories = computed(() => {
+  const seen = new Set<string>()
+  for (const p of allPosts.value) {
+    if (p.category) seen.add(p.category)
+  }
+  return Array.from(seen)
+})
+const CATS = computed(() => ['Wszystkie', ...categories.value])
+
+const cat = ref('Wszystkie')
+
+// Wpisy pasujące do wybranej kategorii
+const filtered = computed(() =>
+  cat.value === 'Wszystkie'
+    ? allPosts.value
+    : allPosts.value.filter(p => p.category === cat.value)
+)
+
+// Najnowszy wpis jako wyróżniony — pokazujemy go nad siatką, gdy pasuje do filtra
+const featured = computed(() => filtered.value[0] ?? null)
+const list = computed(() => filtered.value.slice(1))
+
+const count = computed(() => filtered.value.length)
 const countLabel = computed(() => {
   if (count.value === 1) return 'wpis'
   if (count.value >= 2 && count.value <= 4) return 'wpisy'
@@ -200,18 +230,28 @@ function subscribe() {
 
 let observer: IntersectionObserver | null = null
 
-onMounted(() => {
-  if (!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.io').forEach(el => el.classList.add('io--in'))
+function observeIo() {
+  const els = document.querySelectorAll('.io:not(.io--in)')
+  if (!observer) {
+    els.forEach(el => el.classList.add('io--in'))
     return
   }
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
-    })
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-  document.querySelectorAll('.io:not(.io--in)').forEach(el => observer!.observe(el))
+  els.forEach(el => observer!.observe(el))
+}
+
+onMounted(() => {
+  if ('IntersectionObserver' in window) {
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
+      })
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
+  }
+  observeIo()
 })
+
+// Zmiana filtra tworzy nowe elementy .io — trzeba je dopiąć do obserwatora
+watch(cat, () => nextTick(observeIo))
 
 onUnmounted(() => {
   if (observer) observer.disconnect()

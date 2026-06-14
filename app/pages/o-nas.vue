@@ -56,15 +56,7 @@
         <div class="section container">
           <div class="founder">
             <figure class="founder__photo io">
-              <div class="founder__placeholder">
-                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="3" y="3" width="18" height="18" rx="2"/>
-                  <circle cx="8.5" cy="8.5" r="1.5"/>
-                  <path d="m21 15-5-5L5 21"/>
-                </svg>
-                <span>Portret · Jędrzej Cyganik</span>
-              </div>
-              <figcaption>Jędrzej · pracownia DRWA</figcaption>
+              <img class="founder__img" src="/Jedrzej.avif" alt="Jędrzej Cyganik — założyciel DRWA" />
             </figure>
             <div class="founder__body io">
               <span class="eyebrow">Założyciel</span>

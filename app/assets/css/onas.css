@@ -24,7 +24,7 @@
 
 /* ============ Historia (split) ============ */
 .story { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-8); align-items: center; }
-.story__text h2 {
+.story .story__text h2 {
   font-family: var(--font-display); font-weight: 600; font-size: var(--text-2xl);
   letter-spacing: -0.015em; color: var(--text-strong); margin: 14px 0 0; line-height: 1.12; text-wrap: balance;
 }
@@ -45,6 +45,7 @@
   padding: var(--space-6);
 }
 .founder__placeholder svg { opacity: 0.4; }
+.founder__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .founder__photo figcaption {
   position: absolute; left: 14px; bottom: 12px; z-index: 2;
   font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.1em; text-transform: uppercase;
