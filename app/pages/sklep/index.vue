@@ -50,48 +50,37 @@
         <div class="container">
           <!-- Pasek filtrów -->
           <div class="shop__bar io">
-            <span class="shop__count">{{ filtered.length }} {{ filtered.length === 1 ? 'produkt' : 'produktów' }}</span>
-            <div class="shop__filters" role="group" aria-label="Filtruj produkty">
-              <button
-                v-for="f in FILTERS"
-                :key="f.id"
-                class="filt"
-                :class="{ 'is-on': filter === f.id }"
-                @click="filter = f.id"
-              >{{ f.label }}</button>
-            </div>
+            <span class="shop__count">{{ products.length }} {{ products.length === 1 ? 'produkt' : 'produktów' }}</span>
           </div>
 
           <!-- Siatka produktów -->
           <div class="mgrid">
             <article
-              v-for="p in filtered"
+              v-for="p in products"
               :key="p.id"
               class="mcard io"
             >
               <div class="mcard__media">
-                <span v-if="p.badge" class="mcard__badge" :class="p.badgeTone === 'ember' ? 'mcard__badge--ember' : ''">
-                  {{ p.badge }}
-                </span>
-                <div class="mcard__placeholder">
+                <img v-if="assetUrl(p.image)" class="mcard__img" :src="assetUrl(p.image) || ''" :alt="p.title" />
+                <div v-else class="mcard__placeholder">
                   <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <rect x="3" y="3" width="18" height="18" rx="2"/>
                     <circle cx="8.5" cy="8.5" r="1.5"/>
                     <path d="m21 15-5-5L5 21"/>
                   </svg>
-                  <span>{{ p.eyebrow }}</span>
+                  <span>Merch DRWA</span>
                 </div>
                 <NuxtLink class="mcard__cover" :to="`/sklep/${p.id}`" :aria-label="'Zobacz: ' + p.title" />
               </div>
               <div class="mcard__body">
-                <span class="mcard__eyebrow">{{ p.eyebrow }}</span>
+                <span class="mcard__eyebrow">{{ productEyebrow(p.title) }}</span>
                 <h3 class="mcard__title">
                   <NuxtLink class="mcard__link" :to="`/sklep/${p.id}`">{{ p.title }}</NuxtLink>
                 </h3>
-                <p class="mcard__desc">{{ p.desc }}</p>
+                <p class="mcard__desc">{{ stripHtml(p.description) }}</p>
                 <div class="sizes" role="group" :aria-label="'Rozmiar · ' + p.title">
                   <button
-                    v-for="s in SIZES"
+                    v-for="s in availableSizes(p.id)"
                     :key="s"
                     class="size"
                     :class="{ 'is-on': sizes[p.id] === s }"
@@ -99,7 +88,7 @@
                   >{{ s }}</button>
                 </div>
                 <div class="mcard__foot">
-                  <span class="mcard__price">{{ p.price }}</span>
+                  <span class="mcard__price">{{ formatPrice(p.price) }}</span>
                   <button class="btn btn--secondary btn--sm" @click="addToCart(p)">
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
@@ -142,8 +131,7 @@
           <div>
             <h4>Sklep</h4>
             <ul>
-              <li><a href="#" @click.prevent="filter = 'bluza'">Bluzy</a></li>
-              <li><a href="#" @click.prevent="filter = 'koszulka'">Koszulki</a></li>
+              <li><NuxtLink to="/sklep">Wszystkie produkty</NuxtLink></li>
               <li><NuxtLink to="/kontakt">Wysyłka i zwroty</NuxtLink></li>
             </ul>
           </div>
@@ -203,20 +191,37 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
-import { PRODUCTS, SIZES } from '~/data/produkty'
+import { formatPrice, stripHtml } from '~/utils/format'
 
 useHead({
   title: 'Sklep DRWA — Merch z lasu',
   link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
-const FILTERS = [
-  { id: 'all', label: 'Wszystko' },
-  { id: 'bluza', label: 'Bluzy' },
-  { id: 'koszulka', label: 'Koszulki' },
-]
+const { assetUrl } = useDirectus()
+const { data } = await useProducts('merch')
+
+const products = computed(() => data.value?.products ?? [])
+const variants = computed(() => data.value?.variants ?? [])
+
+const SIZES_ORDER = ['S', 'M', 'L', 'XL']
+
+function availableSizes(productId: number): string[] {
+  const vs = variants.value.filter(v => v.product_id === productId)
+  if (!vs.length) return SIZES_ORDER
+  return vs
+    .map(v => v.size?.toUpperCase())
+    .filter((s): s is string => !!s)
+    .sort((a, b) => SIZES_ORDER.indexOf(a) - SIZES_ORDER.indexOf(b))
+}
+
+function productEyebrow(title: string): string {
+  if (/bluza/i.test(title)) return 'Bluza'
+  if (/koszulka/i.test(title)) return 'Koszulka'
+  return 'Merch DRWA'
+}
 
 const ASSUR = [
   {
@@ -255,27 +260,22 @@ const ASSUR = [
   },
 ]
 
-const filter = ref('all')
-const sizes = reactive({})
+const sizes = reactive<Record<number, string | null>>({})
 const cartCount = ref(0)
 const toast = reactive({ on: false, msg: '' })
-let toastTimer = null
+let toastTimer: ReturnType<typeof setTimeout> | null = null
 
-const filtered = computed(() =>
-  filter.value === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.cat === filter.value)
-)
-
-function addToCart(p) {
+function addToCart(p: { id: number; title: string }) {
   cartCount.value++
   const size = sizes[p.id]
   const tag = size ? ` (rozm. ${size})` : ''
   toast.msg = `Dodano: ${p.title}${tag}`
   toast.on = true
-  clearTimeout(toastTimer)
+  if (toastTimer) clearTimeout(toastTimer)
   toastTimer = setTimeout(() => { toast.on = false }, 2600)
 }
 
-let observer = null
+let observer: IntersectionObserver | null = null
 
 onMounted(() => {
   if (!('IntersectionObserver' in window)) {
@@ -284,14 +284,14 @@ onMounted(() => {
   }
   observer = new IntersectionObserver((entries) => {
     entries.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.add('io--in'); observer.unobserve(en.target) }
+      if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
     })
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-  document.querySelectorAll('.io:not(.io--in)').forEach(el => observer.observe(el))
+  document.querySelectorAll('.io:not(.io--in)').forEach(el => observer!.observe(el))
 })
 
 onUnmounted(() => {
   if (observer) observer.disconnect()
-  clearTimeout(toastTimer)
+  if (toastTimer) clearTimeout(toastTimer)
 })
 </script>

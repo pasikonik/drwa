@@ -66,8 +66,8 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const NAV = [
   { id: 'warsztaty', label: 'Warsztaty stacjonarne', route: '/warsztaty' },
   { id: 'kursy', label: 'Kursy online', children: [
-    { to: '/kursy/od-wiaty-do-chaty', label: 'Od wiaty do chaty', desc: 'Pełny kurs wideo' },
-    { to: 'kursy', label: 'Minikurs podstaw', desc: 'Praca z drewnem od zera' },
+    { route: '/kursy/od-wiaty-do-chaty', label: 'Od wiaty do chaty', desc: 'Pełny kurs wideo' },
+    { route: '/kursy/minikurs-podstaw', label: 'Minikurs podstaw', desc: 'Praca z drewnem od zera' },
   ] },
   { id: 'onas', label: 'O nas', route: '/o-nas' },
   { id: 'sklep', label: 'Sklep', route: '/sklep' },

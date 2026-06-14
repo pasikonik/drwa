@@ -1,14 +1,12 @@
-import { createDirectus, rest } from '@directus/sdk';
+import { createDirectus, rest } from '@directus/sdk'
+import type { Schema } from '~/types/directus'
 
 export default defineNuxtPlugin(() => {
-  const config = useRuntimeConfig();
-  
-  // Tworzymy klienta Directus z obsługą REST API
-  const directus = createDirectus(config.public.directusUrl).with(rest());
+  const config = useRuntimeConfig()
+
+  const directus = createDirectus<Schema>(config.public.directusUrl.replace(/\/$/, '')).with(rest())
 
   return {
-    provide: {
-      directus
-    }
-  };
-});
+    provide: { directus }
+  }
+})

@@ -42,7 +42,7 @@
           <p>Każdy warsztat to jeden realny budynek — od przygotowania drewna po gotową konstrukcję. Pracujemy w grupach do dziesięciu osób.</p>
         </div>
         <div class="wlist">
-          <article v-for="w in WORKSHOPS" :key="w.id" class="wrow io">
+          <article v-for="w in workshops" :key="w.id" class="wrow io">
             <div class="wrow__date">
               <span class="wrow__day">{{ w.day }}</span>
               <span class="wrow__month">{{ w.month }}</span>
@@ -193,7 +193,7 @@
                 <div class="field">
                   <label class="field__label" for="sf-workshop">Warsztat</label>
                   <select id="sf-workshop" v-model="form.workshopId" class="field__select">
-                    <option v-for="w in WORKSHOPS" :key="w.id" :value="w.id">
+                    <option v-for="w in workshops" :key="w.id" :value="w.id">
                       {{ w.title }} · {{ w.day }} {{ w.month }} {{ w.year }}
                     </option>
                   </select>
@@ -296,49 +296,58 @@
   </div>
 </template>
 
-<script setup>
-import { ref, reactive, onMounted, onUnmounted } from 'vue'
+<script setup lang="ts">
+import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
+import { formatPrice, formatDateRange, stripHtml, workshopSpots } from '~/utils/format'
 
 useHead({
   title: 'Warsztaty 2026 — DRWA',
   link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
-const WORKSHOPS = [
-  {
-    id: 'altana',
-    title: 'Budowanie altany',
-    route: '/warsztaty/budowanie-altany',
-    day: '15–17', month: 'maja', year: '2026',
-    days: '3 dni', level: 'podstawowy',
-    price: '1 450 zł', spotsLabel: '4 wolne miejsca', spotsTone: 'success',
-    place: 'Stolarnia pod lasem · Beskid Niski', lead: 'prowadzi Tomasz Gajda',
-    img: '/assets/forest-1.png', pos: '50% 55%',
-    desc: 'Od pierwszego cięcia po gotowy dach. Wspólnie stawiamy altanę ogrodową na tradycyjnych łączeniach ciesielskich — bez gwoździ i wkrętów.',
-  },
-  {
-    id: 'wiata',
-    title: 'Budowanie wiaty',
-    route: null,
-    day: '26–28', month: 'czerwca', year: '2026',
-    days: '3 dni', level: 'podstawowy',
-    price: '1 450 zł', spotsLabel: '7 wolnych miejsc', spotsTone: 'success',
-    place: 'Stolarnia pod lasem · Beskid Niski', lead: 'prowadzi Tomasz Gajda',
-    img: '/assets/timber-2.png', pos: '50% 45%',
-    desc: 'Solidna wiata na drewno albo auto: słupy, miecze i więźba dachowa. Uczymy się czytać konstrukcję i przenosić ciężar tam, gdzie trzeba.',
-  },
-  {
-    id: 'sauna',
-    title: 'Budowanie sauny',
-    route: null,
-    day: '19–23', month: 'sierpnia', year: '2026',
-    days: '5 dni', level: 'średni',
-    price: '2 900 zł', spotsLabel: 'Ostatnie 2 miejsca', spotsTone: 'warning',
-    place: 'Stolarnia pod lasem · Beskid Niski', lead: 'prowadzi Marek Sosnowski',
-    img: '/assets/forest-3.png', pos: '50% 60%',
-    desc: 'Pięć dni przy najbardziej wymagającym projekcie sezonu: sauna ogrodowa od podwaliny po piec. Izolacja naturalna, drewno opalane.',
-  },
-]
+const { assetUrl } = useDirectus()
+const { data } = await useProducts('workshop')
+
+const FALLBACK_IMGS = ['/assets/forest-1.png', '/assets/timber-2.png', '/assets/forest-3.png']
+
+const workshops = computed(() =>
+  (data.value?.products ?? []).map((p, i) => {
+    const dates = p.workshop_start_date && p.workshop_end_date
+      ? formatDateRange(p.workshop_start_date, p.workshop_end_date)
+      : { day: '—', month: '—', year: '—' }
+
+    const days = p.workshop_start_date && p.workshop_end_date
+      ? (() => {
+          const diff = Math.round(
+            (new Date(p.workshop_end_date).getTime() - new Date(p.workshop_start_date).getTime())
+            / (1000 * 60 * 60 * 24)
+          ) + 1
+          return `${diff} ${diff === 1 ? 'dzień' : 'dni'}`
+        })()
+      : '—'
+
+    const spots = workshopSpots(p.workshop_capacity, p.workshop_booked)
+
+    return {
+      id: p.id,
+      title: p.title,
+      route: null as string | null,
+      day: dates.day,
+      month: dates.month,
+      year: dates.year,
+      days,
+      level: 'podstawowy',
+      price: formatPrice(p.price),
+      spotsLabel: spots.label,
+      spotsTone: spots.tone,
+      place: p.workshop_location ?? 'Stolarnia pod lasem · Beskid Niski',
+      lead: 'prowadzi Jędrzej Cyganik',
+      img: assetUrl(p.image) ?? FALLBACK_IMGS[i % FALLBACK_IMGS.length],
+      pos: '50% 50%',
+      desc: stripHtml(p.description, 180),
+    }
+  })
+)
 
 const PAST = [
   { date: '10–12 kwietnia 2026',    title: 'Budowanie stolarni' },
@@ -367,17 +376,20 @@ const FAQ = [
   },
 ]
 
-const openFaq = ref(0)
-const form = reactive({ workshopId: WORKSHOPS[0].id, name: '', email: '', message: '', newsletter: false })
+const openFaq = ref<number | null>(0)
+const form = reactive({
+  workshopId: workshops.value[0]?.id ?? null as number | null,
+  name: '', email: '', message: '', newsletter: false,
+})
 const errors = reactive({ name: '', email: '' })
 const sent = ref(false)
 
-function jump(id) {
+function jump(id: string) {
   const el = document.getElementById(id)
   if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 88, behavior: 'smooth' })
 }
 
-function signupFor(id) {
+function signupFor(id: number) {
   form.workshopId = id
   jump('zapisy')
 }
@@ -388,7 +400,7 @@ function submit() {
   if (!errors.name && !errors.email) sent.value = true
 }
 
-let observer = null
+let observer: IntersectionObserver | null = null
 
 onMounted(() => {
   if (!('IntersectionObserver' in window)) {
@@ -397,10 +409,10 @@ onMounted(() => {
   }
   observer = new IntersectionObserver((entries) => {
     entries.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.add('io--in'); observer.unobserve(en.target) }
+      if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
     })
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-  document.querySelectorAll('.io:not(.io--in)').forEach(el => observer.observe(el))
+  document.querySelectorAll('.io:not(.io--in)').forEach(el => observer!.observe(el))
 })
 
 onUnmounted(() => { if (observer) observer.disconnect() })

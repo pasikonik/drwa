@@ -12,8 +12,8 @@
         <div>
           <h4>Warsztaty</h4>
           <ul>
-            <li><a @click="jump('warsztaty')">Warsztaty 2026</a></li>
-            <li><a @click="jump('warsztaty')">Informacje i oferta</a></li>
+            <li><NuxtLink to="/warsztaty">Warsztaty 2026</NuxtLink></li>
+            <li><NuxtLink to="/warsztaty">Informacje i oferta</NuxtLink></li>
             <li><a @click="jump('opinie')">Relacje i opinie</a></li>
             <li><NuxtLink to="/blog">Blog · Z lasu</NuxtLink></li>
           </ul>
@@ -21,7 +21,7 @@
         <div>
           <h4>Kursy online</h4>
           <ul>
-            <li><a @click="jump('kursy')">Od wiaty do chaty</a></li>
+            <li><NuxtLink to="/kursy/od-wiaty-do-chaty">Od wiaty do chaty</NuxtLink></li>
             <li><a @click="jump('kursy')">Minikurs podstaw</a></li>
             <li><NuxtLink to="/o-nas">O nas</NuxtLink></li>
           </ul>

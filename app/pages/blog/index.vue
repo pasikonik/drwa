@@ -32,28 +32,22 @@
     </div>
 
     <main class="container">
-      <!-- Filtry kategorii -->
+      <!-- Licznik wpisów -->
       <div class="bfilters io">
-        <div class="bfilters__tags" role="group" aria-label="Filtruj wpisy">
-          <button
-            v-for="c in CATS"
-            :key="c"
-            class="drwa-tag drwa-tag--interactive"
-            :class="{ 'drwa-tag--active': cat === c }"
-            @click="cat = c"
-          >{{ c }}</button>
-        </div>
         <span class="bfilters__count">{{ count }} {{ countLabel }}</span>
       </div>
 
       <!-- Wpis wyróżniony -->
-      <NuxtLink v-if="showFeatured" class="band io" :to="FEATURED.route">
-        <div class="band__bg"><img :src="FEATURED.img" :alt="FEATURED.title" /></div>
+      <NuxtLink v-if="featured" class="band io" :to="`/blog/${featured.slug}`">
+        <div class="band__bg">
+          <img v-if="assetUrl(featured.featured_image)" :src="assetUrl(featured.featured_image) || ''" :alt="featured.title" />
+          <img v-else src="/assets/mist-hero.png" :alt="featured.title" />
+        </div>
         <div class="band__scrim" />
         <div class="band__inner">
-          <span class="eyebrow band__eyebrow">{{ FEATURED.cat }} · {{ FEATURED.read }}</span>
-          <h2>{{ FEATURED.title }}</h2>
-          <p>{{ FEATURED.excerpt }}</p>
+          <span class="eyebrow band__eyebrow">{{ formatDate(featured.publish_date) }} · {{ readTime(featured.content) }}</span>
+          <h2>{{ featured.title }}</h2>
+          <p>{{ stripHtml(featured.content, 200) }}</p>
           <span class="btn btn--on-dark btn--md">
             Czytaj artykuł
             <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -66,16 +60,17 @@
       <!-- Siatka wpisów -->
       <section class="section--tight" style="padding-top: 0">
         <div class="bgrid">
-          <article v-for="a in list" :key="a.id" class="drwa-pcard io">
+          <NuxtLink v-for="a in list" :key="a.id" class="drwa-pcard io" :to="`/blog/${a.slug}`">
             <div class="drwa-pcard__media">
-              <img :src="a.img" :alt="a.title" :style="a.pos ? { objectPosition: a.pos } : undefined" />
+              <img v-if="assetUrl(a.featured_image)" :src="assetUrl(a.featured_image) || ''" :alt="a.title" />
+              <img v-else src="/assets/forest-1.png" :alt="a.title" />
             </div>
             <div class="drwa-pcard__body">
-              <span class="drwa-pcard__eyebrow">{{ a.cat }} · {{ a.read }}</span>
+              <span class="drwa-pcard__eyebrow">{{ readTime(a.content) }}</span>
               <h3 class="drwa-pcard__title">{{ a.title }}</h3>
-              <p class="drwa-pcard__desc">{{ a.excerpt }}</p>
+              <p class="drwa-pcard__desc">{{ stripHtml(a.content, 140) }}</p>
               <div class="drwa-pcard__foot">
-                <span class="drwa-pcard__meta">{{ a.date }}</span>
+                <span class="drwa-pcard__meta">{{ formatDate(a.publish_date) }}</span>
                 <span class="bcard__go">
                   Czytaj
                   <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -84,7 +79,7 @@
                 </span>
               </div>
             </div>
-          </article>
+          </NuxtLink>
         </div>
       </section>
     </main>
@@ -171,64 +166,23 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
+<script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { formatDate, stripHtml, readTime } from '~/utils/format'
 
 useHead({
   title: 'Blog · Z lasu — DRWA',
   link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
-const CATS = ['Wszystkie', 'Z lasu', 'Rzemiosło', 'Eko-budownictwo', 'Społeczność']
+const { assetUrl } = useDirectus()
+const { data } = await useBlogPosts()
 
-const FEATURED = {
-  cat: 'Eko-budownictwo', read: '6 min czytania', date: '2 czerwca 2026',
-  title: 'Dlaczego budujemy z drewna',
-  excerpt: 'Drewno wiąże węgiel, starzeje się z godnością i uczy pokory. O tym, dlaczego po latach betonu wracamy do najstarszego materiału świata — nie z sentymentu, lecz z rozsądku.',
-  img: '/assets/mist-hero.png',
-  route: '/blog/dlaczego-budujemy-z-drewna',
-}
+const allPosts = computed(() => data.value ?? [])
+const featured = computed(() => allPosts.value[0] ?? null)
+const list = computed(() => allPosts.value.slice(1))
 
-const ARTICLES = [
-  {
-    id: 'dluto', cat: 'Rzemiosło', read: '4 min', date: '18 maja 2026',
-    title: 'Czego uczy pierwsze dłuto',
-    excerpt: 'Pierwsze cięcie zawsze idzie krzywo. I dobrze — o początkach, błędach i ostrzeniu.',
-    img: '/assets/timber-2.png',
-  },
-  {
-    id: 'sloje', cat: 'Z lasu', read: '5 min', date: '4 maja 2026',
-    title: 'Słoje, czyli pamięć suchych lat',
-    excerpt: 'Jak czytać przekrój pnia: wąskie słoje suszy, szerokie lata deszczu i blizny po wiatrach.',
-    img: '/assets/forest-1.png',
-  },
-  {
-    id: 'glina', cat: 'Eko-budownictwo', read: '7 min', date: '21 kwietnia 2026',
-    title: 'Glina, słoma i drewno',
-    excerpt: 'Trzy materiały, które budowały polskie wsie przez wieki — i wracają w nowych domach.',
-    img: '/assets/forest-3.png',
-  },
-  {
-    id: 'ognisko', cat: 'Społeczność', read: '3 min', date: '7 kwietnia 2026',
-    title: 'Ognisko po warsztacie',
-    excerpt: 'Najważniejsze rozmowy zaczynają się po zmroku, gdy narzędzia są już schowane.',
-    img: '/assets/forest-band.png',
-  },
-  {
-    id: 'drewno', cat: 'Z lasu', read: '5 min', date: '23 marca 2026',
-    title: 'Skąd bierzemy drewno',
-    excerpt: 'O tartakach, z którymi pracujemy, certyfikatach i tym, czemu nie kupujemy „okazji”.',
-    img: '/assets/forest-1.png', pos: '20% 70%',
-  },
-]
-
-const cat = ref('Wszystkie')
-
-const list = computed(() =>
-  cat.value === 'Wszystkie' ? ARTICLES : ARTICLES.filter(a => a.cat === cat.value)
-)
-const showFeatured = computed(() => cat.value === 'Wszystkie' || FEATURED.cat === cat.value)
-const count = computed(() => list.value.length + (showFeatured.value ? 1 : 0))
+const count = computed(() => allPosts.value.length)
 const countLabel = computed(() => {
   if (count.value === 1) return 'wpis'
   if (count.value >= 2 && count.value <= 4) return 'wpisy'
@@ -242,30 +196,20 @@ function subscribe() {
   if (email.value.trim()) sent.value = true
 }
 
-let observer = null
-
-function observeIo() {
-  const els = document.querySelectorAll('.io:not(.io--in)')
-  if (!observer) {
-    els.forEach(el => el.classList.add('io--in'))
-    return
-  }
-  els.forEach(el => observer.observe(el))
-}
+let observer: IntersectionObserver | null = null
 
 onMounted(() => {
-  if ('IntersectionObserver' in window) {
-    observer = new IntersectionObserver((entries) => {
-      entries.forEach(en => {
-        if (en.isIntersecting) { en.target.classList.add('io--in'); observer.unobserve(en.target) }
-      })
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.io').forEach(el => el.classList.add('io--in'))
+    return
   }
-  observeIo()
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
+    })
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
+  document.querySelectorAll('.io:not(.io--in)').forEach(el => observer!.observe(el))
 })
-
-// Zmiana filtra tworzy nowe elementy .io — trzeba je dopiąć do obserwatora
-watch(cat, () => nextTick(observeIo))
 
 onUnmounted(() => {
   if (observer) observer.disconnect()
