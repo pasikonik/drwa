@@ -77,11 +77,12 @@
               </div>
               <div class="wrow__cta">
                 <span class="wrow__price">{{ w.price }}<small>od osoby</small></span>
+                <NuxtLink v-if="w.route" :to="w.route" class="btn btn--secondary btn--md">Szczegóły</NuxtLink>
                 <button class="btn btn--primary btn--md" @click="signupFor(w.id)">Zapisz się</button>
               </div>
             </div>
             <div class="wrow__img">
-              <img :src="w.img" :alt="w.title" :style="{ objectPosition: w.pos }" />
+              <DrwaImg :src="w.rawImage" :alt="w.title" preset="hero" :img-style="{ objectPosition: w.pos }" :fallback="w.img" />
             </div>
           </article>
         </div>
@@ -305,7 +306,6 @@ useHead({
   link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
-const { assetUrl } = useDirectus()
 const { data } = await useProducts('workshop')
 
 const FALLBACK_IMGS = ['/assets/forest-1.png', '/assets/timber-2.png', '/assets/forest-3.png']
@@ -331,7 +331,7 @@ const workshops = computed(() =>
     return {
       id: p.id,
       title: p.title,
-      route: null as string | null,
+      route: p.slug ? `/warsztaty/${p.slug}` : null,
       day: dates.day,
       month: dates.month,
       year: dates.year,
@@ -342,7 +342,8 @@ const workshops = computed(() =>
       spotsTone: spots.tone,
       place: p.workshop_location ?? 'Stolarnia pod lasem · Beskid Niski',
       lead: 'prowadzi Jędrzej Cyganik',
-      img: assetUrl(p.image) ?? FALLBACK_IMGS[i % FALLBACK_IMGS.length],
+      rawImage: p.image,
+      img: FALLBACK_IMGS[i % FALLBACK_IMGS.length],
       pos: '50% 50%',
       desc: stripHtml(p.description, 180),
     }

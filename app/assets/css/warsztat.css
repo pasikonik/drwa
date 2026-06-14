@@ -125,10 +125,12 @@
   letter-spacing: -0.02em; margin: 10px 0 var(--space-5);
   color: var(--text-strong); text-wrap: balance;
 }
-.dsec > p {
+.dsec > p,
+.dsec__content p {
   font-size: var(--text-md); line-height: 1.75; color: var(--text-body);
   margin: 0 0 var(--space-4); max-width: 62ch;
 }
+.dsec__content { margin-bottom: var(--space-5); }
 
 /* ============ Learn list ============ */
 .learn {

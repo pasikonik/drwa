@@ -28,6 +28,23 @@ export default defineNuxtConfig({
     }
   },
 
+  // Long-term caching for Nuxt-served static files in public/.
+  // Directus /assets/* are served by Directus itself — configure
+  // ASSETS_CACHE_TTL (seconds) in the Directus environment for those.
+  routeRules: {
+    '/assets/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/*.avif':    { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/*.png':     { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/*.jpg':     { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/*.webp':    { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/*.svg':     { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+  },
+
+  nitro: {
+    // Brotli + gzip for all static assets served by Nitro.
+    compressPublicAssets: { brotli: true, gzip: true },
+  },
+
   vite: {
     optimizeDeps: {
       include: [

@@ -49,8 +49,7 @@
       <!-- Wpis wyróżniony -->
       <NuxtLink v-if="featured" class="band io" :to="`/blog/${featured.slug}`">
         <div class="band__bg">
-          <img v-if="assetUrl(featured.featured_image)" :src="assetUrl(featured.featured_image) || ''" :alt="featured.title" />
-          <img v-else src="/assets/mist-hero.png" :alt="featured.title" />
+          <DrwaImg :src="featured.featured_image" :alt="featured.title" preset="hero" priority fallback="/assets/mist-hero.png" />
         </div>
         <div class="band__scrim" />
         <div class="band__inner">
@@ -73,8 +72,7 @@
         <div class="bgrid">
           <NuxtLink v-for="a in list" :key="a.id" class="drwa-pcard io" :to="`/blog/${a.slug}`">
             <div class="drwa-pcard__media">
-              <img v-if="assetUrl(a.featured_image)" :src="assetUrl(a.featured_image) || ''" :alt="a.title" />
-              <img v-else src="/assets/forest-1.png" :alt="a.title" />
+              <DrwaImg :src="a.featured_image" :alt="a.title" preset="card" fallback="/assets/forest-1.png" />
             </div>
             <div class="drwa-pcard__body">
               <span class="drwa-pcard__eyebrow"><template v-if="a.category">{{ a.category }} · </template>{{ readTime(a.content, true) }}</span>
@@ -186,7 +184,6 @@ useHead({
   link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
-const { assetUrl } = useDirectus()
 const { data } = await useBlogPosts()
 
 const allPosts = computed(() => data.value ?? [])

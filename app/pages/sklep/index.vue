@@ -61,7 +61,7 @@
               class="mcard io"
             >
               <div class="mcard__media">
-                <img v-if="assetUrl(p.image)" class="mcard__img" :src="assetUrl(p.image) || ''" :alt="p.title" />
+                <DrwaImg v-if="p.image" :src="p.image" :alt="p.title" preset="card" img-class="mcard__img" />
                 <div v-else class="mcard__placeholder">
                   <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <rect x="3" y="3" width="18" height="18" rx="2"/>

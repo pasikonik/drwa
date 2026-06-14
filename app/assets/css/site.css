@@ -17,6 +17,8 @@
 .section--tight { padding: var(--space-8) 0; }
 
 a { color: inherit; }
+/* Make <picture> transparent to layout so DrwaImg fills positioned containers */
+picture { display: contents; }
 
 /* ============ Eyebrow ============ */
 .eyebrow {

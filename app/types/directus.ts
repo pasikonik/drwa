@@ -22,6 +22,7 @@ export type ProductType = 'merch' | 'course' | 'workshop'
 export interface Product {
   id: number
   title: string
+  slug: string | null
   type: ProductType
   price: number
   image: string | DirectusFile | null

@@ -26,7 +26,7 @@ export const useProducts = (type: ProductType) => {
           filter: { type: { _eq: type } },
           sort: ['id'],
           fields: [
-            'id', 'title', 'type', 'price', 'description', 'stock', 'image',
+            'id', 'title', 'slug', 'type', 'price', 'description', 'stock', 'image',
             'workshop_location', 'workshop_capacity',
             'workshop_start_date', 'workshop_end_date', 'workshop_booked',
           ],
