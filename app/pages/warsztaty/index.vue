@@ -15,7 +15,7 @@
         </nav>
         <div class="nav__spacer" />
         <div class="nav__actions">
-          <button class="btn btn--primary btn--sm" @click="jump('zapisy')">Zapisz się</button>
+          <CartLink />
         </div>
       </div>
     </header>
@@ -78,7 +78,7 @@
               <div class="wrow__cta">
                 <span class="wrow__price">{{ w.price }}<small>od osoby</small></span>
                 <NuxtLink v-if="w.route" :to="w.route" class="btn btn--secondary btn--md">Szczegóły</NuxtLink>
-                <button class="btn btn--primary btn--md" @click="signupFor(w.id)">Zapisz się</button>
+                <AddToCartButton :product="w.raw" label="Rezerwuj miejsce" />
               </div>
             </div>
             <div class="wrow__img">
@@ -330,6 +330,7 @@ const workshops = computed(() =>
 
     return {
       id: p.id,
+      raw: p,
       title: p.title,
       route: p.slug ? `/warsztaty/${p.slug}` : null,
       day: dates.day,
@@ -388,11 +389,6 @@ const sent = ref(false)
 function jump(id: string) {
   const el = document.getElementById(id)
   if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 88, behavior: 'smooth' })
-}
-
-function signupFor(id: number) {
-  form.workshopId = id
-  jump('zapisy')
 }
 
 function submit() {

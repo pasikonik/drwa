@@ -15,7 +15,7 @@
         </nav>
         <div class="nav__spacer" />
         <div class="nav__actions">
-          <button class="btn btn--primary btn--sm" @click="jump('zapisy')">Zapisz się</button>
+          <CartLink />
         </div>
       </div>
     </header>
@@ -184,7 +184,7 @@
                 <span class="badge__dot" />
                 {{ spots.label }}
               </div>
-              <button class="btn btn--primary btn--lg" @click="jump('zapisy')">Zapisz się</button>
+              <AddToCartButton :product="prod" label="Rezerwuj miejsce" />
             </div>
             <p class="book__note">zaliczka 400 zł rezerwuje miejsce · pytania: <a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></p>
           </div>
@@ -357,6 +357,8 @@ useHead({
 
 // ─── Display values ───────────────────────────────────────────────────────────
 
+// Non-null product (we threw a 404 above when absent) — for AddToCartButton.
+const prod = computed(() => product.value!)
 const title = computed(() => product.value?.title ?? '—')
 const heroImage = computed(() => product.value?.image ?? null)
 const descHtml = computed(() => product.value?.description ?? '')

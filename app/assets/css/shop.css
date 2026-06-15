@@ -1,0 +1,146 @@
+/* DRWA — sklep: koszyk, checkout, konto, auth. Reużywa tokenów z drwa-tokens.css. */
+
+/* ===== Stany puste / wspólne ===== */
+.shop-empty {
+  text-align: center;
+  padding: var(--space-9) var(--space-4);
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-5);
+  color: var(--text-muted);
+}
+.shop-empty p { font-size: var(--text-md); margin: 0; }
+
+/* ===== Produkt: dopięcia ===== */
+.pdp__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pdp__longhtml { font-family: var(--font-serif); font-size: var(--text-base); line-height: 1.75; color: var(--text-body); max-width: 640px; }
+.pdp__longhtml p { margin: 0 0 var(--space-4); }
+.pdp__pick-hint { font-size: var(--text-xs); color: var(--text-faint); margin: 10px 0 0; }
+.size.is-off { opacity: 0.4; text-decoration: line-through; cursor: not-allowed; }
+
+/* ===== Quantity stepper ===== */
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--border-default); border-radius: var(--radius-md, 10px); overflow: hidden; }
+.qty__btn {
+  width: 36px; height: 36px; display: grid; place-items: center;
+  background: var(--surface-raised); color: var(--text-strong);
+  font-size: var(--text-md); line-height: 1; border: none; cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-standard);
+}
+.qty__btn:hover:not(:disabled) { background: var(--surface-sunken, var(--fog-100, #eee)); }
+.qty__btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.qty__val { min-width: 38px; text-align: center; font-family: var(--font-mono); font-size: var(--text-sm); }
+
+/* ===== Koszyk ===== */
+.cart { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: var(--space-7); align-items: start; }
+.cart__list { display: flex; flex-direction: column; gap: var(--space-3); }
+.cart__aside { position: sticky; top: 90px; }
+.cart__aside .card { display: flex; flex-direction: column; gap: var(--space-4); }
+.cart__aside h2 { font-family: var(--font-display); font-size: var(--text-lg); margin: 0; color: var(--text-strong); }
+.cart__hint { font-size: var(--text-xs); color: var(--text-faint); margin: 0; }
+
+.cartline {
+  display: grid; grid-template-columns: 84px minmax(0, 1fr) auto; gap: var(--space-4);
+  align-items: center; padding: var(--space-4);
+  background: var(--surface-raised); border: 1px solid var(--border-soft); border-radius: var(--radius-lg);
+}
+.cartline__media { position: relative; width: 84px; height: 84px; border-radius: var(--radius-md, 10px); overflow: hidden; background: var(--surface-sunken, var(--fog-100, #eee)); }
+.cartline__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cartline__ph { position: absolute; inset: 0; background: linear-gradient(135deg, var(--fog-100, #eee), var(--fog-200, #ddd)); }
+.cartline__body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.cartline__title { font-family: var(--font-display); font-size: var(--text-base); font-weight: 500; margin: 0; color: var(--text-strong); }
+.cartline__meta { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin: 0; }
+.cartline__remove { align-self: flex-start; background: none; border: none; padding: 0; color: var(--rust); font-size: var(--text-xs); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.cartline__controls { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.cartline__price { font-family: var(--font-mono); font-size: var(--text-base); color: var(--text-strong); white-space: nowrap; }
+.cartline__single { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--text-faint); }
+
+/* ===== Podsumowanie ===== */
+.summary { display: flex; flex-direction: column; gap: 8px; }
+.summary__row { display: flex; justify-content: space-between; gap: var(--space-4); font-size: var(--text-sm); color: var(--text-muted); }
+.summary__total { padding-top: 10px; margin-top: 2px; border-top: 1px solid var(--border-soft); font-family: var(--font-mono); font-size: var(--text-md); color: var(--text-strong); font-weight: 500; }
+
+/* ===== Checkout ===== */
+.checkout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: var(--space-7); align-items: start; }
+.checkout__main { display: flex; flex-direction: column; gap: var(--space-5); }
+.checkout__main .card { display: flex; flex-direction: column; gap: var(--space-4); }
+.checkout__aside { position: sticky; top: 90px; }
+.checkout__aside .card { display: flex; flex-direction: column; gap: var(--space-4); }
+.checkout__h { font-family: var(--font-display); font-size: var(--text-lg); margin: 0; color: var(--text-strong); }
+.checkout__sub { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-faint); margin: var(--space-3) 0 0; }
+.checkout__items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.checkout__item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; font-size: var(--text-sm); color: var(--text-body); }
+.checkout__item-q { font-family: var(--font-mono); color: var(--text-faint); }
+.checkout__item-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.checkout__item-p { font-family: var(--font-mono); white-space: nowrap; color: var(--text-strong); }
+.checkout__hint { font-size: var(--text-xs); color: var(--text-faint); margin: 0; }
+.checkout__err { margin: 0; }
+.checkout__back { align-self: flex-start; background: none; border: none; padding: 0; margin-top: var(--space-3); color: var(--text-muted); font-size: var(--text-sm); cursor: pointer; }
+
+/* ===== Dostawa (radio) ===== */
+.ship { display: flex; flex-direction: column; gap: 8px; }
+.ship__opt {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px;
+  padding: 12px var(--space-4); border: 1px solid var(--border-default); border-radius: var(--radius-md, 10px);
+  cursor: pointer; transition: border-color var(--dur-fast) var(--ease-standard);
+}
+.ship__opt--on { border-color: var(--brand); box-shadow: 0 0 0 1px var(--brand); }
+.ship__opt input { accent-color: var(--timber-500, var(--brand)); }
+.ship__label { font-size: var(--text-sm); color: var(--text-strong); }
+.ship__cost { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text-muted); }
+
+/* ===== Adres ===== */
+.addr { display: flex; flex-direction: column; gap: var(--space-4); }
+.addr__row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+
+/* ===== Stripe ===== */
+.stripe-form { display: flex; flex-direction: column; gap: var(--space-4); }
+.stripe-form__element { min-height: 44px; }
+.stripe-form__error { color: var(--rust); font-size: var(--text-sm); margin: 0; }
+.stripe-form__submit { width: 100%; justify-content: center; }
+.stripe-form__note { font-size: var(--text-2xs); color: var(--text-faint); margin: 0; text-align: center; }
+
+/* ===== Auth ===== */
+.authwrap { max-width: 420px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-4); }
+.authform { display: flex; flex-direction: column; gap: var(--space-4); }
+.authform .btn { width: 100%; justify-content: center; }
+.authwrap__alt { text-align: center; font-size: var(--text-sm); color: var(--text-muted); margin: 0; }
+.authwrap__alt a { color: var(--text-brand); }
+
+/* ===== Konto ===== */
+.account { display: flex; flex-direction: column; gap: var(--space-6); }
+.account__head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+.account__meta { display: flex; flex-direction: column; gap: 2px; }
+.account__meta strong { color: var(--text-strong); }
+.account__meta span { font-size: var(--text-sm); color: var(--text-muted); }
+.orderlist { display: flex; flex-direction: column; gap: var(--space-4); }
+.ordercard { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5); background: var(--surface-raised); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); }
+.ordercard__head { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+.ordercard__head .ordercard__date { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-faint); }
+.ordercard__head .ordercard__total { margin-left: auto; font-family: var(--font-mono); font-size: var(--text-base); color: var(--text-strong); }
+.ordercard__items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: var(--text-sm); color: var(--text-body); }
+.ordercard__items li { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* ===== Responsywność ===== */
+@media (max-width: 900px) {
+  .cart, .checkout { grid-template-columns: 1fr; }
+  .cart__aside, .checkout__aside { position: static; }
+}
+@media (max-width: 560px) {
+  .addr__row { grid-template-columns: 1fr; }
+  .cartline { grid-template-columns: 64px minmax(0, 1fr); }
+  .cartline__media { width: 64px; height: 64px; }
+  .cartline__controls { grid-column: 1 / -1; flex-direction: row; justify-content: space-between; align-items: center; }
+}
+
+/* ===== Dopięcia stron (koszyk / konto / potwierdzenie) ===== */
+.cart__h { font-family: var(--font-display); font-size: var(--text-lg); margin: 0; color: var(--text-strong); }
+.cart__continue { text-align: center; font-size: var(--text-sm); color: var(--text-muted); }
+
+.account__note { font-size: var(--text-sm); color: var(--text-muted); margin: 0; }
+.account__alt { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+
+.ordercard h2 { font-family: var(--font-display); font-size: var(--text-md); margin: 0; color: var(--text-strong); }
+.ordercard__item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.ordercard__item-q { font-family: var(--font-mono); color: var(--text-faint); }
+.ordercard__item-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ordercard__item-p { font-family: var(--font-mono); white-space: nowrap; color: var(--text-strong); }
+.ordercard__course { font-size: var(--text-xs); color: var(--text-brand); text-decoration: underline; text-underline-offset: 2px; }
+.ordercard__link { font-size: var(--text-sm); color: var(--text-brand); text-underline-offset: 2px; }

@@ -18,14 +18,7 @@
         </nav>
         <div class="nav__spacer" />
         <div class="nav__actions">
-          <button class="cartbtn nav__link" aria-label="Koszyk">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
-              <path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
-            </svg>
-            Koszyk
-            <span v-if="cartCount > 0" class="cartbtn__count">{{ cartCount }}</span>
-          </button>
+          <CartLink />
         </div>
       </div>
     </header>
@@ -70,12 +63,12 @@
                   </svg>
                   <span>Merch DRWA</span>
                 </div>
-                <NuxtLink class="mcard__cover" :to="`/sklep/${p.id}`" :aria-label="'Zobacz: ' + p.title" />
+                <NuxtLink class="mcard__cover" :to="`/sklep/${p.slug}`" :aria-label="'Zobacz: ' + p.title" />
               </div>
               <div class="mcard__body">
                 <span class="mcard__eyebrow">{{ productEyebrow(p.title) }}</span>
                 <h3 class="mcard__title">
-                  <NuxtLink class="mcard__link" :to="`/sklep/${p.id}`">{{ p.title }}</NuxtLink>
+                  <NuxtLink class="mcard__link" :to="`/sklep/${p.slug}`">{{ p.title }}</NuxtLink>
                 </h3>
                 <p class="mcard__desc">{{ stripHtml(p.description) }}</p>
                 <div class="sizes" role="group" :aria-label="'Rozmiar · ' + p.title">
@@ -194,6 +187,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
 import { formatPrice, stripHtml } from '~/utils/format'
+import type { Product } from '~/types/directus'
 
 useHead({
   title: 'Sklep DRWA — Merch z lasu',
@@ -261,18 +255,28 @@ const ASSUR = [
 ]
 
 const sizes = reactive<Record<number, string | null>>({})
-const cartCount = ref(0)
 const toast = reactive({ on: false, msg: '' })
 let toastTimer: ReturnType<typeof setTimeout> | null = null
 
-function addToCart(p: { id: number; title: string }) {
-  cartCount.value++
-  const size = sizes[p.id]
-  const tag = size ? ` (rozm. ${size})` : ''
-  toast.msg = `Dodano: ${p.title}${tag}`
+const { addProduct } = useCart()
+
+function showToast(msg: string) {
+  toast.msg = msg
   toast.on = true
   if (toastTimer) clearTimeout(toastTimer)
   toastTimer = setTimeout(() => { toast.on = false }, 2600)
+}
+
+function addToCart(p: Product) {
+  const sizeSel = sizes[p.id]
+  const vs = variants.value.filter(v => v.product_id === p.id)
+  if (vs.length && !sizeSel) {
+    showToast('Wybierz rozmiar')
+    return
+  }
+  const variant = sizeSel ? vs.find(v => v.size?.toUpperCase() === sizeSel) ?? null : null
+  addProduct(p, { variant, size: sizeSel ?? null })
+  showToast(`Dodano: ${p.title}${sizeSel ? ` (rozm. ${sizeSel})` : ''}`)
 }
 
 let observer: IntersectionObserver | null = null

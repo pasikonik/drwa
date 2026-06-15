@@ -28,6 +28,8 @@ export interface Product {
   image: string | DirectusFile | null
   description: string
   stock: number
+  // Conditional — only populated when type === 'course'
+  course_access_url: string | null    // link to external course platform
   // Conditional — only populated when type === 'workshop'
   workshop_location: string | null
   workshop_capacity: number | null
@@ -53,10 +55,24 @@ export interface Order {
   id: string            // UUID
   date_created: string  // timestamptz
   status: OrderStatus
-  total_price: number
+  total_price: number   // PLN (same unit as product.price); converted to grosze only for Stripe
+  subtotal: number | null
+  shipping_method: string | null
+  shipping_cost: number | null
+  email: string | null
+  payment_intent_id: string | null
   stripe_session_id: string | null
-  customer: string | null
-  shpping_address: string | null  // intentional typo — matches DB column
+  customer: string | null         // relation → directus_users (nullable for guests)
+  shpping_address: string | null  // intentional typo — matches DB column; holds JSON address
+}
+
+// Expanded order with its line items + product info — used by confirmation/panel.
+export interface OrderWithItems extends Order {
+  items: OrderItemExpanded[]
+}
+
+export interface OrderItemExpanded extends OrderItem {
+  product: Pick<Product, 'id' | 'title' | 'slug' | 'type' | 'image' | 'course_access_url'> | null
 }
 
 export interface OrderItem {

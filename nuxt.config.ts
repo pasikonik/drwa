@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '~/assets/css/warsztat.css',
     '~/assets/css/sklep.css',
     '~/assets/css/produkt.css',
+    '~/assets/css/shop.css',
     '~/assets/css/blog.css',
     '~/assets/css/onas.css',
     '~/assets/css/kontakt.css',
@@ -23,8 +24,14 @@ export default defineNuxtConfig({
   ],
 
   runtimeConfig: {
+    // Server-only — never exposed to the client.
+    stripeSecretKey: process.env.STRIPE_SECRET_KEY || '',
+    stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || '',
+    directusServiceToken: process.env.DIRECTUS_SERVICE_TOKEN || '',
+    directusUrl: process.env.DIRECTUS_URL || 'http://localhost:8055',
     public: {
-      directusUrl: process.env.DIRECTUS_URL || 'http://localhost:8055'
+      directusUrl: process.env.NUXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_URL || 'http://localhost:8055',
+      stripePublishableKey: process.env.NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
     }
   },
 
