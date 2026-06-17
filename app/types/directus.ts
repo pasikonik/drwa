@@ -19,6 +19,8 @@ export interface DirectusFile {
 
 export type ProductType = 'merch' | 'course' | 'workshop'
 
+export type WorkshopLevel = 'beginner' | 'intermediate' | 'advanced'
+
 export interface Product {
   id: number
   title: string
@@ -35,6 +37,9 @@ export interface Product {
   date_start: string | null    // ISO datetime
   date_end: string | null      // ISO datetime
   spots_booked: number | null
+  level: WorkshopLevel | null  // Beginner / Intermediate / Advanced
+  advance: number | null       // deposit amount charged at checkout (workshops only)
+  short_description: string | null  // 1-2 zdania do hero/kart (warsztaty, kursy)
 }
 
 export type VariantSize = 's' | 'm' | 'l' | 'xl'

@@ -1,6 +1,6 @@
 <template>
   <div class="site">
-    <ShopNav />
+    <DrwaNav />
 
     <div class="pagehead">
       <div class="container">

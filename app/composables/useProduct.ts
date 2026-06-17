@@ -14,7 +14,7 @@ export const useProduct = (slug: string) => {
           fields: [
             'id', 'title', 'slug', 'type', 'price', 'description', 'image',
             'location', 'spots_total',
-            'date_start', 'date_end', 'spots_booked',
+            'date_start', 'date_end', 'spots_booked', 'level', 'advance', 'short_description',
           ],
         })
       )) as Product[]

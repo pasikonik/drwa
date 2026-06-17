@@ -75,6 +75,11 @@ picture { display: contents; }
 }
 .nav__link:hover { color: var(--text-brand); }
 .nav__link:hover::after { transform: scaleX(1); }
+/* Active route — NuxtLink adds .router-link-active; plus dropdown-parent state */
+.nav__link.router-link-active,
+.nav__link--current { color: var(--text-brand); }
+.nav__link.router-link-active::after,
+.nav__link--current::after { transform: scaleX(1); }
 
 .nav__item { position: relative; display: flex; align-items: center; }
 .nav__link--has-menu { display: inline-flex; align-items: center; gap: 5px; }
@@ -104,7 +109,83 @@ picture { display: contents; }
 .nav__spacer { flex: 1; }
 .nav__actions { display: flex; align-items: center; gap: var(--space-3); }
 
-@media (max-width: 880px) { .nav__links { display: none; } }
+/* ============ Mobile nav: burger + drawer ============ */
+.nav__burger {
+  display: none;
+  flex-direction: column; justify-content: center; gap: 5px;
+  width: 42px; height: 42px; padding: 0 9px;
+  background: none; border: none; cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+.nav__burger span {
+  display: block; height: 2px; width: 100%; border-radius: 2px;
+  background: var(--ink-900);
+  transition: transform var(--dur-base) var(--ease-out), opacity var(--dur-fast) var(--ease-standard);
+}
+.nav__burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav__burger.is-open span:nth-child(2) { opacity: 0; }
+.nav__burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nav__backdrop {
+  position: fixed; inset: 0; z-index: 80;
+  background: rgba(20, 25, 21, 0.42); backdrop-filter: blur(2px);
+}
+.nav__drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 90;
+  width: min(82vw, 340px);
+  display: flex; flex-direction: column;
+  background: var(--surface-page); border-left: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-5) var(--space-5) var(--space-6);
+  overflow-y: auto;
+}
+.nav__drawer-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-5); }
+.nav__drawer-close {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; margin-right: -8px;
+  background: none; border: none; cursor: pointer; color: var(--text-body);
+  border-radius: var(--radius-sm);
+}
+.nav__drawer-close:hover { background: var(--pine-50); color: var(--text-brand); }
+.nav__drawer-links { display: flex; flex-direction: column; }
+.nav__drawer-link {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  font-family: var(--font-ui); font-size: var(--text-md); font-weight: 600;
+  color: var(--text-strong); text-decoration: none; text-align: left;
+  background: none; border: none; cursor: pointer; width: 100%;
+  padding: 14px 0; border-bottom: 1px solid var(--border-soft);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+.nav__drawer-link:hover,
+.nav__drawer-link.router-link-active { color: var(--text-brand); }
+.nav__drawer-link .nav__chev { transition: transform var(--dur-base) var(--ease-standard); }
+.nav__drawer-link .nav__chev.is-flip { transform: rotate(180deg); }
+.nav__drawer-sub { display: flex; flex-direction: column; padding: 4px 0 8px var(--space-3); }
+.nav__drawer-sublink {
+  font-family: var(--font-ui); font-size: var(--text-sm); font-weight: 500;
+  color: var(--text-muted); text-decoration: none; padding: 10px 0;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+.nav__drawer-sublink:hover,
+.nav__drawer-sublink.router-link-active { color: var(--text-brand); }
+.nav__drawer-foot { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-6); }
+.nav__drawer-foot .btn { width: 100%; justify-content: center; }
+
+/* Drawer / backdrop transitions */
+.nav-drawer-enter-active, .nav-drawer-leave-active { transition: transform var(--dur-base) var(--ease-out); }
+.nav-drawer-enter-from, .nav-drawer-leave-to { transform: translateX(100%); }
+.nav-fade-enter-active, .nav-fade-leave-active { transition: opacity var(--dur-base) var(--ease-standard); }
+.nav-fade-enter-from, .nav-fade-leave-to { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .nav-drawer-enter-active, .nav-drawer-leave-active,
+  .nav-fade-enter-active, .nav-fade-leave-active { transition: none; }
+}
+
+@media (max-width: 880px) {
+  .nav__links { display: none; }
+  .nav__account { display: none; }
+  .nav__burger { display: flex; }
+}
 
 /* ============ Button ============ */
 .btn {

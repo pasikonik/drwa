@@ -1,6 +1,6 @@
 <template>
   <div class="site">
-    <ShopNav />
+    <DrwaNav />
 
     <main>
       <div class="container section" style="padding-top: var(--space-6)">

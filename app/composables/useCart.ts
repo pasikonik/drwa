@@ -45,13 +45,17 @@ export const useCart = () => {
     opts: { variant?: ProductVariant | null; qty?: number; size?: string | null } = {},
   ): void {
     const variant = opts.variant ?? null
+    const chargePrice = product.type === 'workshop' && product.advance != null
+      ? Number(product.advance)
+      : Number(product.price)
+
     add({
       productId: product.id,
       variantId: variant?.id ?? null,
       type: product.type,
       slug: product.slug,
       title: product.title,
-      price: Number(product.price),
+      price: chargePrice,
       qty: opts.qty ?? 1,
       image: fileId(product.image),
       size: opts.size ?? variant?.size ?? null,

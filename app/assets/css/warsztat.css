@@ -216,6 +216,12 @@
   font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--text-faint);
 }
+.book__deposit {
+  font-size: var(--text-xs); line-height: 1.5; color: var(--text-muted);
+  margin: 10px 0 0; padding: 10px 12px;
+  background: var(--pine-50); border-radius: var(--radius-sm);
+}
+.book__deposit strong { color: var(--text-strong); font-weight: 600; white-space: nowrap; }
 .book__cta { display: flex; flex-direction: column; gap: var(--space-2); margin-top: var(--space-4); }
 .book__cta > * { width: 100%; }
 .book__note {

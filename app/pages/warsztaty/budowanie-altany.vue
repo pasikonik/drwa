@@ -1,24 +1,6 @@
 <template>
   <div class="site">
-    <!-- ===== Nawigacja ===== -->
-    <header class="nav">
-      <div class="container nav__row">
-        <NuxtLink class="brand" to="/">
-          <img src="/assets/drwa-mark-ink.png" alt="DRWA" />
-          <span class="brand__wm">DRWA</span>
-        </NuxtLink>
-        <nav class="nav__links" aria-label="Główne">
-          <NuxtLink class="nav__link" to="/warsztaty">Warsztaty 2026</NuxtLink>
-          <button class="nav__link" @click="jump('program')">Program</button>
-          <button class="nav__link" @click="jump('prowadzacy')">Prowadzący</button>
-          <button class="nav__link" @click="jump('galeria')">Galeria</button>
-        </nav>
-        <div class="nav__spacer" />
-        <div class="nav__actions">
-          <button class="btn btn--primary btn--sm" @click="jump('zapisy')">Zapisz się</button>
-        </div>
-      </div>
-    </header>
+    <DrwaNav />
 
     <!-- ===== Hero ===== -->
     <section class="dhero" id="top">

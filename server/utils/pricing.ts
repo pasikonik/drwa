@@ -31,7 +31,7 @@ export async function computeOrder(
     readItems('products', {
       filter: { id: { _in: productIds } },
       fields: [
-        'id', 'title', 'type', 'price',
+        'id', 'title', 'type', 'price', 'advance',
         'spots_total', 'spots_booked',
       ],
       limit: -1,
@@ -59,7 +59,9 @@ export async function computeOrder(
     if (!product) fail(`Produkt #${item.productId} nie istnieje.`)
 
     const qty = Math.max(1, Math.floor(item.qty))
-    const unitPrice = Number(product.price)
+    const unitPrice = product.type === 'workshop' && product.advance != null
+      ? Number(product.advance)
+      : Number(product.price)
     if (!Number.isFinite(unitPrice) || unitPrice < 0) fail(`Niepoprawna cena produktu „${product.title}".`)
 
     if (product.type === 'merch') {

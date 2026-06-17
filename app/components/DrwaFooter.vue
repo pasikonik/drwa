@@ -38,7 +38,7 @@
       <div class="foot__bottom">
         <span>© 2026 DRWA · Drewno · Rzemiosło · Szkolenia</span>
         <div class="foot__social">
-          <a aria-label="Instagram" href="#">
+          <a aria-label="Instagram" href="https://www.instagram.com/drwa_yen/" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <rect width="20" height="20" x="2" y="2" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>
             </svg>

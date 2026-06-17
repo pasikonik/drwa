@@ -1,24 +1,6 @@
 <template>
   <div class="site">
-    <!-- ===== Nawigacja ===== -->
-    <header class="nav">
-      <div class="container nav__row">
-        <NuxtLink class="brand" to="/">
-          <img src="/assets/drwa-mark-ink.png" alt="DRWA" />
-          <span class="brand__wm">DRWA</span>
-        </NuxtLink>
-        <nav class="nav__links" aria-label="Główne">
-          <NuxtLink class="nav__link" to="/">Strona główna</NuxtLink>
-          <button class="nav__link nav__link--current" @click="jump('lista')">Warsztaty 2026</button>
-          <button class="nav__link" @click="jump('archiwum')">Minione</button>
-          <button class="nav__link" @click="jump('faq')">FAQ</button>
-        </nav>
-        <div class="nav__spacer" />
-        <div class="nav__actions">
-          <CartLink />
-        </div>
-      </div>
-    </header>
+    <DrwaNav />
 
     <!-- ===== Hero ===== -->
     <section class="phero" id="top">
@@ -76,9 +58,10 @@
                 </span>
               </div>
               <div class="wrow__cta">
-                <span class="wrow__price">{{ w.price }}<small>od osoby</small></span>
-                <NuxtLink v-if="w.route" :to="w.route" class="btn btn--secondary btn--md">Szczegóły</NuxtLink>
-                <AddToCartButton :product="w.raw" label="Rezerwuj miejsce" />
+                <span class="wrow__price">
+                  {{ w.price }}<small>{{ w.advance ? `od osoby · zaliczka ${w.advance}` : 'od osoby' }}</small>
+                </span>
+                <NuxtLink v-if="w.route" :to="w.route" class="btn btn--primary btn--md">Szczegóły i zapisy</NuxtLink>
               </div>
             </div>
             <div class="wrow__img">
@@ -300,6 +283,14 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
 import { formatPrice, formatDateRange, stripHtml, workshopSpots } from '~/utils/format'
+const LEVEL_LABEL: Record<string, string> = {
+  beginner: 'podstawowy',
+  intermediate: 'średni',
+  advanced: 'zaawansowany',
+}
+
+const levelLabelOf = (level: string | null) =>
+  (level && LEVEL_LABEL[level.toLowerCase()]) || 'podstawowy'
 
 useHead({
   title: 'Warsztaty 2026 — DRWA',
@@ -337,8 +328,9 @@ const workshops = computed(() =>
       month: dates.month,
       year: dates.year,
       days,
-      level: 'podstawowy',
+      level: levelLabelOf(p.level),
       price: formatPrice(p.price),
+      advance: p.advance != null ? formatPrice(p.advance) : null,
       spotsLabel: spots.label,
       spotsTone: spots.tone,
       place: p.location ?? 'Stolarnia pod lasem · Beskid Niski',
@@ -346,7 +338,7 @@ const workshops = computed(() =>
       rawImage: p.image,
       img: FALLBACK_IMGS[i % FALLBACK_IMGS.length],
       pos: '50% 50%',
-      desc: stripHtml(p.description, 180),
+      desc: p.short_description ?? stripHtml(p.description, 180),
     }
   })
 )

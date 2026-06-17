@@ -1,24 +1,6 @@
 <template>
   <div class="site">
-    <!-- ===== Nawigacja ===== -->
-    <header class="nav">
-      <div class="container nav__row">
-        <NuxtLink class="brand" to="/">
-          <img src="/assets/drwa-mark-ink.png" alt="DRWA" />
-          <span class="brand__wm">DRWA</span>
-        </NuxtLink>
-        <nav class="nav__links" aria-label="Główne">
-          <NuxtLink class="nav__link" to="/warsztaty">Warsztaty 2026</NuxtLink>
-          <button class="nav__link" @click="jump('program')">Program</button>
-          <button class="nav__link" @click="jump('prowadzacy')">Prowadzący</button>
-          <button class="nav__link" @click="jump('galeria')">Galeria</button>
-        </nav>
-        <div class="nav__spacer" />
-        <div class="nav__actions">
-          <CartLink />
-        </div>
-      </div>
-    </header>
+    <DrwaNav />
 
     <!-- ===== Hero ===== -->
     <section class="dhero" id="top">
@@ -45,7 +27,7 @@
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M14 12 3 23"/><path d="M18 2 8 12l4 4L22 6a2.83 2.83 0 0 0-4-4Z"/>
             </svg>
-            poziom podstawowy
+            poziom {{ levelLabel }}
           </span>
           <span class="dhero__fact">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -171,7 +153,7 @@
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M14 12 3 23"/><path d="M18 2 8 12l4 4L22 6a2.83 2.83 0 0 0-4-4Z"/>
                 </svg>
-                poziom podstawowy — zaczynamy od zera
+                {{ levelNote }}
               </span>
             </div>
             <div class="book__rule" />
@@ -179,6 +161,9 @@
               <span class="book__price">{{ priceStr }}</span>
               <span class="book__per">od osoby</span>
             </div>
+            <p class="book__deposit" v-if="hasAdvance">
+              Płacisz teraz <strong>zaliczkę {{ advanceStr }}</strong>, która rezerwuje Twoje miejsce — resztę dopłacasz przed warsztatem.
+            </p>
             <div class="book__cta">
               <div class="badge" :class="spots.tone === 'warning' ? 'badge--warning' : 'badge--success'">
                 <span class="badge__dot" />
@@ -186,7 +171,7 @@
               </div>
               <AddToCartButton :product="prod" label="Rezerwuj miejsce" />
             </div>
-            <p class="book__note">zaliczka 400 zł rezerwuje miejsce · pytania: <a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></p>
+            <p class="book__note">pytania: <a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></p>
           </div>
         </aside>
       </div>
@@ -342,6 +327,19 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
 import { formatPrice, formatDateRange, stripHtml, workshopSpots } from '~/utils/format'
+const LEVEL_LABEL: Record<string, string> = {
+  beginner: 'podstawowy',
+  intermediate: 'średni',
+  advanced: 'zaawansowany',
+}
+
+const LEVEL_NOTE: Record<string, string> = {
+  beginner: 'poziom podstawowy — zaczynamy od zera',
+  intermediate: 'poziom średni — przyda się jedno doświadczenie',
+  advanced: 'poziom zaawansowany — dla wprawionych w drewnie',
+}
+
+const levelKey = (level: string | null) => level?.toLowerCase() ?? ''
 
 const route = useRoute()
 const { data: product } = await useProduct(route.params.slug as string)
@@ -363,7 +361,7 @@ const title = computed(() => product.value?.title ?? '—')
 const heroImage = computed(() => product.value?.image ?? null)
 const descHtml = computed(() => product.value?.description ?? '')
 const lead = computed(() =>
-  product.value?.description ? stripHtml(product.value.description, 260) : ''
+  product.value?.short_description ?? (product.value?.description ? stripHtml(product.value.description, 260) : '')
 )
 const location = computed(() =>
   product.value?.location ?? 'Stolarnia pod lasem · Beskid Niski'
@@ -371,6 +369,13 @@ const location = computed(() =>
 const priceStr = computed(() =>
   product.value ? formatPrice(product.value.price) : '—'
 )
+
+const advanceStr = computed(() => {
+  const a = product.value?.advance
+  return a != null ? formatPrice(a) : priceStr.value
+})
+
+const hasAdvance = computed(() => product.value?.advance != null)
 
 const dateStr = computed(() => {
   const s = product.value?.date_start
@@ -398,6 +403,14 @@ const capacityLabel = computed(() => {
   const cap = product.value?.spots_total
   return cap ? `grupa maks. ${cap} osób` : 'mała grupa'
 })
+
+const levelLabel = computed(() =>
+  LEVEL_LABEL[levelKey(product.value?.level ?? null)] ?? 'podstawowy'
+)
+
+const levelNote = computed(() =>
+  LEVEL_NOTE[levelKey(product.value?.level ?? null)] ?? 'poziom podstawowy — zaczynamy od zera'
+)
 
 const formEyebrow = computed(() => {
   const t = title.value

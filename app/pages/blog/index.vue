@@ -1,26 +1,6 @@
 <template>
   <div class="site">
-    <!-- ===== Nawigacja ===== -->
-    <header class="nav">
-      <div class="container nav__row">
-        <NuxtLink class="brand" to="/">
-          <img src="/assets/drwa-mark-ink.png" alt="DRWA" />
-          <span class="brand__wm">DRWA</span>
-        </NuxtLink>
-        <nav class="nav__links" aria-label="Główne">
-          <NuxtLink class="nav__link nav__item" to="/warsztaty">Warsztaty stacjonarne</NuxtLink>
-          <a class="nav__link nav__item" href="/#kursy">Kursy online</a>
-          <NuxtLink class="nav__link nav__item" to="/o-nas">O nas</NuxtLink>
-          <NuxtLink class="nav__link nav__item" to="/sklep">Sklep</NuxtLink>
-          <a class="nav__link nav__item nav__link--current" href="#">Blog</a>
-          <NuxtLink class="nav__link nav__item" to="/kontakt">Kontakt</NuxtLink>
-        </nav>
-        <div class="nav__spacer" />
-        <div class="nav__actions">
-          <NuxtLink class="btn btn--primary btn--sm" to="/warsztaty">Zapisz się</NuxtLink>
-        </div>
-      </div>
-    </header>
+    <DrwaNav />
 
     <!-- ===== Nagłówek strony ===== -->
     <div class="pagehead">

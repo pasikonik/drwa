@@ -1,27 +1,9 @@
 <template>
   <div class="site">
-    <!-- ===== Nawigacja (kursowa) ===== -->
-    <header class="nav" id="top">
-      <div class="container nav__row">
-        <NuxtLink class="brand" to="/">
-          <img src="/assets/drwa-mark-ink.png" alt="DRWA" />
-          <span class="brand__wm">DRWA</span>
-        </NuxtLink>
-        <nav class="nav__links" aria-label="Główne">
-          <button class="nav__link" @click="scrollTo('nauczysz')">Co nauczysz się</button>
-          <button class="nav__link" @click="scrollTo('program')">Program</button>
-          <NuxtLink class="nav__link nav__item" to="/kursy/od-wiaty-do-chaty">Pełny kurs</NuxtLink>
-          <NuxtLink class="nav__link nav__item" to="/warsztaty">Warsztaty 2026</NuxtLink>
-        </nav>
-        <div class="nav__spacer" />
-        <div class="nav__actions">
-          <button class="btn btn--primary btn--sm" @click="scrollTo('dostep')">Zarejestruj się</button>
-        </div>
-      </div>
-    </header>
+    <DrwaNav />
 
     <!-- ===== Hero (wariant: podział papierowy) ===== -->
-    <section class="khero khero--paper">
+    <section class="khero khero--paper" id="top">
       <div class="container khero__inner">
         <div>
           <div class="khero__crumb">
