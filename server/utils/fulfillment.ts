@@ -23,7 +23,7 @@ export async function fulfillOrder(orderId: string): Promise<void> {
     ? ((await client.request(
         readItems('products', {
           filter: { id: { _in: productIds } },
-          fields: ['id', 'type', 'stock', 'workshop_booked'],
+          fields: ['id', 'type', 'spots_booked'],
           limit: -1,
         }),
       )) as Product[])
@@ -55,14 +55,10 @@ export async function fulfillOrder(orderId: string): Promise<void> {
             stock: Math.max(0, variant.stock - item.quantity),
           }))
         }
-      } else {
-        await client.request(updateItem('products', product.id, {
-          stock: Math.max(0, product.stock - item.quantity),
-        }))
       }
     } else if (product.type === 'workshop') {
       await client.request(updateItem('products', product.id, {
-        workshop_booked: (product.workshop_booked ?? 0) + item.quantity,
+        spots_booked: (product.spots_booked ?? 0) + item.quantity,
       }))
     }
     // course: nothing to reserve

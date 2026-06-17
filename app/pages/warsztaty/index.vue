@@ -312,21 +312,21 @@ const FALLBACK_IMGS = ['/assets/forest-1.png', '/assets/timber-2.png', '/assets/
 
 const workshops = computed(() =>
   (data.value?.products ?? []).map((p, i) => {
-    const dates = p.workshop_start_date && p.workshop_end_date
-      ? formatDateRange(p.workshop_start_date, p.workshop_end_date)
+    const dates = p.date_start && p.date_end
+      ? formatDateRange(p.date_start, p.date_end)
       : { day: '—', month: '—', year: '—' }
 
-    const days = p.workshop_start_date && p.workshop_end_date
+    const days = p.date_start && p.date_end
       ? (() => {
           const diff = Math.round(
-            (new Date(p.workshop_end_date).getTime() - new Date(p.workshop_start_date).getTime())
+            (new Date(p.date_end).getTime() - new Date(p.date_start).getTime())
             / (1000 * 60 * 60 * 24)
           ) + 1
           return `${diff} ${diff === 1 ? 'dzień' : 'dni'}`
         })()
       : '—'
 
-    const spots = workshopSpots(p.workshop_capacity, p.workshop_booked)
+    const spots = workshopSpots(p.spots_total, p.spots_booked)
 
     return {
       id: p.id,
@@ -341,7 +341,7 @@ const workshops = computed(() =>
       price: formatPrice(p.price),
       spotsLabel: spots.label,
       spotsTone: spots.tone,
-      place: p.workshop_location ?? 'Stolarnia pod lasem · Beskid Niski',
+      place: p.location ?? 'Stolarnia pod lasem · Beskid Niski',
       lead: 'prowadzi Jędrzej Cyganik',
       rawImage: p.image,
       img: FALLBACK_IMGS[i % FALLBACK_IMGS.length],

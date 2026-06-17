@@ -31,8 +31,8 @@ export async function computeOrder(
     readItems('products', {
       filter: { id: { _in: productIds } },
       fields: [
-        'id', 'title', 'type', 'price', 'stock',
-        'workshop_capacity', 'workshop_booked',
+        'id', 'title', 'type', 'price',
+        'spots_total', 'spots_booked',
       ],
       limit: -1,
     }),
@@ -67,11 +67,9 @@ export async function computeOrder(
         const variant = variantById.get(item.variantId)
         if (!variant || variant.product_id !== product.id) fail(`Wariant produktu „${product.title}" jest niepoprawny.`)
         if (variant.stock < qty) fail(`Za mało sztuk „${product.title}" (rozmiar ${variant.size ?? '—'}) na stanie.`)
-      } else if (product.stock < qty) {
-        fail(`Za mało sztuk „${product.title}" na stanie.`)
       }
     } else if (product.type === 'workshop') {
-      const free = (product.workshop_capacity ?? 0) - (product.workshop_booked ?? 0)
+      const free = (product.spots_total ?? 0) - (product.spots_booked ?? 0)
       if (free < qty) fail(`Za mało wolnych miejsc na „${product.title}".`)
     }
     // course: no stock constraint

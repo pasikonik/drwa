@@ -12,20 +12,33 @@
           required
           placeholder="twój@email.pl"
           aria-label="E-mail"
+          :disabled="loading"
         />
-        <button type="submit" class="btn btn--accent btn--md">Zapisz się</button>
+        <button type="submit" class="btn btn--accent btn--md" :disabled="loading">
+          {{ loading ? 'Zapisuję…' : 'Zapisz się' }}
+        </button>
       </form>
+      <p v-if="error" class="news__error">{{ error }}</p>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
 const email = ref('')
 const sent = ref(false)
+const error = ref('')
+const loading = ref(false)
 
-function submit() {
-  if (email.value.trim()) sent.value = true
+async function submit() {
+  error.value = ''
+  loading.value = true
+  try {
+    await $fetch('/api/newsletter', { method: 'POST', body: { email: email.value } })
+    sent.value = true
+  } catch (e) {
+    error.value = e?.data?.message ?? 'Coś poszło nie tak. Spróbuj ponownie.'
+  } finally {
+    loading.value = false
+  }
 }
 </script>

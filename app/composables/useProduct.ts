@@ -12,9 +12,9 @@ export const useProduct = (slug: string) => {
           filter: { slug: { _eq: slug } },
           limit: 1,
           fields: [
-            'id', 'title', 'slug', 'type', 'price', 'description', 'stock', 'image',
-            'workshop_location', 'workshop_capacity',
-            'workshop_start_date', 'workshop_end_date', 'workshop_booked',
+            'id', 'title', 'slug', 'type', 'price', 'description', 'image',
+            'location', 'spots_total',
+            'date_start', 'date_end', 'spots_booked',
           ],
         })
       )) as Product[]

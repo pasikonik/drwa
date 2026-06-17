@@ -366,23 +366,23 @@ const lead = computed(() =>
   product.value?.description ? stripHtml(product.value.description, 260) : ''
 )
 const location = computed(() =>
-  product.value?.workshop_location ?? 'Stolarnia pod lasem · Beskid Niski'
+  product.value?.location ?? 'Stolarnia pod lasem · Beskid Niski'
 )
 const priceStr = computed(() =>
   product.value ? formatPrice(product.value.price) : '—'
 )
 
 const dateStr = computed(() => {
-  const s = product.value?.workshop_start_date
-  const e = product.value?.workshop_end_date
+  const s = product.value?.date_start
+  const e = product.value?.date_end
   if (!s || !e) return '—'
   const dr = formatDateRange(s, e)
   return `${dr.day} ${dr.month} ${dr.year}`
 })
 
 const daysCount = computed(() => {
-  const s = product.value?.workshop_start_date
-  const e = product.value?.workshop_end_date
+  const s = product.value?.date_start
+  const e = product.value?.date_end
   if (!s || !e) return '—'
   const diff = Math.round(
     (new Date(e).getTime() - new Date(s).getTime()) / (1000 * 60 * 60 * 24)
@@ -391,11 +391,11 @@ const daysCount = computed(() => {
 })
 
 const spots = computed(() =>
-  workshopSpots(product.value?.workshop_capacity ?? null, product.value?.workshop_booked ?? null)
+  workshopSpots(product.value?.spots_total ?? null, product.value?.spots_booked ?? null)
 )
 
 const capacityLabel = computed(() => {
-  const cap = product.value?.workshop_capacity
+  const cap = product.value?.spots_total
   return cap ? `grupa maks. ${cap} osób` : 'mała grupa'
 })
 

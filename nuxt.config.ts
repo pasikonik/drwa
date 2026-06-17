@@ -29,6 +29,8 @@ export default defineNuxtConfig({
     stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || '',
     directusServiceToken: process.env.DIRECTUS_SERVICE_TOKEN || '',
     directusUrl: process.env.DIRECTUS_URL || 'http://localhost:8055',
+    mailerLiteApiKey: process.env.MAILERLITE_API_KEY || '',
+    mailerLiteGroupId: process.env.MAILERLITE_GROUP_ID || '',
     public: {
       directusUrl: process.env.NUXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_URL || 'http://localhost:8055',
       stripePublishableKey: process.env.NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
@@ -39,6 +41,12 @@ export default defineNuxtConfig({
   // Directus /assets/* are served by Directus itself — configure
   // ASSETS_CACHE_TTL (seconds) in the Directus environment for those.
   routeRules: {
+    // Bezpieczna konfiguracja pod webhook Stripe (brak cache + surowe body)
+    '/api/stripe/webhook': { 
+      cache: false,
+      experimentalNoDirectResponse: true 
+    },
+
     '/assets/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     '/*.avif':    { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     '/*.png':     { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },

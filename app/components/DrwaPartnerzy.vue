@@ -14,10 +14,8 @@
 
 <script setup>
 const PARTNERS = [
-  { name: 'Leśna Manufaktura', kind: 'Tartak', href: '#' },
-  { name: 'Sosna & Spółka', kind: 'Drewno', href: '#' },
-  { name: 'Naturalny Dom', kind: 'Budownictwo', href: '#' },
-  { name: 'Stowarzyszenie Cieśli', kind: 'Rzemiosło', href: '#' },
-  { name: 'EkoOsada', kind: 'Społeczność', href: '#' },
+  { name: 'Iseris', kind: 'Stwowarzyszenie', href: 'https://iseris.pl/' },
+  { name: 'Dobry Dom', kind: 'Naturalne Budownictwo', href: 'http://www.stankowice64.com/index_right.html' },
+  { name: 'Festool', kind: 'Narzędzia', href: 'https://www.festool.pl/' },
 ]
 </script>

@@ -256,10 +256,10 @@ picture { display: contents; }
 @media (max-width: 900px) { .quotes { grid-template-columns: 1fr; } }
 
 /* ============ Partnerzy ============ */
-.partners { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-4); }
+.partners { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4); }
 .partner {
   display: flex; align-items: center; justify-content: center; text-decoration: none;
-  height: 96px; border: 1px solid var(--border-soft); border-radius: var(--radius-md);
+  width: 200px; height: 96px; border: 1px solid var(--border-soft); border-radius: var(--radius-md);
   background: var(--surface-raised); color: var(--stone-600);
   font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); letter-spacing: 0.01em;
   transition: color var(--dur-base) var(--ease-standard), border-color var(--dur-base) var(--ease-standard), background var(--dur-base) var(--ease-standard);
@@ -268,7 +268,7 @@ picture { display: contents; }
 .partner span { display: block; }
 .partner small { display: block; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-faint); margin-top: 4px; }
 .partner:hover { color: var(--text-brand); border-color: var(--pine-300); background: var(--white); }
-@media (max-width: 900px) { .partners { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px) { .partner { width: calc(50% - var(--space-4) / 2); } }
 
 /* ============ Newsletter ============ */
 .news {

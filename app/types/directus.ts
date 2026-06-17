@@ -27,15 +27,14 @@ export interface Product {
   price: number
   image: string | DirectusFile | null
   description: string
-  stock: number
   // Conditional — only populated when type === 'course'
   course_access_url: string | null    // link to external course platform
   // Conditional — only populated when type === 'workshop'
-  workshop_location: string | null
-  workshop_capacity: number | null
-  workshop_start_date: string | null   // ISO datetime
-  workshop_end_date: string | null     // ISO datetime
-  workshop_booked: number | null
+  location: string | null
+  spots_total: number | null
+  date_start: string | null    // ISO datetime
+  date_end: string | null      // ISO datetime
+  spots_booked: number | null
 }
 
 export type VariantSize = 's' | 'm' | 'l' | 'xl'
