@@ -145,7 +145,7 @@
 .mod__chev { color: var(--text-faint); justify-self: end; align-self: center; transition: transform var(--dur-base) var(--ease-standard); }
 .mod.is-open .mod__chev { transform: rotate(180deg); }
 .mod__body { overflow: hidden; max-height: 0; transition: max-height var(--dur-slow) var(--ease-standard); }
-.mod.is-open .mod__body { max-height: 120px; }
+.mod.is-open .mod__body { max-height: 400px; }
 .mod__body p { margin: 0; padding: 0 0 18px 64px; max-width: 58ch; font-size: var(--text-sm); line-height: 1.65; color: var(--text-muted); }
 @media (prefers-reduced-motion: reduce) { .mod__body { transition: none; } }
 @media (max-width: 760px) {

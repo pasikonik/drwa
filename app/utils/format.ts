@@ -30,6 +30,23 @@ export const formatDateRange = (
   return { day, month, year }
 }
 
+/** Directus time '09:00:00' → '9:00'. Returns '' for empty input. */
+export const formatTime = (time: string | null | undefined): string => {
+  if (!time) return ''
+  const [h, m] = time.split(':')
+  return `${Number(h)}:${m ?? '00'}`
+}
+
+/** Two Directus times → '9:00–17:00' (or '' if either is missing). */
+export const formatTimeRange = (
+  start: string | null | undefined,
+  end: string | null | undefined
+): string => {
+  const s = formatTime(start)
+  const e = formatTime(end)
+  return s && e ? `${s}–${e}` : s || e
+}
+
 /** Strip HTML tags and truncate to maxLen chars with ellipsis. */
 export const stripHtml = (html: string, maxLen = 160): string => {
   const text = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()

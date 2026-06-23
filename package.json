@@ -2,6 +2,9 @@
   "name": "drwa-frontend",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=24.0.0"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -13,11 +16,11 @@
     "@directus/sdk": "^22.0.0",
     "@stripe/stripe-js": "^9.8.0",
     "nuxt": "^4.4.8",
-    "stripe": "^22.2.1",
+    "stripe": "^22.2.3",
     "vue": "^3.5.38",
     "vue-router": "^5.1.0"
   },
   "devDependencies": {
-    "@types/node": "^25.9.3"
+    "@types/node": "^24.13.2"
   }
 }

@@ -7,6 +7,7 @@ import type {
   ShippingMethod,
 } from '~/types/shop'
 import { SHIPPING_RATES, FREE_SHIPPING_THRESHOLD } from '~/utils/shipping'
+import { normalizeProduct } from '~/utils/product'
 import { directusAdmin } from './directusAdmin'
 
 function fail(message: string): never {
@@ -24,19 +25,35 @@ export async function computeOrder(
 ): Promise<ComputedOrder> {
   if (!items?.length) fail('Koszyk jest pusty.')
 
+  // Merge duplicate lines (same product + variant) so each is priced and
+  // validated against its CUMULATIVE quantity. Without this, a crafted request
+  // could split a workshop/variant across several lines and slip past the
+  // per-line capacity/stock checks below, overselling seats or stock.
+  const mergedById = new Map<string, CheckoutItemInput>()
+  for (const it of items) {
+    const key = `${it.productId}:${it.variantId ?? 'x'}`
+    const existing = mergedById.get(key)
+    const qty = Math.max(1, Math.floor(it.qty))
+    if (existing) existing.qty += qty
+    else mergedById.set(key, { productId: it.productId, variantId: it.variantId, qty })
+  }
+  items = [...mergedById.values()]
+
   const client = directusAdmin()
   const productIds = [...new Set(items.map((i) => i.productId))]
 
-  const products = (await client.request(
+  const rawProducts = (await client.request(
     readItems('products', {
       filter: { id: { _in: productIds } },
       fields: [
-        'id', 'title', 'type', 'price', 'advance',
-        'spots_total', 'spots_booked',
+        'id', 'title', 'price',
+        { workshop: ['id', 'spots_total', 'spots_booked', 'advance'] },
+        { course: ['id'] },
       ],
       limit: -1,
     }),
-  )) as Product[]
+  )) as unknown[]
+  const products: Product[] = rawProducts.map(normalizeProduct)
 
   const variantIds = items.map((i) => i.variantId).filter((v): v is number => v != null)
   const variants = variantIds.length
@@ -59,8 +76,8 @@ export async function computeOrder(
     if (!product) fail(`Produkt #${item.productId} nie istnieje.`)
 
     const qty = Math.max(1, Math.floor(item.qty))
-    const unitPrice = product.type === 'workshop' && product.advance != null
-      ? Number(product.advance)
+    const unitPrice = product.type === 'workshop' && product.workshop?.advance != null
+      ? Number(product.workshop.advance)
       : Number(product.price)
     if (!Number.isFinite(unitPrice) || unitPrice < 0) fail(`Niepoprawna cena produktu „${product.title}".`)
 
@@ -71,7 +88,8 @@ export async function computeOrder(
         if (variant.stock < qty) fail(`Za mało sztuk „${product.title}" (rozmiar ${variant.size ?? '—'}) na stanie.`)
       }
     } else if (product.type === 'workshop') {
-      const free = (product.spots_total ?? 0) - (product.spots_booked ?? 0)
+      const w = product.workshop
+      const free = (w?.spots_total ?? 0) - (w?.spots_booked ?? 0)
       if (free < qty) fail(`Za mało wolnych miejsc na „${product.title}".`)
     }
     // course: no stock constraint

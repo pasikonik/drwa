@@ -10,7 +10,8 @@ const fileId = (f: Product['image']): string | null =>
 const maxQtyFor = (product: Product, variant: ProductVariant | null): number => {
   if (product.type === 'course') return 1
   if (product.type === 'workshop') {
-    return Math.max(0, (product.spots_total ?? 0) - (product.spots_booked ?? 0))
+    const w = product.workshop
+    return Math.max(0, (w?.spots_total ?? 0) - (w?.spots_booked ?? 0))
   }
   // merch
   return variant ? variant.stock : 0
@@ -45,8 +46,8 @@ export const useCart = () => {
     opts: { variant?: ProductVariant | null; qty?: number; size?: string | null } = {},
   ): void {
     const variant = opts.variant ?? null
-    const chargePrice = product.type === 'workshop' && product.advance != null
-      ? Number(product.advance)
+    const chargePrice = product.type === 'workshop' && product.workshop?.advance != null
+      ? Number(product.workshop.advance)
       : Number(product.price)
 
     add({

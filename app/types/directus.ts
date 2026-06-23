@@ -1,5 +1,13 @@
 // DRWA — TypeScript types for Directus collections.
 // Keep in sync with the Directus data-model schema.
+//
+// Data model (Directus): `products` holds the purchasable/commerce fields
+// (title, price, slug, image, description). Two 1:1 extension collections add
+// type-specific data, linked by `product_id`:
+//   • workshops — stationary events (dates, location, seats, level, program)
+//   • courses   — online courses (access url)
+// A product's *kind* is derived from which extension it carries (see
+// `deriveProductType` in ~/utils/product). Merch = a product with neither.
 
 // ─── Directus system types ────────────────────────────────────────────────────
 
@@ -21,25 +29,87 @@ export type ProductType = 'merch' | 'course' | 'workshop'
 
 export type WorkshopLevel = 'beginner' | 'intermediate' | 'advanced'
 
+// One agenda line within a workshop day (workshop_agenda collection).
+export interface WorkshopAgendaItem {
+  id: string
+  description: string | null
+  sort: number | null
+}
+
+// A single day of a workshop block (workshop_days collection).
+export interface WorkshopDay {
+  id: string
+  day_number: number | null
+  day_name: string | null      // e.g. 'Piątek'
+  start_time: string | null    // 'HH:MM:SS'
+  end_time: string | null      // 'HH:MM:SS'
+  theme: string | null         // e.g. 'Drewno i trasowanie'
+  agenda_items: WorkshopAgendaItem[]
+}
+
+// Workshop extension (workshops collection) — 1:1 with a product.
+export interface Workshop {
+  id: string                   // UUID
+  product_id: number | null
+  date_start: string | null    // ISO datetime
+  date_end: string | null      // ISO datetime
+  location: string | null
+  spots_total: number | null
+  spots_booked: number | null
+  advance: number | null       // deposit charged at checkout (arrives as decimal string)
+  level: WorkshopLevel | null
+  blogpost_link: string | null // link to a related blog post (relacja)
+  days: WorkshopDay[]
+}
+
+export type CourseModuleStatus = 'draft' | 'published' | 'archived'
+
+// One module/lesson within a course (course_modules collection).
+export interface CourseModule {
+  id: string
+  status: CourseModuleStatus
+  title: string
+  description: string | null   // rich text (HTML)
+  sort: number | null
+  course: string | null        // M2O → courses.id (uuid)
+}
+
+// Course extension (courses collection) — 1:1 with a product.
+export interface Course {
+  id: string                   // UUID
+  product_id: number | null
+  course_access_url: string | null  // link to external course platform
+  sort: number | null
+  modules: CourseModule[]
+}
+
+// App-facing product: commerce fields + resolved 1:1 extension + derived kind.
+// Produced by `normalizeProduct` (Directus returns the extensions as arrays).
 export interface Product {
   id: number
   title: string
   slug: string | null
-  type: ProductType
+  price: number              // PLN — note: Directus sends decimals as strings
+  image: string | DirectusFile | null
+  description: string
+  short_description: string | null  // 1-2 zdania do hero/kart (warsztaty, kursy)
+  type: ProductType          // derived from which extension is present
+  workshop: Workshop | null  // populated when type === 'workshop'
+  course: Course | null      // populated when type === 'course'
+}
+
+// Raw product as returned by the SDK before normalization — the 1:1 extensions
+// come back as arrays (O2M alias on `products`).
+export interface RawProduct {
+  id: number
+  title: string
+  slug: string | null
   price: number
   image: string | DirectusFile | null
   description: string
-  // Conditional — only populated when type === 'course'
-  course_access_url: string | null    // link to external course platform
-  // Conditional — only populated when type === 'workshop'
-  location: string | null
-  spots_total: number | null
-  date_start: string | null    // ISO datetime
-  date_end: string | null      // ISO datetime
-  spots_booked: number | null
-  level: WorkshopLevel | null  // Beginner / Intermediate / Advanced
-  advance: number | null       // deposit amount charged at checkout (workshops only)
-  short_description: string | null  // 1-2 zdania do hero/kart (warsztaty, kursy)
+  short_description: string | null
+  workshop: Workshop[]
+  course: Course[]
 }
 
 export type VariantSize = 's' | 'm' | 'l' | 'xl'
@@ -75,8 +145,19 @@ export interface OrderWithItems extends Order {
   items: OrderItemExpanded[]
 }
 
+// Minimal product info attached to an order line. `course_access_url` is
+// flattened from the course extension for convenient display.
+export interface OrderProductRef {
+  id: number
+  title: string
+  slug: string | null
+  type: ProductType
+  image: string | DirectusFile | null
+  course_access_url: string | null
+}
+
 export interface OrderItemExpanded extends OrderItem {
-  product: Pick<Product, 'id' | 'title' | 'slug' | 'type' | 'image' | 'course_access_url'> | null
+  product: OrderProductRef | null
 }
 
 export interface OrderItem {
@@ -103,11 +184,17 @@ export interface BlogPost {
 
 // ─── SDK schema map ───────────────────────────────────────────────────────────
 // Passed as the generic to createDirectus<Schema>() so the SDK types all
-// request/response objects automatically.
+// request/response objects automatically. `products` uses RawProduct so nested
+// relation fields (workshop/course) type-check; we normalize after fetch.
 
 export interface Schema {
-  products: Product[]
+  products: RawProduct[]
   product_variants: ProductVariant[]
+  workshops: Workshop[]
+  workshop_days: WorkshopDay[]
+  workshop_agenda: WorkshopAgendaItem[]
+  courses: Course[]
+  course_modules: CourseModule[]
   orders: Order[]
   order_items: OrderItem[]
   blog_posts: BlogPost[]

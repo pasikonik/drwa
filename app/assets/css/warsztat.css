@@ -162,6 +162,13 @@
 .pday ul li { display: flex; gap: 10px; font-size: var(--text-sm); line-height: 1.55; color: var(--text-muted); }
 .pday ul li::before { content: "·"; color: var(--accent); font-weight: 700; }
 @media (max-width: 720px) { .pday { grid-template-columns: 1fr; gap: var(--space-3); } }
+.prog__relacja {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: var(--space-5);
+  font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-brand); text-decoration: none;
+}
+.prog__relacja svg { transition: transform 0.2s ease; }
+.prog__relacja:hover svg { transform: translateX(3px); }
 
 /* ============ Tutor ============ */
 .tutor { display: flex; gap: var(--space-5); align-items: flex-start; margin-top: var(--space-5); }
@@ -230,6 +237,19 @@
 }
 .book__note a { color: var(--text-muted); text-decoration: none; }
 .book__note a:hover { color: var(--text-brand); }
+.book__tutors { margin-top: var(--space-4); }
+.ptutors { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.ptutor { display: flex; align-items: center; gap: var(--space-3); }
+.ptutor .avatar { width: 44px; height: 44px; font-size: var(--text-sm); }
+.ptutor__body { display: flex; flex-direction: column; min-width: 0; }
+.ptutor__name {
+  font-family: var(--font-display); font-weight: 500; font-size: var(--text-md);
+  color: var(--text-strong);
+}
+.ptutor__role {
+  font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent); margin-top: 3px;
+}
 @media (max-width: 960px) {
   .detail { grid-template-columns: 1fr; }
   .book { position: static; }

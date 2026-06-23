@@ -164,9 +164,13 @@ const sizes = computed(() =>
 )
 const others = computed(() => (data.value?.products ?? []).filter((p) => p.id !== product!.id).slice(0, 3))
 
-const selectedVariant = ref<ProductVariant | null>(null)
+const selectedVariant = ref<ProductVariant | null>(
+  sizes.value.find(v => v.size?.toUpperCase() === 'M' && v.stock > 0)
+    ?? sizes.value.find(v => v.stock > 0)
+    ?? null,
+)
 function selectVariant(v: ProductVariant): void {
-  selectedVariant.value = selectedVariant.value?.id === v.id ? null : v
+  selectedVariant.value = v
 }
 
 const toast = reactive({ on: false, msg: '' })

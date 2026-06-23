@@ -91,8 +91,8 @@
         </div>
         <div class="mods io">
           <article
-            v-for="([title, desc], i) in MODULES"
-            :key="title"
+            v-for="(m, i) in MODULES_DISPLAY"
+            :key="m.key"
             class="mod"
             :class="{ 'is-open': openMod === i }"
           >
@@ -102,7 +102,7 @@
               @click="openMod = openMod === i ? -1 : i"
             >
               <span class="mod__num">{{ String(i + 1).padStart(2, '0') }}</span>
-              <span class="mod__title">{{ title }}</span>
+              <span class="mod__title">{{ m.title }}</span>
               <span class="mod__chev">
                 <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="m6 9 6 6 6-6"/>
@@ -110,7 +110,7 @@
               </span>
             </button>
             <div class="mod__body">
-              <p>{{ desc }}</p>
+              <div class="mod__copy" v-html="m.descHtml" />
             </div>
           </article>
         </div>
@@ -241,12 +241,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, defineComponent, h } from 'vue'
+import { ref, computed, onMounted, onUnmounted, defineComponent, h } from 'vue'
 
 useHead({
   title: 'Minikurs podstaw — Podstawy ciesielstwa i pracy z drewnem · DRWA',
   link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
+
+// Course product in Directus (products.id) backing this page — drives the
+// modules program below; falls back to the hardcoded list when unavailable.
+const COURSE_PRODUCT_ID = 7
+const { data: course } = await useCourse(COURSE_PRODUCT_ID)
 
 // ---- ikony inline ----
 const IconLayers = defineComponent({ render: () => h('svg', { viewBox: '0 0 24 24', width: 24, height: 24, fill: 'none', stroke: 'currentColor', 'stroke-width': '1.75', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' }, [h('path', { d: 'm12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z' }), h('path', { d: 'm6.08 9.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59' }), h('path', { d: 'm6.08 14.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59' })]) })
@@ -281,6 +286,17 @@ const MODULES: [string, string][] = [
   ['Pierwsze złącza ciesielskie — wręby i czopy', 'Jak wycinać wręby połówkowe, czopy i gniazda dłutem i piłą. Ćwiczenia na odpadach drewnianych przed właściwą robotą.'],
   ['BHP i organizacja stanowiska pracy', 'Zasady bezpiecznej pracy z drewnem. Jak urządzić stanowisko, co mieć zawsze pod ręką — i co zrobić przed pierwszym wejściem na budowę.'],
 ]
+
+// Program modules — from Directus (published, sorted) when available, otherwise
+// the hardcoded list above. `descHtml` is rich text from Directus / plain text
+// from the fallback (both safe to render with v-html).
+const MODULES_DISPLAY = computed(() => {
+  const fromCms = (course.value?.course?.modules ?? []).filter((m) => m.status === 'published')
+  if (fromCms.length) {
+    return fromCms.map((m) => ({ key: m.id, title: m.title, descHtml: m.description ?? '' }))
+  }
+  return MODULES.map(([title, desc], i) => ({ key: `static-${i}`, title, descHtml: `<p>${desc}</p>` }))
+})
 
 const PERSONAS = [
   { tag: 'Totalny początkujący', title: 'Zaczynasz od zera', desc: 'Nigdy wcześniej nie trzymałeś dłuta w ręku. Chcesz wiedzieć, czy budownictwo drewniane jest dla ciebie — zanim zainwestujesz czas i pieniądze w pełny kurs.' },

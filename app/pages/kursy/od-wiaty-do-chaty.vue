@@ -123,8 +123,8 @@
         </div>
         <div class="mods io">
           <article
-            v-for="([title, desc], i) in MODULES"
-            :key="title"
+            v-for="(m, i) in MODULES_DISPLAY"
+            :key="m.key"
             class="mod"
             :class="{ 'is-open': openMod === i }"
           >
@@ -134,7 +134,7 @@
               @click="openMod = openMod === i ? -1 : i"
             >
               <span class="mod__num">{{ String(i + 1).padStart(2, '0') }}</span>
-              <span class="mod__title">{{ title }}</span>
+              <span class="mod__title">{{ m.title }}</span>
               <span class="mod__chev">
                 <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="m6 9 6 6 6-6"/>
@@ -142,7 +142,7 @@
               </span>
             </button>
             <div class="mod__body">
-              <p>{{ desc }}</p>
+              <div class="mod__copy" v-html="m.descHtml" />
             </div>
           </article>
         </div>
@@ -346,12 +346,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, defineComponent, h } from 'vue'
+import { ref, computed, onMounted, onUnmounted, defineComponent, h } from 'vue'
 
 useHead({
   title: 'Kurs „Od wiaty do chaty" — DRWA',
   link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
+
+// Course product in Directus (products.id) backing this page — its modules
+// drive the program below. Course products have no slug, so we address by id.
+const COURSE_PRODUCT_ID = 2
+const { data: course } = await useCourse(COURSE_PRODUCT_ID)
 
 // ---- ikony inline ----
 const IconFilm = defineComponent({ render: () => h('svg', { viewBox: '0 0 24 24', width: 21, height: 21, fill: 'none', stroke: 'currentColor', 'stroke-width': '1.75', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' }, [h('rect', { width: 18, height: 18, x: 3, y: 3, rx: 2 }), h('path', { d: 'M7 3v18M17 3v18M3 7.5h4M3 16.5h4M17 7.5h4M17 16.5h4' })]) })
@@ -401,6 +406,17 @@ const MODULES: [string, string][] = [
   ['Wykończenie ścian', 'Elewacja z desek i artystyczna obróbka drewna.'],
   ['Wykonanie oraz instalacja okien i drzwi', 'Stolarka od podstaw: wykonanie, osadzenie i regulacja. Finał budowy.'],
 ]
+
+// Program modules — from Directus (published, sorted) when available, otherwise
+// the hardcoded list above. `descHtml` is rich text from Directus / plain text
+// from the fallback (both safe to render with v-html).
+const MODULES_DISPLAY = computed(() => {
+  const fromCms = (course.value?.course?.modules ?? []).filter((m) => m.status === 'published')
+  if (fromCms.length) {
+    return fromCms.map((m) => ({ key: m.id, title: m.title, descHtml: m.description ?? '' }))
+  }
+  return MODULES.map(([title, desc], i) => ({ key: `static-${i}`, title, descHtml: `<p>${desc}</p>` }))
+})
 
 const BONUSES = [
   { num: 'Bonus 01', icon: IconFilm, title: 'Minikurs „Podstawy ciesielstwa i pracy z drewnem"', desc: 'Idealny start dla totalnie początkujących. Techniki, narzędzia i zasady bezpieczeństwa — solidne podstawy, zanim ruszysz z modułami kursu.' },

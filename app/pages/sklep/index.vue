@@ -56,7 +56,7 @@
                     :key="s"
                     class="size"
                     :class="{ 'is-on': sizes[p.id] === s }"
-                    @click="sizes[p.id] = sizes[p.id] === s ? null : s"
+                    @click="sizes[p.id] = s"
                   >{{ s }}</button>
                 </div>
                 <div class="mcard__foot">
@@ -234,6 +234,12 @@ const ASSUR = [
 ]
 
 const sizes = reactive<Record<number, string | null>>({})
+
+// Auto-select first available size so the button is always ready
+products.value.forEach(p => {
+  const available = availableSizes(p.id)
+  sizes[p.id] = available.includes('M') ? 'M' : available[0] ?? null
+})
 const toast = reactive({ on: false, msg: '' })
 let toastTimer: ReturnType<typeof setTimeout> | null = null
 

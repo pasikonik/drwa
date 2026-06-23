@@ -1,5 +1,6 @@
 import { readItems } from '@directus/sdk'
 import type { Product, ProductVariant, ProductType } from '~/types/directus'
+import { normalizeProduct } from '~/utils/product'
 
 // Returned by useProducts — contains both products and their variants in one
 // round-trip so pages can await a single composable.
@@ -9,7 +10,11 @@ export interface ProductsWithVariants {
 }
 
 /**
- * Fetch products of a given type + all their variants.
+ * Fetch products of a given kind + all their variants.
+ *
+ * There is no `type` column on `products`; the kind is derived from which 1:1
+ * extension (workshop / course) a product carries, so we fetch all products
+ * with their (shallow) extensions and filter by the derived type in memory.
  * Results are cached by Nuxt's useAsyncData with a stable key.
  *
  * @example const { data } = await useProducts('merch')
@@ -21,17 +26,24 @@ export const useProducts = (type: ProductType) => {
   return useAsyncData<ProductsWithVariants>(
     `products-${type}`,
     async () => {
-      const products = (await directus.request(
+      const raw = (await directus.request(
         readItems('products', {
-          filter: { type: { _eq: type } },
           sort: ['id'],
+          limit: -1,
           fields: [
-            'id', 'title', 'slug', 'type', 'price', 'description', 'image',
-            'location', 'spots_total',
-            'date_start', 'date_end', 'spots_booked', 'level', 'advance', 'short_description',
+            'id', 'title', 'slug', 'price', 'description', 'image', 'short_description',
+            {
+              workshop: [
+                'id', 'product_id', 'date_start', 'date_end', 'location',
+                'spots_total', 'spots_booked', 'advance', 'level', 'blogpost_link',
+              ],
+            },
+            { course: ['id', 'product_id', 'course_access_url', 'sort'] },
           ],
         })
-      )) as Product[]
+      )) as unknown[]
+
+      const products = raw.map(normalizeProduct).filter((p) => p.type === type)
 
       const ids = products.map((p) => p.id)
 

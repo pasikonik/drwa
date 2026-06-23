@@ -1,5 +1,6 @@
 import { readItems } from '@directus/sdk'
-import type { Order, OrderItem, Product, OrderWithItems, OrderItemExpanded } from '~/types/directus'
+import type { Order, OrderItem, OrderProductRef, OrderWithItems, OrderItemExpanded } from '~/types/directus'
+import { toOrderProductRef } from '~/utils/product'
 import { directusAdmin } from '../../utils/directusAdmin'
 import { resolveUserId } from '../../utils/sessionUser'
 
@@ -33,14 +34,18 @@ export default defineEventHandler(async (event): Promise<OrderWithItems[]> => {
   )) as OrderItem[]
 
   const productIds = [...new Set(allItems.map((i) => i.product_id).filter((v): v is number => v != null))]
-  const products = productIds.length
+  const products: OrderProductRef[] = productIds.length
     ? ((await client.request(
         readItems('products', {
           filter: { id: { _in: productIds } },
-          fields: ['id', 'title', 'slug', 'type', 'image', 'course_access_url'],
+          fields: [
+            'id', 'title', 'slug', 'image',
+            { workshop: ['id'] },
+            { course: ['id', 'course_access_url'] },
+          ],
           limit: -1,
         }),
-      )) as Pick<Product, 'id' | 'title' | 'slug' | 'type' | 'image' | 'course_access_url'>[])
+      )) as unknown[]).map(toOrderProductRef)
     : []
 
   const productById = new Map(products.map((p) => [p.id, p]))

@@ -1,5 +1,6 @@
 import { readItems, updateItem } from '@directus/sdk'
 import type { OrderItem, Product, ProductVariant } from '~/types/directus'
+import { normalizeProduct } from '~/utils/product'
 import { directusAdmin } from './directusAdmin'
 
 /**
@@ -19,14 +20,18 @@ export async function fulfillOrder(orderId: string): Promise<void> {
   )) as OrderItem[]
 
   const productIds = [...new Set(items.map((i) => i.product_id).filter((v): v is number => v != null))]
-  const products = productIds.length
+  const products: Product[] = productIds.length
     ? ((await client.request(
         readItems('products', {
           filter: { id: { _in: productIds } },
-          fields: ['id', 'type', 'spots_booked'],
+          fields: [
+            'id',
+            { workshop: ['id', 'spots_booked'] },
+            { course: ['id'] },
+          ],
           limit: -1,
         }),
-      )) as Product[])
+      )) as unknown[]).map(normalizeProduct)
     : []
 
   const variantIds = items.map((i) => i.variant_id).filter((v): v is number => v != null)
@@ -51,15 +56,17 @@ export async function fulfillOrder(orderId: string): Promise<void> {
       if (item.variant_id != null) {
         const variant = variantById.get(item.variant_id)
         if (variant) {
-          await client.request(updateItem('product_variants', variant.id, {
-            stock: Math.max(0, variant.stock - item.quantity),
-          }))
+          const next = Math.max(0, variant.stock - item.quantity)
+          await client.request(updateItem('product_variants', variant.id, { stock: next }))
+          variant.stock = next // accumulate if the same variant spans multiple lines
         }
       }
-    } else if (product.type === 'workshop') {
-      await client.request(updateItem('products', product.id, {
-        spots_booked: (product.spots_booked ?? 0) + item.quantity,
-      }))
+    } else if (product.type === 'workshop' && product.workshop) {
+      // Seats live on the workshops extension, keyed by its own UUID.
+      const w = product.workshop
+      const next = (w.spots_booked ?? 0) + item.quantity
+      await client.request(updateItem('workshops', w.id, { spots_booked: next }))
+      w.spots_booked = next // accumulate if the same workshop spans multiple lines
     }
     // course: nothing to reserve
   }

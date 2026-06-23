@@ -1,5 +1,6 @@
 import { readItems } from '@directus/sdk'
 import type { Product } from '~/types/directus'
+import { normalizeProduct } from '~/utils/product'
 
 export const useProduct = (slug: string) => {
   const { directus } = useDirectus()
@@ -12,13 +13,24 @@ export const useProduct = (slug: string) => {
           filter: { slug: { _eq: slug } },
           limit: 1,
           fields: [
-            'id', 'title', 'slug', 'type', 'price', 'description', 'image',
-            'location', 'spots_total',
-            'date_start', 'date_end', 'spots_booked', 'level', 'advance', 'short_description',
+            'id', 'title', 'slug', 'price', 'description', 'image', 'short_description',
+            {
+              workshop: [
+                'id', 'product_id', 'date_start', 'date_end', 'location',
+                'spots_total', 'spots_booked', 'advance', 'level', 'blogpost_link',
+                {
+                  days: [
+                    'id', 'day_number', 'day_name', 'start_time', 'end_time', 'theme',
+                    { agenda_items: ['id', 'description', 'sort'] },
+                  ],
+                },
+              ],
+            },
+            { course: ['id', 'product_id', 'course_access_url', 'sort'] },
           ],
         })
-      )) as Product[]
-      return results[0] ?? null
+      )) as unknown[]
+      return results[0] ? normalizeProduct(results[0]) : null
     },
     { default: () => null }
   )

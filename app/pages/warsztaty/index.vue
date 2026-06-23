@@ -303,21 +303,22 @@ const FALLBACK_IMGS = ['/assets/forest-1.png', '/assets/timber-2.png', '/assets/
 
 const workshops = computed(() =>
   (data.value?.products ?? []).map((p, i) => {
-    const dates = p.date_start && p.date_end
-      ? formatDateRange(p.date_start, p.date_end)
+    const w = p.workshop
+    const dates = w?.date_start && w?.date_end
+      ? formatDateRange(w.date_start, w.date_end)
       : { day: '—', month: '—', year: '—' }
 
-    const days = p.date_start && p.date_end
+    const days = w?.date_start && w?.date_end
       ? (() => {
           const diff = Math.round(
-            (new Date(p.date_end).getTime() - new Date(p.date_start).getTime())
+            (new Date(w.date_end).getTime() - new Date(w.date_start).getTime())
             / (1000 * 60 * 60 * 24)
           ) + 1
           return `${diff} ${diff === 1 ? 'dzień' : 'dni'}`
         })()
       : '—'
 
-    const spots = workshopSpots(p.spots_total, p.spots_booked)
+    const spots = workshopSpots(w?.spots_total ?? null, w?.spots_booked ?? null)
 
     return {
       id: p.id,
@@ -328,12 +329,12 @@ const workshops = computed(() =>
       month: dates.month,
       year: dates.year,
       days,
-      level: levelLabelOf(p.level),
+      level: levelLabelOf(w?.level ?? null),
       price: formatPrice(p.price),
-      advance: p.advance != null ? formatPrice(p.advance) : null,
+      advance: w?.advance != null ? formatPrice(Number(w.advance)) : null,
       spotsLabel: spots.label,
       spotsTone: spots.tone,
-      place: p.location ?? 'Stolarnia pod lasem · Beskid Niski',
+      place: w?.location ?? 'Stolarnia pod lasem · Beskid Niski',
       lead: 'prowadzi Jędrzej Cyganik',
       rawImage: p.image,
       img: FALLBACK_IMGS[i % FALLBACK_IMGS.length],

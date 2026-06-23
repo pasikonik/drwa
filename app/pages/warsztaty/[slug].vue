@@ -68,7 +68,7 @@
             <span class="eyebrow">Program</span>
             <h2>Dzień po dniu</h2>
             <div class="prog">
-              <article v-for="day in PROGRAM" :key="day.num" class="pday">
+              <article v-for="day in PROGRAM" :key="day.id" class="pday">
                 <div class="pday__label">
                   <span class="pday__num">{{ day.num }}</span>
                   <span class="pday__sub">{{ day.sub }}</span>
@@ -77,49 +77,17 @@
                 <div>
                   <h3 class="pday__title">{{ day.title }}</h3>
                   <ul>
-                    <li v-for="it in day.items" :key="it">{{ it }}</li>
+                    <li v-for="it in day.items" :key="it.id">{{ it.text }}</li>
                   </ul>
                 </div>
               </article>
             </div>
-          </section>
-
-          <!-- Prowadzący -->
-          <section class="dsec io" id="prowadzacy">
-            <span class="eyebrow">Prowadzący</span>
-            <h2>Kto cię poprowadzi</h2>
-            <div class="tutor">
-              <div class="avatar avatar--ring" aria-hidden="true">JC</div>
-              <div class="tutor__body">
-                <h3 class="tutor__name">Jędrzej Cyganik</h3>
-                <p class="tutor__role">Cieśla · założyciel DRWA</p>
-                <p>Cieśla i stolarz, od wielu lat przy drewnie — od więźb dachowych w Beskidach po naturalne domy szkieletowe. Założyciel DRWA i pomysłodawca warsztatów.</p>
-                <p>Uczy spokojnie i konkretnie: najpierw pokazuje, potem oddaje narzędzie. Na jego warsztatach każdy uczestnik wykonuje każde łączenie własnymi rękami.</p>
-              </div>
-            </div>
-          </section>
-
-          <!-- Galeria -->
-          <section class="dsec io" id="galeria">
-            <span class="eyebrow">Galeria</span>
-            <h2>Z poprzednich edycji</h2>
-            <div class="gal">
-              <div class="gal__slot gal__big">
-                <DrwaImg :src="heroImage" :alt="title" preset="card" fallback="/assets/forest-1.png" />
-              </div>
-              <div class="gal__slot">
-                <img src="/assets/timber-2.png" alt="Praca przy łączeniach" />
-              </div>
-              <div class="gal__slot">
-                <img src="/assets/forest-3.png" alt="Stawianie więźby" />
-              </div>
-              <div class="gal__slot gal__placeholder">
-                <span>Ognisko wieczorem</span>
-              </div>
-              <div class="gal__slot gal__placeholder">
-                <span>Gotowa konstrukcja</span>
-              </div>
-            </div>
+            <a v-if="blogpostLink" :href="blogpostLink" class="prog__relacja">
+              Zobacz relację z poprzedniej edycji
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
           </section>
 
         </div>
@@ -127,15 +95,12 @@
         <!-- Panel rezerwacji -->
         <aside class="book">
           <div class="card card--padded">
-            <div class="eyebrow book__eyebrow">Najbliższy termin</div>
-            <div class="book__date">{{ dateStr }}</div>
-            <div class="book__rule" />
             <div class="book__facts">
               <span class="book__fact">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
                 </svg>
-                {{ daysCount }} · piątek–niedziela, 9:00–17:00
+                {{ daysCount }}<template v-if="scheduleSummary"> · {{ scheduleSummary }}</template>
               </span>
               <span class="book__fact">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -171,7 +136,20 @@
               </div>
               <AddToCartButton :product="prod" label="Rezerwuj miejsce" />
             </div>
-            <p class="book__note">pytania: <a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></p>
+          </div>
+
+          <!-- Prowadzący -->
+          <div class="card card--padded book__tutors" id="prowadzacy">
+            <div class="eyebrow book__eyebrow">Prowadzący</div>
+            <ul class="ptutors">
+              <li v-for="t in INSTRUCTORS" :key="t.name" class="ptutor">
+                <div class="avatar avatar--ring" aria-hidden="true">{{ t.initials }}</div>
+                <div class="ptutor__body">
+                  <span class="ptutor__name">{{ t.name }}</span>
+                  <span class="ptutor__role">{{ t.role }}</span>
+                </div>
+              </li>
+            </ul>
           </div>
         </aside>
       </div>
@@ -271,7 +249,7 @@
             <ul>
               <li><a @click.prevent="jump('program')">Program dzień po dniu</a></li>
               <li><a @click.prevent="jump('prowadzacy')">Prowadzący</a></li>
-              <li><a @click.prevent="jump('galeria')">Galeria</a></li>
+              <li v-if="blogpostLink"><a :href="blogpostLink">Relacja z warsztatu</a></li>
               <li><a @click.prevent="jump('zapisy')">Zapisy</a></li>
             </ul>
           </div>
@@ -326,7 +304,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
-import { formatPrice, formatDateRange, stripHtml, workshopSpots } from '~/utils/format'
+import { formatPrice, formatDateRange, formatTimeRange, stripHtml, workshopSpots } from '~/utils/format'
 const LEVEL_LABEL: Record<string, string> = {
   beginner: 'podstawowy',
   intermediate: 'średni',
@@ -363,97 +341,112 @@ const descHtml = computed(() => product.value?.description ?? '')
 const lead = computed(() =>
   product.value?.short_description ?? (product.value?.description ? stripHtml(product.value.description, 260) : '')
 )
+const workshop = computed(() => product.value?.workshop ?? null)
+
 const location = computed(() =>
-  product.value?.location ?? 'Stolarnia pod lasem · Beskid Niski'
+  workshop.value?.location ?? 'Stolarnia pod lasem · Beskid Niski'
 )
 const priceStr = computed(() =>
   product.value ? formatPrice(product.value.price) : '—'
 )
 
 const advanceStr = computed(() => {
-  const a = product.value?.advance
-  return a != null ? formatPrice(a) : priceStr.value
+  const a = workshop.value?.advance
+  return a != null ? formatPrice(Number(a)) : priceStr.value
 })
 
-const hasAdvance = computed(() => product.value?.advance != null)
+const hasAdvance = computed(() => workshop.value?.advance != null)
 
 const dateStr = computed(() => {
-  const s = product.value?.date_start
-  const e = product.value?.date_end
+  const s = workshop.value?.date_start
+  const e = workshop.value?.date_end
   if (!s || !e) return '—'
   const dr = formatDateRange(s, e)
   return `${dr.day} ${dr.month} ${dr.year}`
 })
 
+// Program — built from the workshop's days + agenda (sorted in normalizeProduct).
+const PROGRAM = computed(() =>
+  (workshop.value?.days ?? []).map((d) => ({
+    id: d.id,
+    num: d.day_number != null ? `Dzień ${d.day_number}` : 'Dzień',
+    sub: d.day_name ?? '',
+    hours: formatTimeRange(d.start_time, d.end_time),
+    title: d.theme ?? '',
+    items: (d.agenda_items ?? [])
+      .filter((a) => !!a.description)
+      .map((a) => ({ id: a.id, text: a.description as string })),
+  }))
+)
+
 const daysCount = computed(() => {
-  const s = product.value?.date_start
-  const e = product.value?.date_end
-  if (!s || !e) return '—'
-  const diff = Math.round(
-    (new Date(e).getTime() - new Date(s).getTime()) / (1000 * 60 * 60 * 24)
-  ) + 1
-  return `${diff} ${diff === 1 ? 'dzień' : 'dni'}`
+  const days = workshop.value?.days ?? []
+  let count = days.length
+  if (!count) {
+    // Fall back to the date span when the program isn't filled in.
+    const s = workshop.value?.date_start
+    const e = workshop.value?.date_end
+    if (!s || !e) return '—'
+    count = Math.round((new Date(e).getTime() - new Date(s).getTime()) / (1000 * 60 * 60 * 24)) + 1
+  }
+  return `${count} ${count === 1 ? 'dzień' : 'dni'}`
+})
+
+// e.g. 'Piątek–Niedziela, 9:00–17:00' — derived from the days when they exist.
+const scheduleSummary = computed(() => {
+  const days = workshop.value?.days ?? []
+  if (!days.length) return ''
+  const first = days[0]
+  if (!first) return ''
+  const last = days[days.length - 1]
+  // Show a name range only when every day is named (positional endpoints), so a
+  // multi-day block with partially-filled names isn't mislabelled as one day.
+  const allNamed = days.every((d) => !!d.day_name)
+  const range = days.length > 1
+    ? (allNamed ? `${first.day_name}–${last?.day_name}` : '')
+    : (first.day_name ?? '')
+  const sameHours = days.every((d) => d.start_time === first.start_time && d.end_time === first.end_time)
+  const hours = sameHours ? formatTimeRange(first.start_time, first.end_time) : ''
+  return [range, hours].filter(Boolean).join(', ')
 })
 
 const spots = computed(() =>
-  workshopSpots(product.value?.spots_total ?? null, product.value?.spots_booked ?? null)
+  workshopSpots(workshop.value?.spots_total ?? null, workshop.value?.spots_booked ?? null)
 )
 
 const capacityLabel = computed(() => {
-  const cap = product.value?.spots_total
+  const cap = workshop.value?.spots_total
   return cap ? `grupa maks. ${cap} osób` : 'mała grupa'
 })
 
 const levelLabel = computed(() =>
-  LEVEL_LABEL[levelKey(product.value?.level ?? null)] ?? 'podstawowy'
+  LEVEL_LABEL[levelKey(workshop.value?.level ?? null)] ?? 'podstawowy'
 )
 
 const levelNote = computed(() =>
-  LEVEL_NOTE[levelKey(product.value?.level ?? null)] ?? 'poziom podstawowy — zaczynamy od zera'
+  LEVEL_NOTE[levelKey(workshop.value?.level ?? null)] ?? 'poziom podstawowy'
 )
+
+// Link to a related blog post (relacja) — surfaced only when set in Directus.
+const blogpostLink = computed(() => workshop.value?.blogpost_link ?? null)
 
 const formEyebrow = computed(() => {
   const t = title.value
   return dateStr.value !== '—' ? `${t} · ${dateStr.value}` : t
 })
 
-// ─── Hardcoded defaults (update when Directus fields are added) ───────────────
+// ─── Hardcoded defaults (no matching Directus field yet) ──────────────────────
+
+const INSTRUCTORS = [
+  { initials: 'JC', name: 'Jędrzej Cyganik', role: 'Cieśla · założyciel DRWA' },
+  { initials: 'GR', name: 'Grzegorz', role: 'Cieśla · prowadzący' },
+]
 
 const LEARN = [
   'Trasowanie i wykonywanie łączeń czopowych — dłutem i piłą',
   'Czytanie drewna: słoje, sęki i praca materiału w konstrukcji',
   'Składanie ram i wspólne stawianie więźby dachowej',
   'Plan konstrukcji, który zabierzesz do domu i powtórzysz u siebie',
-]
-
-const PROGRAM = [
-  {
-    num: 'Dzień 1', sub: 'piątek', hours: '9:00–17:00', title: 'Drewno i trasowanie',
-    items: [
-      'Poznajemy materiał: wybór i przygotowanie drewna na konstrukcję',
-      'Trasowanie łączeń — ołówek, węgielnica, znacznik',
-      'Podstawy pracy dłutem i piłą ciesielską',
-      'Pierwsze czopy i gniazda na próbnych klockach',
-    ],
-  },
-  {
-    num: 'Dzień 2', sub: 'sobota', hours: '9:00–17:00', title: 'Łączenia i ściany',
-    items: [
-      'Ciosanie czopów w elementach docelowych',
-      'Składanie ram słupów — miecze i rygle',
-      'Próbny montaż na placu',
-      'Wieczorem: ognisko i rozmowy o naturalnym budowaniu',
-    ],
-  },
-  {
-    num: 'Dzień 3', sub: 'niedziela', hours: '9:00–16:00', title: 'Więźba i finał',
-    items: [
-      'Krokwie i jętki — przygotowanie więźby',
-      'Wspólne stawianie konstrukcji',
-      'Deskowanie połaci dachu',
-      'Finał: gotowa konstrukcja i wspólne zdjęcie przy ognisku',
-    ],
-  },
 ]
 
 // ─── Form ─────────────────────────────────────────────────────────────────────
