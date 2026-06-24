@@ -96,7 +96,7 @@
 
 .sizes { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
 .size {
-  min-width: 38px; height: 34px; padding: 0 8px; cursor: pointer;
+  min-width: 38px; min-height: 44px; padding: 0 10px; cursor: pointer;
   font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.04em;
   display: inline-flex; align-items: center; justify-content: center;
   border-radius: var(--radius-sm); border: 1px solid var(--border-soft);

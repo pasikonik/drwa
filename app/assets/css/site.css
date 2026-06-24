@@ -367,7 +367,7 @@ picture { display: contents; }
   font-family: var(--font-body); font-size: var(--text-base);
 }
 .news__form input::placeholder { color: var(--pine-300); }
-.news__form input:focus { outline: none; border-color: var(--accent); }
+.news__form input:focus { outline: none; border-color: var(--timber-300); box-shadow: 0 0 0 3px rgba(189, 144, 89, 0.50); }
 .news__sent { color: var(--timber-200); font-family: var(--font-mono); font-size: var(--text-sm); margin: 0; }
 
 /* ============ Footer ============ */
