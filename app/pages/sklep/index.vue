@@ -152,18 +152,11 @@
       </div>
     </footer>
 
-    <!-- ===== Toast ===== -->
-    <div class="toast" :class="{ 'is-on': toast.on }" role="status" aria-live="polite">
-      <svg class="toast__check" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M20 6 9 17l-5-5"/>
-      </svg>
-      <span>{{ toast.msg }}</span>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
+import { reactive, computed, onMounted, onUnmounted } from 'vue'
 import { formatPrice, stripHtml } from '~/utils/format'
 import type { Product } from '~/types/directus'
 
@@ -172,7 +165,6 @@ useHead({
   link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
-const { assetUrl } = useDirectus()
 const { data } = await useProducts('merch')
 
 const products = computed(() => data.value?.products ?? [])
@@ -239,28 +231,13 @@ products.value.forEach(p => {
   const available = availableSizes(p.id)
   sizes[p.id] = available.includes('M') ? 'M' : available[0] ?? null
 })
-const toast = reactive({ on: false, msg: '' })
-let toastTimer: ReturnType<typeof setTimeout> | null = null
-
 const { addProduct } = useCart()
-
-function showToast(msg: string) {
-  toast.msg = msg
-  toast.on = true
-  if (toastTimer) clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => { toast.on = false }, 2600)
-}
 
 function addToCart(p: Product) {
   const sizeSel = sizes[p.id]
   const vs = variants.value.filter(v => v.product_id === p.id)
-  if (vs.length && !sizeSel) {
-    showToast('Wybierz rozmiar')
-    return
-  }
   const variant = sizeSel ? vs.find(v => v.size?.toUpperCase() === sizeSel) ?? null : null
   addProduct(p, { variant, size: sizeSel ?? null })
-  showToast(`Dodano: ${p.title}${sizeSel ? ` (rozm. ${sizeSel})` : ''}`)
 }
 
 let observer: IntersectionObserver | null = null
@@ -280,6 +257,5 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (observer) observer.disconnect()
-  if (toastTimer) clearTimeout(toastTimer)
 })
 </script>

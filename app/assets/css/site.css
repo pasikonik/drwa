@@ -409,6 +409,15 @@ picture { display: contents; }
 .foot__social a:hover { border-color: var(--pine-300); color: var(--cream-50); }
 @media (max-width: 860px) { .foot__top { grid-template-columns: 1fr 1fr; } }
 
+/* ============ Cart icon bump ============ */
+@keyframes cart-bump {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.28); }
+  70%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+.cartbtn.is-bumped { animation: cart-bump 600ms var(--ease-out) forwards; }
+
 /* ============ Scroll reveal ============ */
 @media (prefers-reduced-motion: no-preference) {
   .io { opacity: 0; transform: translateY(20px); transition: opacity var(--dur-slower) var(--ease-out), transform var(--dur-slower) var(--ease-out); }

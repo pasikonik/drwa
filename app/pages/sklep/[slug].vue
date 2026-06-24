@@ -55,7 +55,6 @@
                 :variant="selectedVariant"
                 :disabled="sizes.length > 0 && !selectedVariant"
                 :label="`Do koszyka · ${formatPrice(product.price)}`"
-                @added="onAdded"
               />
               <p v-if="sizes.length > 0 && !selectedVariant" class="pdp__pick-hint">Wybierz rozmiar, aby dodać do koszyka.</p>
             </div>
@@ -128,18 +127,11 @@
 
     <DrwaFooter />
 
-    <!-- Toast -->
-    <div class="toast" :class="{ 'is-on': toast.on }" role="status" aria-live="polite">
-      <svg class="toast__check" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M20 6 9 17l-5-5" />
-      </svg>
-      <span>{{ toast.msg }}</span>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { formatPrice, stripHtml } from '~/utils/format'
 import type { ProductVariant } from '~/types/directus'
 
@@ -173,16 +165,6 @@ function selectVariant(v: ProductVariant): void {
   selectedVariant.value = v
 }
 
-const toast = reactive({ on: false, msg: '' })
-let toastTimer: ReturnType<typeof setTimeout> | null = null
-function onAdded(): void {
-  const tag = selectedVariant.value?.size ? ` (rozm. ${selectedVariant.value.size.toUpperCase()})` : ''
-  toast.msg = `Dodano: ${product!.title}${tag}`
-  toast.on = true
-  if (toastTimer) clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => { toast.on = false }, 2600)
-}
-
 let observer: IntersectionObserver | null = null
 onMounted(() => {
   if (!('IntersectionObserver' in window)) {
@@ -198,6 +180,5 @@ onMounted(() => {
 })
 onUnmounted(() => {
   if (observer) observer.disconnect()
-  if (toastTimer) clearTimeout(toastTimer)
 })
 </script>
