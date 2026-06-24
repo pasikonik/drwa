@@ -296,7 +296,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { formatPrice, formatDateRange, formatTimeRange, stripHtml, workshopSpots } from '~/utils/format'
 const LEVEL_LABEL: Record<string, string> = {
   beginner: 'podstawowy',
@@ -461,20 +461,5 @@ function submit() {
 
 // ─── Intersection observer ────────────────────────────────────────────────────
 
-let observer: IntersectionObserver | null = null
-
-onMounted(() => {
-  if (!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.io').forEach(el => el.classList.add('io--in'))
-    return
-  }
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
-    })
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-  document.querySelectorAll('.io:not(.io--in)').forEach(el => observer!.observe(el))
-})
-
-onUnmounted(() => { if (observer) observer.disconnect() })
+useScrollReveal()
 </script>

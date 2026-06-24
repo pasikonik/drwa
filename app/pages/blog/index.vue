@@ -155,7 +155,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { formatDate, stripHtml, readTime } from '~/utils/format'
 
 useHead({
@@ -204,32 +204,8 @@ function subscribe() {
   if (email.value.trim()) sent.value = true
 }
 
-let observer: IntersectionObserver | null = null
-
-function observeIo() {
-  const els = document.querySelectorAll('.io:not(.io--in)')
-  if (!observer) {
-    els.forEach(el => el.classList.add('io--in'))
-    return
-  }
-  els.forEach(el => observer!.observe(el))
-}
-
-onMounted(() => {
-  if ('IntersectionObserver' in window) {
-    observer = new IntersectionObserver((entries) => {
-      entries.forEach(en => {
-        if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
-      })
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-  }
-  observeIo()
-})
+const { setupObserver } = useScrollReveal()
 
 // Zmiana filtra tworzy nowe elementy .io — trzeba je dopiąć do obserwatora
-watch(cat, () => nextTick(observeIo))
-
-onUnmounted(() => {
-  if (observer) observer.disconnect()
-})
+watch(cat, () => nextTick(setupObserver))
 </script>

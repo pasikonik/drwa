@@ -211,12 +211,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 
 useHead({
   title: 'Kontakt — DRWA',
   link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
+
+useScrollReveal()
 
 const sent = ref(false)
 const topic = ref('warsztaty')
@@ -227,23 +229,4 @@ const FAQ = [
   { q: 'Czy mogę zwrócić rzeczy ze sklepu?', a: 'Tak — masz 30 dni na zwrot bez podania przyczyny. Napisz na czesc@drwa.pl, a odeślemy instrukcję i pokryjemy koszt pierwszej wysyłki zwrotnej.' },
   { q: 'Robicie warsztaty na zamówienie?', a: 'Robimy — dla firm, szkół i grup znajomych od 6 osób. Opisz w formularzu, co chcecie zbudować, a przygotujemy program i wycenę.' },
 ]
-
-let observer = null
-
-onMounted(() => {
-  if (!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.io').forEach(el => el.classList.add('io--in'))
-    return
-  }
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.add('io--in'); observer.unobserve(en.target) }
-    })
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-  document.querySelectorAll('.io:not(.io--in)').forEach(el => observer.observe(el))
-})
-
-onUnmounted(() => {
-  if (observer) observer.disconnect()
-})
 </script>

@@ -131,7 +131,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed } from 'vue'
 import { formatPrice, stripHtml } from '~/utils/format'
 import type { ProductVariant } from '~/types/directus'
 
@@ -165,20 +165,5 @@ function selectVariant(v: ProductVariant): void {
   selectedVariant.value = v
 }
 
-let observer: IntersectionObserver | null = null
-onMounted(() => {
-  if (!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.io').forEach((el) => el.classList.add('io--in'))
-    return
-  }
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach((en) => {
-      if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
-    })
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-  document.querySelectorAll('.io:not(.io--in)').forEach((el) => observer!.observe(el))
-})
-onUnmounted(() => {
-  if (observer) observer.disconnect()
-})
+useScrollReveal()
 </script>
