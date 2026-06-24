@@ -2,7 +2,7 @@
   <div class="site">
     <DrwaNav />
 
-    <main>
+    <main id="main-content">
       <div class="container section" style="padding-top: var(--space-6)">
         <nav class="drwa-crumb" aria-label="Breadcrumb">
           <NuxtLink to="/sklep">Sklep</NuxtLink>

@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <main class="container section">
+    <main id="main-content" class="container section">
       <div class="account">
         <!-- Nagłówek konta -->
         <div class="account__head card card--padded">

@@ -30,7 +30,7 @@
           <h4>Kontakt</h4>
           <ul>
             <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
-            <li><a href="tel:+48600100200">+48 600 100 200</a></li>
+
             <li><a>Stolarnia pod lasem</a></li>
           </ul>
         </div>

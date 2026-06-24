@@ -2,7 +2,7 @@
   <div class="site">
     <DrwaNav />
     <DrwaHero />
-    <main>
+    <main id="main-content">
       <DrwaTiles />
       <DrwaAbout />
       <DrwaValues />

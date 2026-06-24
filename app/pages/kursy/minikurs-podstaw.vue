@@ -63,7 +63,7 @@
       </div>
     </section>
 
-    <main>
+    <main id="main-content">
       <!-- ===== Co nauczysz się ===== -->
       <section class="section container" id="nauczysz">
         <div class="sec-head io">
@@ -204,7 +204,7 @@
             <h4>Kontakt</h4>
             <ul>
               <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
-              <li><a href="tel:+48600100200">+48 600 100 200</a></li>
+
               <li><NuxtLink to="/kontakt">Stolarnia pod lasem</NuxtLink></li>
             </ul>
           </div>

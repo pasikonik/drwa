@@ -2,7 +2,7 @@
   <div class="site">
     <DrwaNav />
 
-    <main class="container section" style="padding-top: var(--space-6)">
+    <main id="main-content" class="container section" style="padding-top: var(--space-6)">
       <!-- Okruszki -->
       <nav class="drwa-crumb" aria-label="Breadcrumb">
         <NuxtLink to="/blog">Blog</NuxtLink>
@@ -130,7 +130,7 @@
             <h4>Kontakt</h4>
             <ul>
               <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
-              <li><a href="tel:+48600100200">+48 600 100 200</a></li>
+
               <li><NuxtLink to="/">Strona główna</NuxtLink></li>
             </ul>
           </div>

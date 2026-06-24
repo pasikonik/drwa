@@ -63,7 +63,7 @@
       </div>
     </section>
 
-    <main>
+    <main id="main-content">
       <!-- ===== Co zbudujesz ===== -->
       <section class="section container" id="zbudujesz">
         <div class="sec-head io">
@@ -263,13 +263,8 @@
                 <span class="offer__per">jednorazowo · dostęp 3 lata</span>
               </div>
               <div class="offer__cta">
-                <span class="drwa-badge drwa-badge--success">
-                  <span class="dot" aria-hidden="true"></span>
-                  Zapisy otwarte
-                </span>
                 <button class="btn btn--primary btn--lg" @click="scrollTo('top')">Dołącz do kursu</button>
               </div>
-              <p class="offer__note">Pytania? Napisz: <a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></p>
             </div>
           </div>
         </div>
@@ -309,7 +304,7 @@
             <h4>Kontakt</h4>
             <ul>
               <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
-              <li><a href="tel:+48600100200">+48 600 100 200</a></li>
+
               <li><NuxtLink to="/kontakt">Stolarnia pod lasem</NuxtLink></li>
             </ul>
           </div>

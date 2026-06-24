@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <main class="container section">
+    <main id="main-content" class="container section">
       <div class="authwrap">
         <div class="card card--padded">
           <AuthForm mode="login" @success="onSuccess" />
