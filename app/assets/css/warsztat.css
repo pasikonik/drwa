@@ -55,6 +55,20 @@
 .field__hint { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-faint); }
 .field__error { font-size: var(--text-xs); color: var(--rust); }
 .field__textarea { resize: vertical; min-height: 88px; }
+.field__wrap { position: relative; }
+.field__wrap .field__input { padding-right: 48px; }
+.field__eye {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  background: none; border: none; cursor: pointer; padding: 0;
+  color: var(--text-muted); border-radius: var(--radius-sm);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+.field__eye:hover { color: var(--text-body); }
+.field__eye:focus-visible {
+  outline: 2px solid var(--ring-color); outline-offset: 2px;
+}
 .field__check { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
 .field__check input[type="checkbox"] { margin-top: 3px; accent-color: var(--timber-500); flex-shrink: 0; }
 .field__check-label { font-size: var(--text-sm); color: var(--text-body); line-height: 1.45; }
