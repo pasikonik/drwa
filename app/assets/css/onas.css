@@ -83,6 +83,14 @@
 .strand__go { display: inline-flex; align-items: center; gap: 7px; margin-top: auto; padding-top: var(--space-3); font-family: var(--font-ui); font-weight: 600; font-size: var(--text-sm); color: var(--text-brand); }
 .strand__go svg { transition: transform var(--dur-base) var(--ease-out); }
 .strand:hover .strand__go svg { transform: translateX(4px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .strand { transition: none; }
+  .strand:hover { transform: none; }
+  .strand__go svg { transition: none; }
+  .strand:hover .strand__go svg { transform: none; }
+}
+
 @media (max-width: 880px) { .strands { grid-template-columns: 1fr; } }
 
 /* ============ CTA (forest band) ============ */
