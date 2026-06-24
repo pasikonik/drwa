@@ -304,7 +304,6 @@
             <h4>Kontakt</h4>
             <ul>
               <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
-
               <li><NuxtLink to="/kontakt">Stolarnia pod lasem</NuxtLink></li>
             </ul>
           </div>

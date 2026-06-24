@@ -30,7 +30,6 @@
           <h4>Kontakt</h4>
           <ul>
             <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
-
             <li><a>Stolarnia pod lasem</a></li>
           </ul>
         </div>
