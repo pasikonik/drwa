@@ -3,7 +3,16 @@ import { onMounted, onUnmounted } from 'vue'
 export const useScrollReveal = () => {
   let observer: IntersectionObserver | null = null
 
-  const setupObserver = () => {
+  // Observe any .io elements not yet revealed — safe to call after dynamic renders.
+  const reobserve = () => {
+    if (!observer) {
+      document.querySelectorAll('.io').forEach(el => el.classList.add('io--in'))
+      return
+    }
+    document.querySelectorAll('.io:not(.io--in)').forEach(el => observer!.observe(el))
+  }
+
+  onMounted(() => {
     if (!('IntersectionObserver' in window)) {
       document.querySelectorAll('.io').forEach(el => el.classList.add('io--in'))
       return
@@ -13,16 +22,12 @@ export const useScrollReveal = () => {
         if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
       })
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-    document.querySelectorAll('.io:not(.io--in)').forEach(el => observer!.observe(el))
-  }
-
-  onMounted(() => {
-    setupObserver()
+    reobserve()
   })
 
   onUnmounted(() => {
     if (observer) observer.disconnect()
   })
 
-  return { setupObserver }
+  return { reobserve }
 }

@@ -204,8 +204,8 @@ function subscribe() {
   if (email.value.trim()) sent.value = true
 }
 
-const { setupObserver } = useScrollReveal()
+const { reobserve } = useScrollReveal()
 
 // Zmiana filtra tworzy nowe elementy .io — trzeba je dopiąć do obserwatora
-watch(cat, () => nextTick(setupObserver))
+watch(cat, () => nextTick(reobserve))
 </script>
