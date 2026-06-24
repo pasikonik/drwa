@@ -232,12 +232,16 @@ products.value.forEach(p => {
   sizes[p.id] = available.includes('M') ? 'M' : available[0] ?? null
 })
 const { addProduct } = useCart()
+const { showToast } = useCartToast()
+const fileId = (f: Product['image']): string | null =>
+  !f ? null : typeof f === 'object' ? f.id : f
 
 function addToCart(p: Product) {
   const sizeSel = sizes[p.id]
   const vs = variants.value.filter(v => v.product_id === p.id)
   const variant = sizeSel ? vs.find(v => v.size?.toUpperCase() === sizeSel) ?? null : null
   addProduct(p, { variant, size: sizeSel ?? null })
+  showToast({ title: p.title ?? '', price: Number(p.price), image: fileId(p.image) })
 }
 
 let observer: IntersectionObserver | null = null
