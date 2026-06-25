@@ -34,7 +34,8 @@ export default defineNuxtConfig({
     mailerLiteGroupId: process.env.MAILERLITE_GROUP_ID || '',
     public: {
       directusUrl: process.env.NUXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_URL || 'http://localhost:8055',
-      stripePublishableKey: process.env.NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
+      stripePublishableKey: process.env.NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
+      gtmId: process.env.NUXT_PUBLIC_GTM_ID || ''
     }
   },
 

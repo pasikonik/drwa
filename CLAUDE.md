@@ -23,6 +23,7 @@ STRIPE_WEBHOOK_SECRET
 NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 MAILERLITE_API_KEY
 MAILERLITE_GROUP_ID
+NUXT_PUBLIC_GTM_ID               # optional — GTM container; analytics disabled if empty
 ```
 
 ## Architecture
@@ -103,3 +104,7 @@ There is no `app/layouts/` directory. Each page inlines `<DrwaNav />` and a `<fo
 ### Auth
 
 `useAuth()` composable wraps Directus user/token state. Pages that require login apply `definePageMeta({ middleware: 'auth' })`. The middleware redirects to `/logowanie?redirect=<current>`.
+
+### Analytics (GTM)
+
+`plugins/gtm.client.ts` loads Google Tag Manager **lazily on `requestIdleCallback`, production only**, gated on `NUXT_PUBLIC_GTM_ID`. **Consent Mode v2 defaults all consent to `denied`** (EU/RODO) — there is no cookie banner yet; `useConsent()` exposes `grantConsent()`/`denyConsent()` to wire one up. SPA pageviews are pushed to `dataLayer` as `{ event: 'pageview', page_path }` on each client navigation; configure the matching trigger inside the GTM container.
