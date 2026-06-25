@@ -36,6 +36,7 @@ export const useProducts = (type: ProductType) => {
               workshop: [
                 'id', 'product_id', 'date_start', 'date_end', 'location',
                 'spots_total', 'spots_booked', 'advance', 'level', 'blogpost_link',
+                { instructors: [{ instructors_id: ['id', 'name', 'photo', 'role', 'bio'] }] },
               ],
             },
             { course: ['id', 'product_id', 'course_access_url', 'sort'] },

@@ -111,7 +111,7 @@
             <h4>DRWA</h4>
             <ul>
               <li><NuxtLink to="/warsztaty">Warsztaty 2026</NuxtLink></li>
-              <li><a href="/#kursy">Kursy online</a></li>
+              <li><NuxtLink to="/kursy/od-wiaty-do-chaty">Kursy online</NuxtLink></li>
               <li><NuxtLink to="/o-nas">O nas</NuxtLink></li>
             </ul>
           </div>
@@ -158,6 +158,7 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue'
 import { formatPrice, stripHtml } from '~/utils/format'
+import { fileId } from '~/utils/directus'
 import type { Product } from '~/types/directus'
 
 useHead({
@@ -233,15 +234,16 @@ products.value.forEach(p => {
 })
 const { addProduct } = useCart()
 const { showToast } = useCartToast()
-const fileId = (f: Product['image']): string | null =>
-  !f ? null : typeof f === 'object' ? f.id : f
 
 function addToCart(p: Product) {
   const sizeSel = sizes[p.id]
   const vs = variants.value.filter(v => v.product_id === p.id)
   const variant = sizeSel ? vs.find(v => v.size?.toUpperCase() === sizeSel) ?? null : null
+  // Don't add a sized product without a resolvable variant (avoids a cart line
+  // with variantId: null and maxQty 0 that the qty cap would silently allow).
+  if (vs.length && !variant) return
   addProduct(p, { variant, size: sizeSel ?? null })
-  showToast({ title: p.title ?? '', price: Number(p.price), image: fileId(p.image) })
+  showToast({ title: p.title ?? '', price: Number(p.price), image: fileId(p.image), size: sizeSel ?? null })
 }
 
 useScrollReveal()

@@ -276,6 +276,14 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { formatPrice, formatDateRange, stripHtml, workshopSpots } from '~/utils/format'
+import type { WorkshopInstructor } from '~/types/directus'
+
+function instructorLead(instructors?: WorkshopInstructor[]): string {
+  const names = (instructors ?? []).map(j => j.instructors_id?.name).filter(Boolean)
+  if (!names.length) return 'prowadzi DRWA'
+  return `prowadzi ${names.join(', ')}`
+}
+
 const LEVEL_LABEL: Record<string, string> = {
   beginner: 'podstawowy',
   intermediate: 'średni',
@@ -328,7 +336,7 @@ const workshops = computed(() =>
       spotsLabel: spots.label,
       spotsTone: spots.tone,
       place: w?.location ?? 'Stolarnia pod lasem · Beskid Niski',
-      lead: 'prowadzi Jędrzej Cyganik',
+      lead: instructorLead(w?.instructors),
       rawImage: p.image,
       img: FALLBACK_IMGS[i % FALLBACK_IMGS.length],
       pos: '50% 50%',

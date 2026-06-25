@@ -1,20 +1,16 @@
 <template>
   <section class="section container" id="warsztaty">
-    <div class="sec-head io" ref="headRef">
+    <div class="sec-head io">
       <span class="eyebrow">Trzy drogi do drewna</span>
       <h2>Od czego zaczniesz?</h2>
       <p>Przyjdź na warsztat, ucz się online albo poznaj nas bliżej. Każda droga prowadzi do tego samego — robienia rzeczy z drewna własnymi rękami.</p>
     </div>
     <div class="tiles">
-      <component
-        :is="tile.to ? 'NuxtLink' : 'a'"
+      <NuxtLink
         v-for="tile in TILES"
         :key="tile.title"
-        :id="tile.anchor"
+        :to="tile.to"
         class="tile io"
-        v-bind="tile.to ? { to: tile.to } : { href: '#' }"
-        :ref="el => tileRefs.push(el)"
-        @click="tile.to ? null : ($event.preventDefault(), scrollTo(tile.href))"
       >
         <div class="tile__img">
           <img :src="tile.img" :alt="tile.title" :style="{ objectPosition: tile.pos }" />
@@ -31,14 +27,12 @@
             </svg>
           </span>
         </div>
-      </component>
+      </NuxtLink>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-
 const TILES = [
   {
     to: '/warsztaty', img: '/assets/forest-1.png', pos: '50% 50%',
@@ -57,24 +51,5 @@ const TILES = [
   },
 ]
 
-const headRef = ref(null)
-const tileRefs = []
-
-function scrollTo(id) {
-  const el = document.getElementById(id)
-  if (el) el.scrollIntoView({ behavior: 'smooth' })
-}
-
-onMounted(() => {
-  if (!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.io').forEach(el => el.classList.add('io--in'))
-    return
-  }
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.add('io--in'); obs.unobserve(en.target) }
-    })
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-  document.querySelectorAll('.io').forEach(el => obs.observe(el))
-})
+useScrollReveal()
 </script>

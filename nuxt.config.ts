@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     '~/assets/css/shop.css',
     '~/assets/css/blog.css',
     '~/assets/css/onas.css',
+    '~/assets/css/realizacje.css',
     '~/assets/css/kontakt.css',
     '~/assets/css/kurs.css',
   ],

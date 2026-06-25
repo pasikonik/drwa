@@ -158,7 +158,7 @@
             <h4>DRWA</h4>
             <ul>
               <li><NuxtLink to="/warsztaty">Warsztaty 2026</NuxtLink></li>
-              <li><a href="/#kursy">Kursy online</a></li>
+              <li><NuxtLink to="/kursy/od-wiaty-do-chaty">Kursy online</NuxtLink></li>
               <li><NuxtLink to="/o-nas">O nas</NuxtLink></li>
               <li><NuxtLink to="/sklep">Sklep · Merch</NuxtLink></li>
             </ul>
@@ -174,7 +174,6 @@
             <h4>Kontakt</h4>
             <ul>
               <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
-
               <li><NuxtLink to="/">Strona główna</NuxtLink></li>
             </ul>
           </div>

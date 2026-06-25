@@ -1,9 +1,10 @@
-import { readonly } from 'vue'
+import { readonly, nextTick } from 'vue'
 
 export interface CartToastProduct {
   title: string
   price: number      // PLN, already resolved charge price
   image: string | null  // Directus file ID or null
+  size?: string | null  // selected variant size, if any
 }
 
 let _timer: ReturnType<typeof setTimeout> | null = null
@@ -19,13 +20,17 @@ export const useCartToast = () => {
     if (_bumpTimer) clearTimeout(_bumpTimer)
     product.value = p
     visible.value = true
-    bumped.value = true
+    // Restart the bump animation even on rapid consecutive adds: drop the class
+    // for a tick so the re-added class re-triggers the CSS keyframes.
+    bumped.value = false
+    nextTick(() => { bumped.value = true })
     _timer = setTimeout(() => { visible.value = false }, 4000)
     _bumpTimer = setTimeout(() => { bumped.value = false }, 600)
   }
 
   function hideToast() {
     if (_timer) clearTimeout(_timer)
+    if (_bumpTimer) clearTimeout(_bumpTimer)
     visible.value = false
   }
 

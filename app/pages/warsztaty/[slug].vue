@@ -142,8 +142,11 @@
           <div class="card card--padded book__tutors" id="prowadzacy">
             <div class="eyebrow book__eyebrow">Prowadzący</div>
             <ul class="ptutors">
-              <li v-for="t in INSTRUCTORS" :key="t.name" class="ptutor">
-                <div class="avatar avatar--ring" aria-hidden="true">{{ t.initials }}</div>
+              <li v-for="t in instructors" :key="t.name" class="ptutor">
+                <div class="avatar avatar--ring" aria-hidden="true">
+                  <img v-if="t.photoUrl" :src="t.photoUrl" :alt="t.name" />
+                  <template v-else>{{ t.initials }}</template>
+                </div>
                 <div class="ptutor__body">
                   <span class="ptutor__name">{{ t.name }}</span>
                   <span class="ptutor__role">{{ t.role }}</span>
@@ -428,12 +431,19 @@ const formEyebrow = computed(() => {
   return dateStr.value !== '—' ? `${t} · ${dateStr.value}` : t
 })
 
-// ─── Hardcoded defaults (no matching Directus field yet) ──────────────────────
+const { assetUrl } = useDirectus()
 
-const INSTRUCTORS = [
-  { initials: 'JC', name: 'Jędrzej Cyganik', role: 'Cieśla · założyciel DRWA' },
-  { initials: 'GR', name: 'Grzegorz', role: 'Cieśla · prowadzący' },
-]
+const instructors = computed(() =>
+  (workshop.value?.instructors ?? [])
+    .map(j => j.instructors_id)
+    .filter(Boolean)
+    .map(i => ({
+      name: i.name,
+      role: i.role ?? '',
+      initials: i.name.split(' ').map((p: string) => p[0] ?? '').join('').slice(0, 2).toUpperCase(),
+      photoUrl: assetUrl(i.photo, { width: 120, quality: 82 }),
+    }))
+)
 
 const LEARN = [
   'Trasowanie i wykonywanie łączeń czopowych — dłutem i piłą',

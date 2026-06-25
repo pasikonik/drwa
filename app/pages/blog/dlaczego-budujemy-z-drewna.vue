@@ -121,7 +121,7 @@
             <h4>DRWA</h4>
             <ul>
               <li><NuxtLink to="/warsztaty">Warsztaty 2026</NuxtLink></li>
-              <li><a href="/#kursy">Kursy online</a></li>
+              <li><NuxtLink to="/kursy/od-wiaty-do-chaty">Kursy online</NuxtLink></li>
               <li><NuxtLink to="/o-nas">O nas</NuxtLink></li>
               <li><NuxtLink to="/sklep">Sklep · Merch</NuxtLink></li>
             </ul>

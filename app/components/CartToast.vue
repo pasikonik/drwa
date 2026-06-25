@@ -14,7 +14,8 @@
           <div class="cart-toast__info">
             <span class="cart-toast__label">Dodano do koszyka</span>
             <p class="cart-toast__title">{{ product?.title }}</p>
-            <p class="cart-toast__price">{{ formatPrice(product?.price) }}</p>
+            <p v-if="product?.size" class="cart-toast__variant">rozm. {{ product.size.toUpperCase() }}</p>
+            <p v-if="priceText" class="cart-toast__price">{{ priceText }}</p>
           </div>
         </div>
         <NuxtLink to="/koszyk" class="btn btn--primary btn--sm cart-toast__cta" @click="hideToast">
@@ -27,6 +28,7 @@
 
 <script setup lang="ts">
 import { watch, onMounted, computed } from 'vue'
+import { formatPrice } from '~/utils/format'
 
 const { product, visible, hideToast } = useCartToast()
 const { assetUrl } = useDirectus()
@@ -37,9 +39,9 @@ const imgUrl = computed(() => {
   return assetUrl(product.value.image, { width: 112, height: 112, fit: 'cover' })
 })
 
-function formatPrice(p?: number | null): string {
-  return p != null ? p.toFixed(2).replace('.', ',') + ' zł' : ''
-}
+const priceText = computed(() =>
+  Number.isFinite(product.value?.price) ? formatPrice(product.value!.price) : '',
+)
 
 // Hide toast when navigating to the cart page
 function checkRoute() {
@@ -74,7 +76,7 @@ watch(() => route.path, checkRoute)
 .cart-toast__thumb {
   width: 56px; height: 56px; flex-shrink: 0;
   border-radius: var(--radius-sm); overflow: hidden;
-  background: var(--surface-subtle);
+  background: var(--surface-sunken);
   display: flex; align-items: center; justify-content: center;
   color: var(--text-faint);
 }
@@ -90,6 +92,11 @@ watch(() => route.path, checkRoute)
   font-weight: 500; color: var(--text-strong);
   margin: 0 0 4px; line-height: 1.3;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cart-toast__variant {
+  font-family: var(--font-mono); font-size: var(--text-2xs);
+  letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-faint);
+  margin: 0 0 4px;
 }
 .cart-toast__price {
   font-family: var(--font-sans); font-size: var(--text-sm);

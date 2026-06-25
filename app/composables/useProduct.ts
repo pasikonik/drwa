@@ -24,6 +24,7 @@ export const useProduct = (slug: string) => {
                     { agenda_items: ['id', 'description', 'sort'] },
                   ],
                 },
+                { instructors: [{ instructors_id: ['id', 'name', 'photo', 'role', 'bio'] }] },
               ],
             },
             { course: ['id', 'product_id', 'course_access_url', 'sort'] },

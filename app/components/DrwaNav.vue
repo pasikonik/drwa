@@ -156,7 +156,12 @@ const NAV: NavItem[] = [
   },
   { id: 'sklep', label: 'Sklep', route: '/sklep' },
   { id: 'blog', label: 'Blog', route: '/blog' },
-  { id: 'onas', label: 'O nas', route: '/o-nas' },
+  {
+    id: 'onas', label: 'O nas', children: [
+      { route: '/o-nas', label: 'O nas', desc: 'Kim jesteśmy i skąd DRWA' },
+      { route: '/realizacje', label: 'Realizacje', desc: 'Galeria tego, co zbudowaliśmy' },
+    ],
+  },
   { id: 'kontakt', label: 'Kontakt', route: '/kontakt' },
 ]
 

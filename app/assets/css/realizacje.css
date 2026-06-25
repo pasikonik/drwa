@@ -1,0 +1,133 @@
+/* DRWA — Realizacje (gallery) page */
+
+/* ===== Hero ===== */
+.real-hero {
+  position: relative;
+  padding: calc(var(--nav-height, 72px) + var(--space-9)) 0 var(--space-9);
+  color: var(--text-on-dark);
+  overflow: hidden;
+}
+.real-hero__bg { position: absolute; inset: 0; z-index: 0; }
+.real-hero__bg img { width: 100%; height: 100%; object-fit: cover; }
+.real-hero__scrim {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(19,29,24,.55), rgba(19,29,24,.78));
+}
+.real-hero__inner { position: relative; z-index: 2; }
+.real-hero__inner h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  margin: var(--space-2) 0 var(--space-3);
+}
+.real-hero__lead { max-width: 56ch; color: var(--text-on-dark-muted); }
+
+/* ===== List of projects ===== */
+.real-list { display: flex; flex-direction: column; gap: var(--space-8); }
+
+.real-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: var(--space-5);
+  align-items: start;
+}
+.real-row__head { position: sticky; top: calc(var(--nav-height, 72px) + var(--space-3)); }
+.real-row__title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--text-strong);
+  margin: 0;
+}
+.real-row__date {
+  display: inline-block;
+  margin-top: var(--space-1);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* ===== Horizontal image strip ===== */
+.real-strip {
+  list-style: none; margin: 0; padding: 0 0 var(--space-2);
+  display: flex; gap: var(--space-3);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.real-strip > li { flex: 0 0 auto; scroll-snap-align: start; }
+
+.real-thumb {
+  display: block; padding: 0; border: 0; cursor: pointer;
+  width: 280px; height: 200px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-sunken);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,.08));
+  transition: transform var(--dur-fast, .15s) var(--ease-out, ease), box-shadow var(--dur-fast, .15s) var(--ease-out, ease);
+}
+.real-thumb:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.16); }
+.real-thumb:focus-visible { outline: 3px solid var(--timber-400); outline-offset: 2px; }
+.real-thumb :is(picture, img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.real-empty { text-align: center; color: var(--text-muted); padding: var(--space-8) 0; }
+
+@media (max-width: 768px) {
+  .real-row { grid-template-columns: 1fr; gap: var(--space-3); }
+  .real-row__head { position: static; }
+  .real-thumb { width: 220px; height: 160px; }
+}
+
+/* ===== Lightbox ===== */
+.lbox {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-6);
+  background: rgba(12, 15, 13, .92);
+}
+.lbox__stage {
+  margin: 0; max-width: min(1200px, 92vw);
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-3);
+}
+.lbox__img {
+  max-width: 92vw; max-height: 78vh;
+  width: auto; height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 12px 40px rgba(0,0,0,.5);
+}
+.lbox__caption {
+  display: flex; align-items: center; gap: var(--space-3);
+  color: var(--cream-100);
+  font-family: var(--font-ui); font-size: var(--text-sm);
+}
+.lbox__counter { color: var(--pine-200); }
+
+.lbox__close,
+.lbox__nav {
+  position: absolute;
+  display: flex; align-items: center; justify-content: center;
+  border: 0; cursor: pointer;
+  color: var(--cream-100);
+  background: rgba(255,255,255,.08);
+  border-radius: 50%;
+  transition: background var(--dur-fast, .15s) var(--ease-out, ease);
+}
+.lbox__close:hover,
+.lbox__nav:hover { background: rgba(255,255,255,.18); }
+.lbox__close:focus-visible,
+.lbox__nav:focus-visible { outline: 3px solid var(--timber-400); outline-offset: 2px; }
+
+.lbox__close { top: var(--space-4); right: var(--space-4); width: 44px; height: 44px; }
+.lbox__nav { top: 50%; transform: translateY(-50%); width: 52px; height: 52px; }
+.lbox__nav--prev { left: var(--space-4); }
+.lbox__nav--next { right: var(--space-4); }
+
+.lightbox-fade-enter-active,
+.lightbox-fade-leave-active { transition: opacity var(--dur, .2s) var(--ease-out, ease); }
+.lightbox-fade-enter-from,
+.lightbox-fade-leave-to { opacity: 0; }
+
+@media (max-width: 768px) {
+  .lbox__nav { width: 44px; height: 44px; }
+  .lbox__nav--prev { left: var(--space-2); }
+  .lbox__nav--next { right: var(--space-2); }
+}

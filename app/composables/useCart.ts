@@ -1,11 +1,9 @@
 import { computed } from 'vue'
 import type { CartItem, CheckoutItemInput } from '~/types/shop'
 import type { Product, ProductVariant } from '~/types/directus'
+import { fileId } from '~/utils/directus'
 
 export const CART_STATE_KEY = 'drwa-cart'
-
-const fileId = (f: Product['image']): string | null =>
-  !f ? null : typeof f === 'object' ? f.id : f
 
 const maxQtyFor = (product: Product, variant: ProductVariant | null): number => {
   if (product.type === 'course') return 1

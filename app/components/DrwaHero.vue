@@ -23,7 +23,7 @@
             </svg>
             Warsztaty 2026
           </button>
-          <button class="btn btn--accent btn--lg" @click="scrollTo('kursy')">Kurs online</button>
+          <NuxtLink class="btn btn--accent btn--lg" to="/kursy/od-wiaty-do-chaty">Kurs online</NuxtLink>
         </div>
       </div>
     </div>

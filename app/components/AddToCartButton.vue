@@ -10,6 +10,7 @@
 
 <script setup lang="ts">
 import type { Product, ProductVariant } from '~/types/directus'
+import { fileId } from '~/utils/directus'
 
 const props = defineProps<{
   product: Product
@@ -36,13 +37,11 @@ function onClick(): void {
     ? Number(props.product.workshop.advance)
     : Number(props.product.price)
 
-  const imageId = (f: typeof props.product.image): string | null =>
-    !f ? null : typeof f === 'object' ? f.id : f
-
   showToast({
     title: props.product.title ?? '',
     price: chargePrice,
-    image: imageId(props.product.image),
+    image: fileId(props.product.image),
+    size: props.size ?? props.variant?.size ?? null,
   })
 
   emit('added')

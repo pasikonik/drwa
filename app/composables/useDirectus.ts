@@ -2,6 +2,7 @@
 
 import type { Schema, DirectusFile } from '~/types/directus'
 import type { DirectusClient, RestClient } from '@directus/sdk'
+import { fileId } from '~/utils/directus'
 
 // Size/quality presets keyed by context.
 export type ImagePreset = 'thumb' | 'card' | 'portrait' | 'hero'
@@ -30,7 +31,7 @@ export const useDirectus = () => {
     file: string | DirectusFile | null | undefined,
     transforms?: Record<string, string | number>
   ): string | null => {
-    const id = !file ? null : typeof file === 'object' ? file.id : file
+    const id = fileId(file)
     if (!id) return null
     const url = new URL(`${_base()}/assets/${id}`)
     const params: Record<string, string | number> = { format: 'avif', quality: 80, ...transforms }
@@ -46,7 +47,7 @@ export const useDirectus = () => {
     file: string | DirectusFile | null | undefined,
     preset?: ImagePreset | { width?: number; quality?: number }
   ): { avif: string | null; webp: string | null; jpg: string | null } => {
-    const id = !file ? null : typeof file === 'object' ? file.id : file
+    const id = fileId(file)
     if (!id) return { avif: null, webp: null, jpg: null }
 
     const base = _base()

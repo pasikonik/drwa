@@ -29,6 +29,20 @@ export type ProductType = 'merch' | 'course' | 'workshop'
 
 export type WorkshopLevel = 'beginner' | 'intermediate' | 'advanced'
 
+export interface Instructor {
+  id: string
+  name: string
+  photo: string | DirectusFile | null
+  role: string | null
+  bio: string | null
+}
+
+// Junction row for the workshops ↔ instructors M2M relation.
+export interface WorkshopInstructor {
+  id: number
+  instructors_id: Instructor
+}
+
 // One agenda line within a workshop day (workshop_agenda collection).
 export interface WorkshopAgendaItem {
   id: string
@@ -60,6 +74,7 @@ export interface Workshop {
   level: WorkshopLevel | null
   blogpost_link: string | null // link to a related blog post (relacja)
   days: WorkshopDay[]
+  instructors: WorkshopInstructor[]
 }
 
 export type CourseModuleStatus = 'draft' | 'published' | 'archived'
@@ -169,6 +184,24 @@ export interface OrderItem {
   variant_id: number | null
 }
 
+export type ProjectStatus = 'draft' | 'published' | 'archived'
+
+// Junction row for the projects ↔ directus_files M2M relation (projects_files).
+export interface ProjectImage {
+  id: number
+  directus_files_id: string | DirectusFile
+}
+
+// A completed build shown in the "Realizacje" gallery.
+export interface Project {
+  id: string                  // UUID
+  status: ProjectStatus
+  title: string
+  date: string | null         // 'YYYY-MM-DD'
+  sort: number | null
+  images: ProjectImage[]
+}
+
 export type BlogPostStatus = 'draft' | 'published' | 'archived'
 
 export interface BlogPost {
@@ -193,8 +226,12 @@ export interface Schema {
   workshops: Workshop[]
   workshop_days: WorkshopDay[]
   workshop_agenda: WorkshopAgendaItem[]
+  instructors: Instructor[]
+  workshops_instructors: WorkshopInstructor[]
   courses: Course[]
   course_modules: CourseModule[]
+  projects: Project[]
+  projects_files: ProjectImage[]
   orders: Order[]
   order_items: OrderItem[]
   blog_posts: BlogPost[]
