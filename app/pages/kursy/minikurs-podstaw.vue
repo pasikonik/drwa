@@ -63,7 +63,7 @@
       </div>
     </section>
 
-    <main>
+    <main id="main-content">
       <!-- ===== Co nauczysz się ===== -->
       <section class="section container" id="nauczysz">
         <div class="sec-head io">
@@ -204,7 +204,6 @@
             <h4>Kontakt</h4>
             <ul>
               <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
-              <li><a href="tel:+48600100200">+48 600 100 200</a></li>
               <li><NuxtLink to="/kontakt">Stolarnia pod lasem</NuxtLink></li>
             </ul>
           </div>
@@ -241,7 +240,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, defineComponent, h } from 'vue'
+import { ref, computed, defineComponent, h } from 'vue'
 
 useHead({
   title: 'Minikurs podstaw — Podstawy ciesielstwa i pracy z drewnem · DRWA',
@@ -320,22 +319,5 @@ function scrollTo(id: string) {
 }
 
 // ---- scroll-reveal ----
-let observer: IntersectionObserver | null = null
-
-onMounted(() => {
-  if (!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.io').forEach(el => el.classList.add('io--in'))
-    return
-  }
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
-    })
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-  document.querySelectorAll('.io:not(.io--in)').forEach(el => observer!.observe(el))
-})
-
-onUnmounted(() => {
-  if (observer) observer.disconnect()
-})
+useScrollReveal()
 </script>

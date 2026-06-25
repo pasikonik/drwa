@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <main class="container section">
+    <main id="main-content" class="container section">
       <!-- Nie znaleziono zamówienia -->
       <div v-if="!order" class="shop-empty">
         <p>Nie znaleziono zamówienia.</p>

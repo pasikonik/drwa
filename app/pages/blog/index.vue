@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <main class="container">
+    <main id="main-content" class="container">
       <!-- Filtry kategorii -->
       <div class="bfilters io">
         <div class="bfilters__tags" role="group" aria-label="Filtruj wpisy">
@@ -119,7 +119,6 @@
             <h4>Kontakt</h4>
             <ul>
               <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
-              <li><a href="tel:+48600100200">+48 600 100 200</a></li>
               <li><NuxtLink to="/">Strona główna</NuxtLink></li>
             </ul>
           </div>
@@ -156,7 +155,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { formatDate, stripHtml, readTime } from '~/utils/format'
 
 useHead({
@@ -205,32 +204,8 @@ function subscribe() {
   if (email.value.trim()) sent.value = true
 }
 
-let observer: IntersectionObserver | null = null
-
-function observeIo() {
-  const els = document.querySelectorAll('.io:not(.io--in)')
-  if (!observer) {
-    els.forEach(el => el.classList.add('io--in'))
-    return
-  }
-  els.forEach(el => observer!.observe(el))
-}
-
-onMounted(() => {
-  if ('IntersectionObserver' in window) {
-    observer = new IntersectionObserver((entries) => {
-      entries.forEach(en => {
-        if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
-      })
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-  }
-  observeIo()
-})
+const { reobserve } = useScrollReveal()
 
 // Zmiana filtra tworzy nowe elementy .io — trzeba je dopiąć do obserwatora
-watch(cat, () => nextTick(observeIo))
-
-onUnmounted(() => {
-  if (observer) observer.disconnect()
-})
+watch(cat, () => nextTick(reobserve))
 </script>

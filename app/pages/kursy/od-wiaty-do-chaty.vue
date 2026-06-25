@@ -63,7 +63,7 @@
       </div>
     </section>
 
-    <main>
+    <main id="main-content">
       <!-- ===== Co zbudujesz ===== -->
       <section class="section container" id="zbudujesz">
         <div class="sec-head io">
@@ -263,13 +263,8 @@
                 <span class="offer__per">jednorazowo · dostęp 3 lata</span>
               </div>
               <div class="offer__cta">
-                <span class="drwa-badge drwa-badge--success">
-                  <span class="dot" aria-hidden="true"></span>
-                  Zapisy otwarte
-                </span>
                 <button class="btn btn--primary btn--lg" @click="scrollTo('top')">Dołącz do kursu</button>
               </div>
-              <p class="offer__note">Pytania? Napisz: <a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></p>
             </div>
           </div>
         </div>
@@ -309,7 +304,6 @@
             <h4>Kontakt</h4>
             <ul>
               <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
-              <li><a href="tel:+48600100200">+48 600 100 200</a></li>
               <li><NuxtLink to="/kontakt">Stolarnia pod lasem</NuxtLink></li>
             </ul>
           </div>
@@ -346,7 +340,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, defineComponent, h } from 'vue'
+import { ref, computed, defineComponent, h } from 'vue'
 
 useHead({
   title: 'Kurs „Od wiaty do chaty" — DRWA',
@@ -454,22 +448,5 @@ function initials(name: string) {
 }
 
 // ---- scroll-reveal ----
-let observer: IntersectionObserver | null = null
-
-onMounted(() => {
-  if (!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.io').forEach(el => el.classList.add('io--in'))
-    return
-  }
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
-    })
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-  document.querySelectorAll('.io:not(.io--in)').forEach(el => observer!.observe(el))
-})
-
-onUnmounted(() => {
-  if (observer) observer.disconnect()
-})
+useScrollReveal()
 </script>

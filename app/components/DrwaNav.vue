@@ -63,6 +63,7 @@
         </NuxtLink>
         <CartLink />
         <button
+          ref="burgerRef"
           class="nav__burger"
           :class="{ 'is-open': mobileOpen }"
           :aria-expanded="mobileOpen"
@@ -81,7 +82,15 @@
         <div v-if="mobileOpen" class="nav__backdrop" @click="closeMobile" />
       </Transition>
       <Transition name="nav-drawer">
-        <aside v-if="mobileOpen" id="drwa-drawer" class="nav__drawer" aria-label="Menu">
+        <aside
+          v-if="mobileOpen"
+          id="drwa-drawer"
+          ref="drawerRef"
+          class="nav__drawer"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Nawigacja — menu"
+        >
           <div class="nav__drawer-head">
             <span class="brand__wm">DRWA</span>
             <button class="nav__drawer-close" aria-label="Zamknij menu" @click="closeMobile">
@@ -132,7 +141,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 
 interface NavChild { route: string; label: string; desc: string }
 interface NavItem { id: string; label: string; route?: string; children?: NavChild[] }
@@ -178,6 +187,25 @@ function toggleOpen(id: string) {
 const mobileOpen = ref(false)
 const mobileGroup = ref<string | null>(null)
 
+// ─── Focus trap (mobile drawer) ─────────────────────────────────────────────
+const drawerRef = ref<HTMLElement | null>(null)
+const burgerRef = ref<HTMLButtonElement | null>(null)
+
+const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
+function trapFocus(e: KeyboardEvent) {
+  if (e.key !== 'Tab' || !drawerRef.value) return
+  const els = Array.from(drawerRef.value.querySelectorAll<HTMLElement>(FOCUSABLE))
+  if (!els.length) return
+  const first = els[0]!
+  const last = els[els.length - 1]!
+  if (e.shiftKey) {
+    if (document.activeElement === first) { e.preventDefault(); last.focus() }
+  } else {
+    if (document.activeElement === last) { e.preventDefault(); first.focus() }
+  }
+}
+
 function toggleMobile() {
   mobileOpen.value = !mobileOpen.value
 }
@@ -185,10 +213,18 @@ function closeMobile() {
   mobileOpen.value = false
 }
 
-// Lock body scroll while the drawer is open.
-watch(mobileOpen, (isOpen) => {
-  if (import.meta.client) {
-    document.body.style.overflow = isOpen ? 'hidden' : ''
+// Lock body scroll while the drawer is open; manage focus trap.
+watch(mobileOpen, async (isOpen) => {
+  if (!import.meta.client) return
+  document.body.style.overflow = isOpen ? 'hidden' : ''
+  if (isOpen) {
+    await nextTick()
+    const closeBtn = drawerRef.value?.querySelector<HTMLElement>('.nav__drawer-close')
+    closeBtn?.focus()
+    document.addEventListener('keydown', trapFocus)
+  } else {
+    document.removeEventListener('keydown', trapFocus)
+    burgerRef.value?.focus()
   }
 })
 
@@ -212,6 +248,7 @@ onMounted(() => {
 })
 onUnmounted(() => {
   document.removeEventListener('keydown', onKey)
+  document.removeEventListener('keydown', trapFocus)
   document.removeEventListener('click', onOutsideClick)
   if (closeTimer) clearTimeout(closeTimer)
   if (import.meta.client) document.body.style.overflow = ''

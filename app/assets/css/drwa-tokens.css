@@ -148,6 +148,7 @@
   --space-10: 6rem;
   --space-11: 8rem;
 
+  --nav-height:      77px;
   --container-max:   1200px;
   --container-prose: 680px;
   --gutter:          var(--space-5);

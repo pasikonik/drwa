@@ -23,6 +23,7 @@ const props = defineProps<{
 const emit = defineEmits<{ added: [] }>()
 
 const { addProduct } = useCart()
+const { showToast } = useCartToast()
 
 function onClick(): void {
   addProduct(props.product, {
@@ -30,6 +31,20 @@ function onClick(): void {
     size: props.size ?? null,
     qty: props.qty ?? 1,
   })
+
+  const chargePrice = props.product.type === 'workshop' && props.product.workshop?.advance != null
+    ? Number(props.product.workshop.advance)
+    : Number(props.product.price)
+
+  const imageId = (f: typeof props.product.image): string | null =>
+    !f ? null : typeof f === 'object' ? f.id : f
+
+  showToast({
+    title: props.product.title ?? '',
+    price: chargePrice,
+    image: imageId(props.product.image),
+  })
+
   emit('added')
 }
 </script>

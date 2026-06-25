@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <main class="container section">
+    <main id="main-content" class="container section">
       <!-- Pusty koszyk -->
       <div v-if="isEmpty" class="shop-empty">
         <p>Twój koszyk jest pusty.</p>

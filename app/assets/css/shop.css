@@ -19,7 +19,7 @@
 /* ===== Quantity stepper ===== */
 .qty { display: inline-flex; align-items: center; border: 1px solid var(--border-default); border-radius: var(--radius-md, 10px); overflow: hidden; }
 .qty__btn {
-  width: 36px; height: 36px; display: grid; place-items: center;
+  width: 44px; height: 44px; display: grid; place-items: center;
   background: var(--surface-raised); color: var(--text-strong);
   font-size: var(--text-md); line-height: 1; border: none; cursor: pointer;
   transition: background var(--dur-fast) var(--ease-standard);
@@ -31,7 +31,7 @@
 /* ===== Koszyk ===== */
 .cart { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: var(--space-7); align-items: start; }
 .cart__list { display: flex; flex-direction: column; gap: var(--space-3); }
-.cart__aside { position: sticky; top: 90px; }
+.cart__aside { position: sticky; top: calc(var(--nav-height) + 16px); }
 .cart__aside .card { display: flex; flex-direction: column; gap: var(--space-4); }
 .cart__aside h2 { font-family: var(--font-display); font-size: var(--text-lg); margin: 0; color: var(--text-strong); }
 .cart__hint { font-size: var(--text-xs); color: var(--text-faint); margin: 0; }
@@ -47,7 +47,7 @@
 .cartline__body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .cartline__title { font-family: var(--font-display); font-size: var(--text-base); font-weight: 500; margin: 0; color: var(--text-strong); }
 .cartline__meta { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin: 0; }
-.cartline__remove { align-self: flex-start; background: none; border: none; padding: 0; color: var(--rust); font-size: var(--text-xs); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.cartline__remove { align-self: flex-start; background: none; border: none; padding: 6px 0; color: var(--rust); font-size: var(--text-xs); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; min-height: 36px; display: inline-flex; align-items: center; }
 .cartline__controls { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
 .cartline__price { font-family: var(--font-mono); font-size: var(--text-base); color: var(--text-strong); white-space: nowrap; }
 .cartline__single { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--text-faint); }
@@ -61,7 +61,7 @@
 .checkout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: var(--space-7); align-items: start; }
 .checkout__main { display: flex; flex-direction: column; gap: var(--space-5); }
 .checkout__main .card { display: flex; flex-direction: column; gap: var(--space-4); }
-.checkout__aside { position: sticky; top: 90px; }
+.checkout__aside { position: sticky; top: calc(var(--nav-height) + 16px); }
 .checkout__aside .card { display: flex; flex-direction: column; gap: var(--space-4); }
 .checkout__h { font-family: var(--font-display); font-size: var(--text-lg); margin: 0; color: var(--text-strong); }
 .checkout__sub { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-faint); margin: var(--space-3) 0 0; }

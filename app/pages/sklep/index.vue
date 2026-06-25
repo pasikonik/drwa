@@ -17,7 +17,7 @@
       </div>
     </section>
 
-    <main>
+    <main id="main-content">
       <section class="shop">
         <div class="container">
           <!-- Pasek filtrów -->
@@ -119,7 +119,6 @@
             <h4>Kontakt</h4>
             <ul>
               <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
-              <li><a href="tel:+48600100200">+48 600 100 200</a></li>
               <li><NuxtLink to="/">Strona główna</NuxtLink></li>
             </ul>
           </div>
@@ -153,18 +152,11 @@
       </div>
     </footer>
 
-    <!-- ===== Toast ===== -->
-    <div class="toast" :class="{ 'is-on': toast.on }" role="status" aria-live="polite">
-      <svg class="toast__check" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M20 6 9 17l-5-5"/>
-      </svg>
-      <span>{{ toast.msg }}</span>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
+import { reactive, computed } from 'vue'
 import { formatPrice, stripHtml } from '~/utils/format'
 import type { Product } from '~/types/directus'
 
@@ -173,7 +165,6 @@ useHead({
   link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
-const { assetUrl } = useDirectus()
 const { data } = await useProducts('merch')
 
 const products = computed(() => data.value?.products ?? [])
@@ -240,47 +231,18 @@ products.value.forEach(p => {
   const available = availableSizes(p.id)
   sizes[p.id] = available.includes('M') ? 'M' : available[0] ?? null
 })
-const toast = reactive({ on: false, msg: '' })
-let toastTimer: ReturnType<typeof setTimeout> | null = null
-
 const { addProduct } = useCart()
-
-function showToast(msg: string) {
-  toast.msg = msg
-  toast.on = true
-  if (toastTimer) clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => { toast.on = false }, 2600)
-}
+const { showToast } = useCartToast()
+const fileId = (f: Product['image']): string | null =>
+  !f ? null : typeof f === 'object' ? f.id : f
 
 function addToCart(p: Product) {
   const sizeSel = sizes[p.id]
   const vs = variants.value.filter(v => v.product_id === p.id)
-  if (vs.length && !sizeSel) {
-    showToast('Wybierz rozmiar')
-    return
-  }
   const variant = sizeSel ? vs.find(v => v.size?.toUpperCase() === sizeSel) ?? null : null
   addProduct(p, { variant, size: sizeSel ?? null })
-  showToast(`Dodano: ${p.title}${sizeSel ? ` (rozm. ${sizeSel})` : ''}`)
+  showToast({ title: p.title ?? '', price: Number(p.price), image: fileId(p.image) })
 }
 
-let observer: IntersectionObserver | null = null
-
-onMounted(() => {
-  if (!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.io').forEach(el => el.classList.add('io--in'))
-    return
-  }
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.add('io--in'); observer!.unobserve(en.target) }
-    })
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-  document.querySelectorAll('.io:not(.io--in)').forEach(el => observer!.observe(el))
-})
-
-onUnmounted(() => {
-  if (observer) observer.disconnect()
-  if (toastTimer) clearTimeout(toastTimer)
-})
+useScrollReveal()
 </script>

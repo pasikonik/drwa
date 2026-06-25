@@ -46,6 +46,28 @@ picture { display: contents; }
 .sec-head p { color: var(--text-muted); margin: 12px 0 0; font-size: var(--text-md); line-height: 1.6; max-width: 52ch; }
 .sec-head--center { margin-left: auto; margin-right: auto; text-align: center; }
 
+/* ============ Skip link ============ */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  z-index: 9999;
+  padding: 10px 18px;
+  background: var(--pine-700);
+  color: var(--cream-100);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  border-radius: 0 0 6px 6px;
+  text-decoration: none;
+  transition: top 0.15s;
+}
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid var(--timber-300);
+  outline-offset: 2px;
+}
+
 /* ============ Top nav ============ */
 .nav {
   position: sticky; top: 0; z-index: 60;
@@ -367,7 +389,7 @@ picture { display: contents; }
   font-family: var(--font-body); font-size: var(--text-base);
 }
 .news__form input::placeholder { color: var(--pine-300); }
-.news__form input:focus { outline: none; border-color: var(--accent); }
+.news__form input:focus { outline: none; border-color: var(--timber-300); box-shadow: 0 0 0 3px rgba(189, 144, 89, 0.50); }
 .news__sent { color: var(--timber-200); font-family: var(--font-mono); font-size: var(--text-sm); margin: 0; }
 
 /* ============ Footer ============ */
@@ -386,6 +408,15 @@ picture { display: contents; }
 .foot__social a { display: inline-flex; width: 38px; height: 38px; border: 1px solid var(--border-on-dark); border-radius: 50%; align-items: center; justify-content: center; color: var(--pine-200); }
 .foot__social a:hover { border-color: var(--pine-300); color: var(--cream-50); }
 @media (max-width: 860px) { .foot__top { grid-template-columns: 1fr 1fr; } }
+
+/* ============ Cart icon bump ============ */
+@keyframes cart-bump {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.28); }
+  70%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+.cartbtn.is-bumped { animation: cart-bump 600ms var(--ease-out) forwards; }
 
 /* ============ Scroll reveal ============ */
 @media (prefers-reduced-motion: no-preference) {
