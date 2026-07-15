@@ -89,6 +89,28 @@ export interface CourseModule {
   course: string | null        // M2O → courses.id (uuid)
 }
 
+// ── Course template CMS blocks ───────────────────────────────────────────────
+// JSON-repeater fields on `courses` driving the /kursy/[slug] template.
+// Optional (`?`) because they exist only after the Directus schema gains the
+// fields — useCourse falls back to a core field set on the older schema.
+
+export interface CourseHeroFact { text: string }
+export interface CourseStat { num: string; label: string }  // num is a string: '+380', '24'
+export interface CourseBonus { title: string; description: string | null }
+export interface CourseQuote { name: string; text: string }
+export interface CourseOfferItem { text: string; bonus: boolean | null }
+
+// One image tile in the course "o kursie" section
+// (course_tiles collection, O2M alias `tiles` on courses).
+export interface CourseTile {
+  id: string
+  sort: number | null
+  eyebrow: string | null           // e.g. 'Etap 01'
+  title: string
+  description: string | null
+  image: string | DirectusFile | null
+}
+
 // Course extension (courses collection) — 1:1 with a product.
 export interface Course {
   id: string                   // UUID
@@ -96,6 +118,16 @@ export interface Course {
   course_access_url: string | null  // link to external course platform
   sort: number | null
   modules: CourseModule[]
+  // CMS-driven template sections — absent until the Directus schema has them.
+  hero_kicker?: string | null
+  hero_facts?: CourseHeroFact[] | null
+  stats?: CourseStat[] | null
+  main_heading?: string | null
+  bonuses?: CourseBonus[] | null
+  quotes?: CourseQuote[] | null
+  offer_items?: CourseOfferItem[] | null
+  price_note?: string | null
+  tiles?: CourseTile[]
 }
 
 // App-facing product: commerce fields + resolved 1:1 extension + derived kind.
@@ -230,6 +262,7 @@ export interface Schema {
   workshops_instructors: WorkshopInstructor[]
   courses: Course[]
   course_modules: CourseModule[]
+  course_tiles: CourseTile[]
   projects: Project[]
   projects_files: ProjectImage[]
   orders: Order[]

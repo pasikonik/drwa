@@ -46,10 +46,14 @@ const sortWorkshopProgram = (w: Workshop | null): Workshop | null => {
   return { ...w, days }
 }
 
-/** Ensure a course's modules are always a sorted array (when a course exists). */
+/** Ensure a course's modules/tiles are always sorted arrays (when a course exists). */
 const normalizeCourse = (c: Course | null): Course | null => {
   if (!c) return null
-  return { ...c, modules: [...(c.modules ?? [])].sort(bySort) }
+  return {
+    ...c,
+    modules: [...(c.modules ?? [])].sort(bySort),
+    tiles: [...(c.tiles ?? [])].sort(bySort),
+  }
 }
 
 /** Turn a raw Directus product (extensions as arrays) into the app-facing shape. */
