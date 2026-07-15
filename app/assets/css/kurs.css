@@ -257,3 +257,13 @@
 }
 .build__price { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-lg); letter-spacing: -0.01em; color: var(--text-strong); }
 .klist-empty { font-size: var(--text-md); color: var(--text-muted); }
+
+/* ============ Szablon CMS kursu (/kursy/[slug]) ============ */
+/* Hero bez obrazka — jedna kolumna zamiast grida 2-kolumnowego. */
+.khero--paper .khero__inner--single { grid-template-columns: 1fr; }
+/* Pas liczb o zmiennej liczbie statów (od-wiaty ma sztywne 5 kolumn). */
+.kstats__row--auto { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+/* Opis kursu (rich text z products.description) nad kafelkami. */
+.kdesc { max-width: 68ch; font-size: var(--text-md); line-height: 1.7; color: var(--text-body); }
+.kdesc p { margin: 0 0 var(--space-4); }
+.kdesc > :last-child { margin-bottom: 0; }
