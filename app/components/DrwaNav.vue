@@ -148,8 +148,9 @@ interface NavItem { id: string; label: string; route?: string; children?: NavChi
 
 const NAV: NavItem[] = [
   { id: 'warsztaty', label: 'Warsztaty stacjonarne', route: '/warsztaty' },
+  { id: 'kursy', label: 'Kursy', route: '/kursy' },
   {
-    id: 'kursy', label: 'Kursy online', children: [
+    id: 'kursy-online', label: 'Kursy online', children: [
       { route: '/kursy/od-wiaty-do-chaty', label: 'Od wiaty do chaty', desc: 'Pełny kurs wideo' },
       { route: '/kursy/minikurs-podstaw', label: 'Minikurs podstaw', desc: 'Praca z drewnem od zera' },
     ],
