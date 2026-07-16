@@ -222,5 +222,16 @@ Kolejność dowolna, ale przed krokiem 3 zrób krok 4a (moduł testowy).
   Uwaga: jeśli nadasz slug `od-wiaty-do-chaty`, statyczna strona przykryje nowy
   szablon pod tym adresem — dopóki ona istnieje, nowy szablon tego kursu oglądasz
   przez `/kursy/2` (albo pod innym slugiem).
+  **Slug kursu nie może być czysto numeryczny** (np. `2024`) — routing traktuje
+  liczby jako id produktu (`/kursy/<id>`), więc numeryczny slug prowadziłby do
+  złego produktu albo 404.
+
+## Follow-upy po wykonaniu Appendixu A (z finalnego code review)
+
+- Usunąć gałąź `catch` (fallback pól) z `app/composables/useCourse.ts` — po
+  konfiguracji schematu staje się martwym kodem; jej usunięcie likwiduje też
+  duplikację listy pól i maskowanie przejściowych błędów Directusa jako 404.
+- Przetestować ścieżkę slugową (`/kursy/<slug>`) po nadaniu slugów — dziś kursy
+  nie mają slugów, więc automatyczne asercje pokrywają tylko ścieżkę po id.
 - c) Realne treści sekcji (staty, kafelki, bonusy, opinie, oferta) — można
   przepisać ze starej strony od-wiaty.
