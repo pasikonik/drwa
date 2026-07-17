@@ -286,11 +286,11 @@ const MODULES: [string, string][] = [
   ['BHP i organizacja stanowiska pracy', 'Zasady bezpiecznej pracy z drewnem. Jak urządzić stanowisko, co mieć zawsze pod ręką — i co zrobić przed pierwszym wejściem na budowę.'],
 ]
 
-// Program modules — from Directus (published, sorted) when available, otherwise
-// the hardcoded list above. `descHtml` is rich text from Directus / plain text
+// Program modules — from Directus (sorted) when available, otherwise the
+// hardcoded list above. `descHtml` is rich text from Directus / plain text
 // from the fallback (both safe to render with v-html).
 const MODULES_DISPLAY = computed(() => {
-  const fromCms = (course.value?.course?.modules ?? []).filter((m) => m.status === 'published')
+  const fromCms = course.value?.course?.modules ?? []
   if (fromCms.length) {
     return fromCms.map((m) => ({ key: m.id, title: m.title, descHtml: m.description ?? '' }))
   }

@@ -9,9 +9,9 @@ import { normalizeProduct } from '~/utils/product'
  *
  * The full field list requires the extended Directus schema (see
  * docs/superpowers/specs/2026-07-15-kursy-directus-design.md, Appendix A).
- * Until it is configured (fields + public read permissions, incl.
- * course_modules.status), the full query fails — we then retry with a core
- * field set that works on the current schema and warn loudly.
+ * Until it is configured (fields + public read permissions), the full query
+ * fails — we then retry with a core field set that works on the current
+ * schema and warn loudly.
  *
  * @example const { data: course } = await useCourse(2)         // by id
  * @example const { data: course } = await useCourse('stodola') // by slug
@@ -40,7 +40,7 @@ export const useCourse = (slugOrId: string | number) => {
                   'id', 'product_id', 'course_access_url', 'sort',
                   'hero_kicker', 'hero_facts', 'stats', 'main_heading',
                   'bonuses', 'quotes', 'offer_items', 'price_note',
-                  { modules: ['id', 'status', 'title', 'description', 'sort', 'course'] },
+                  { modules: ['id', 'title', 'description', 'sort', 'course'] },
                   { tiles: ['id', 'sort', 'eyebrow', 'title', 'description', 'image'] },
                 ],
               },
@@ -60,7 +60,6 @@ export const useCourse = (slugOrId: string | number) => {
             fields: [
               'id', 'title', 'slug', 'price', 'description', 'image', 'short_description',
               {
-                // Bez modules.status — rola publiczna nie może go dziś czytać.
                 course: [
                   'id', 'product_id', 'course_access_url', 'sort',
                   { modules: ['id', 'title', 'description', 'sort', 'course'] },

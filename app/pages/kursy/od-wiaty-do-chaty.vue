@@ -401,11 +401,11 @@ const MODULES: [string, string][] = [
   ['Wykonanie oraz instalacja okien i drzwi', 'Stolarka od podstaw: wykonanie, osadzenie i regulacja. Finał budowy.'],
 ]
 
-// Program modules — from Directus (published, sorted) when available, otherwise
-// the hardcoded list above. `descHtml` is rich text from Directus / plain text
+// Program modules — from Directus (sorted) when available, otherwise the
+// hardcoded list above. `descHtml` is rich text from Directus / plain text
 // from the fallback (both safe to render with v-html).
 const MODULES_DISPLAY = computed(() => {
-  const fromCms = (course.value?.course?.modules ?? []).filter((m) => m.status === 'published')
+  const fromCms = course.value?.course?.modules ?? []
   if (fromCms.length) {
     return fromCms.map((m) => ({ key: m.id, title: m.title, descHtml: m.description ?? '' }))
   }

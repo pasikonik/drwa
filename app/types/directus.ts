@@ -77,12 +77,9 @@ export interface Workshop {
   instructors: WorkshopInstructor[]
 }
 
-export type CourseModuleStatus = 'draft' | 'published' | 'archived'
-
 // One module/lesson within a course (course_modules collection).
 export interface CourseModule {
   id: string
-  status: CourseModuleStatus
   title: string
   description: string | null   // rich text (HTML)
   sort: number | null

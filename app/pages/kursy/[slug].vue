@@ -97,7 +97,7 @@
               </span>
             </button>
             <div class="mod__body">
-              <div class="mod__copy" v-html="m.description ?? ''" />
+              <div class="mod__copy" v-html="m.descHtml" />
             </div>
           </article>
         </div>
@@ -213,8 +213,13 @@ const tiles = course?.tiles ?? []
 const bonuses = course?.bonuses ?? []
 const quotes = course?.quotes ?? []
 const offerItems = course?.offer_items ?? []
-// Moduł bez pola `status` (fallback query na starym schemacie) = opublikowany.
-const modules = (course?.modules ?? []).filter((m) => (m.status ?? 'published') === 'published')
+// `descHtml` jak na od-wiaty-do-chaty: opis bez znaczników (stary schemat —
+// zwykły tekst zamiast rich text) zawijamy w <p>, żeby złapał style .mod__body p.
+const modules = (course?.modules ?? [])
+  .map((m) => {
+    const desc = (m.description ?? '').trim()
+    return { ...m, descHtml: !desc || desc.startsWith('<') ? desc : `<p>${desc}</p>` }
+  })
 const hasMain = Boolean(product.description) || tiles.length > 0
 // Directus wysyła decimal jako string — Number() przed formatowaniem.
 const priceLabel = formatPrice(Number(product.price))
