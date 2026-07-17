@@ -111,6 +111,19 @@ export interface CourseTile {
   image: string | DirectusFile | null
 }
 
+export type CourseMaterialIcon = 'model-3d' | 'document' | 'video' | 'general'
+
+// One descriptive "what's included" tile under a course's Program section
+// (course_materials collection, O2M alias `materials` on courses). Purely
+// informational — no actual file attachment/download link.
+export interface CourseMaterial {
+  id: string
+  sort: number | null
+  icon: CourseMaterialIcon | null
+  title: string
+  description: string | null
+}
+
 // Course extension (courses collection) — 1:1 with a product.
 export interface Course {
   id: string                   // UUID
@@ -128,6 +141,7 @@ export interface Course {
   offer_items?: CourseOfferItem[] | null
   price_note?: string | null
   tiles?: CourseTile[]
+  materials?: CourseMaterial[]
 }
 
 // App-facing product: commerce fields + resolved 1:1 extension + derived kind.
@@ -263,6 +277,7 @@ export interface Schema {
   courses: Course[]
   course_modules: CourseModule[]
   course_tiles: CourseTile[]
+  course_materials: CourseMaterial[]
   projects: Project[]
   projects_files: ProjectImage[]
   orders: Order[]

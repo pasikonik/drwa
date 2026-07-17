@@ -46,13 +46,14 @@ const sortWorkshopProgram = (w: Workshop | null): Workshop | null => {
   return { ...w, days }
 }
 
-/** Ensure a course's modules/tiles are always sorted arrays (when a course exists). */
+/** Ensure a course's modules/tiles/materials are always sorted arrays (when a course exists). */
 const normalizeCourse = (c: Course | null): Course | null => {
   if (!c) return null
   return {
     ...c,
     modules: [...(c.modules ?? [])].sort(bySort),
     tiles: [...(c.tiles ?? [])].sort(bySort),
+    materials: [...(c.materials ?? [])].sort(bySort),
   }
 }
 
