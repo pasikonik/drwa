@@ -235,3 +235,101 @@ Kolejność dowolna, ale przed krokiem 3 zrób krok 4a (moduł testowy).
   nie mają slugów, więc automatyczne asercje pokrywają tylko ścieżkę po id.
 - c) Realne treści sekcji (staty, kafelki, bonusy, opinie, oferta) — można
   przepisać ze starej strony od-wiaty.
+
+## Dodatek 2026-07-17 — kafelki materiałów do pobrania (`course_materials`)
+
+**Status:** zaakceptowany przez Michała (brainstorming 2026-07-17). Część tego
+samego, jeszcze nie wykonanego pakietu zmian schematu (Appendix A) — dochodzi
+jako kolejna kolekcja obok `course_tiles`.
+
+**Cel:** sekcja „Program" w `od-wiaty-do-chaty.vue` ma pod akordeonem modułów
+dwa statyczne kafelki opisujące materiały do kursu („Plik SketchUp — model 3D",
+„Rysunki techniczne — pliki PDF"). To czysto opisowe kafelki (ikona + tytuł +
+opis) — **bez** rzeczywistego linku do pobrania (materiały i tak trafiają do
+kursanta przez zewnętrzną platformę pod `course_access_url`). W `[slug].vue`
+tej sekcji dziś w ogóle nie ma. Dodajemy ją jako kolejny CMS-owy blok kafelków,
+edytowalny z Directusa, po wzorze `course_tiles`.
+
+**Zakres:** tylko generyczny szablon `[slug].vue`. Stara strona
+`od-wiaty-do-chaty.vue` zostaje z hardcodowanymi dwoma kafelkami bez zmian
+(zgodnie z resztą tego speca — stare strony to zamrożony podgląd).
+
+### Nowa kolekcja `course_materials`
+
+| Pole | Typ |
+|---|---|
+| `id` | uuid (auto) |
+| `course` | M2O → `courses`; odwrotny alias O2M **`materials`** na `courses` |
+| `sort` | integer (sortowanie ręczne) |
+| `icon` | select (dropdown), wartości: `model-3d`, `document`, `video`, `general` |
+| `title` | string — np. „Plik SketchUp" |
+| `description` | text — np. „Model 3D · trzy wersje projektu" |
+
+Brak pola `image` — to odróżnia ją od `course_tiles` (te mają zdjęcie, te mają
+ikonę z ustalonej listy).
+
+### Typy (`app/types/directus.ts`)
+
+- `export type CourseMaterialIcon = 'model-3d' | 'document' | 'video' | 'general'`
+- `CourseMaterial { id, sort: number | null, icon: CourseMaterialIcon | null, title: string, description: string | null }`
+- `Course.materials?: CourseMaterial[]`
+- `Schema.course_materials: CourseMaterial[]`
+
+### `useCourse.ts`
+
+`materials` dochodzi **wyłącznie do pełnego zapytania** (ten sam `try`, obok
+`tiles`) — analogicznie do `tiles`, bo to też pole czekające na Appendix A.
+Zapytanie fallbackowe (`catch`) zostaje bez zmian. Sortowanie po `sort` tak
+jak `tiles`/`modules`.
+
+### Szablon `[slug].vue`
+
+Blok dochodzi do sekcji **Program** (`#program`), pod akordeonem modułów,
+widoczny tylko gdy `materials.length`. Reużywa istniejących klas `extras`/
+`extra` z `kurs.css` (dziś używanych tylko w `od-wiaty-do-chaty.vue`):
+
+```html
+<div v-if="materials.length" class="extras io">
+  <div v-for="m in materials" :key="m.id" class="extra">
+    <!-- inline SVG dobrany po m.icon: model-3d→box, document→sheet, video→film, general→plik -->
+    <div>
+      <div class="extra__name">{{ m.title }}</div>
+      <div class="extra__desc">{{ m.description }}</div>
+    </div>
+  </div>
+</div>
+```
+
+Ikona: 4 gotowe inline SVG wybierane przez `v-if`/`v-else-if` na `m.icon`
+(`model-3d`/`document` to te same SVG co dziś w `od-wiaty-do-chaty.vue`; `video`
+i `general` to dwie nowe, w tym samym stylu — stroke 1.75, 22×22). Brak
+dopasowania ikony (np. `icon` puste) → fallback na `general`.
+
+### Appendix A — dopisek do kroku 2 (Michał, Directus UI)
+
+Obok tworzenia `course_tiles`, tym samym trybem:
+
+**Kolekcja `course_materials`** (Settings → Data Model → Create Collection, id: UUID):
+
+- pola: `sort` (Integer, pole sortowania kolekcji), `icon` (Select Dropdown,
+  opcje: `model-3d`, `document`, `video`, `general`), `title` (Input),
+  `description` (Textarea), `course` (M2O → `courses`; przy tworzeniu relacji
+  dodaj odwrotny alias O2M na `courses` o nazwie `materials`).
+
+Uprawnienia roli publicznej (krok 3): dopisać `course_materials` — Read: All
+Access, pola: wszystkie.
+
+### Poza zakresem tego dodatku
+
+- Rzeczywisty upload/link do pliku (Directus file field) — świadomie
+  odrzucone; kafelki zostają czysto opisowe, tak jak dziś.
+- Zmiany w `od-wiaty-do-chaty.vue`.
+
+### Weryfikacja
+
+`pnpm build` przechodzi; przed konfiguracją Directusa (`materials` nie
+istnieje jeszcze w schemacie) `/kursy/2` wpada w istniejący fallback `useCourse`
+(sekcja materiałów po prostu nie renderuje się — `materials` puste), bez nowych
+błędów w konsoli poza istniejącym warnem. Po wykonaniu Appendixu A i dodaniu
+przykładowych rekordów `course_materials` — kafelki pojawiają się w sekcji
+Program na `/kursy/2`.
