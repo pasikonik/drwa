@@ -101,6 +101,30 @@
             </div>
           </article>
         </div>
+        <div v-if="materials.length" class="extras io">
+          <div v-for="m in materials" :key="m.id" class="extra">
+            <svg v-if="m.icon === 'model-3d'" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+              <path d="m3.3 7 8.7 5 8.7-5M12 22V12"/>
+            </svg>
+            <svg v-else-if="m.icon === 'document'" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+              <path d="M14 2v4a2 2 0 0 0 2 2h4M9 13h6M9 17h6"/>
+            </svg>
+            <svg v-else-if="m.icon === 'video'" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="18" height="18" x="3" y="3" rx="2"/>
+              <path d="M7 3v18M17 3v18M3 7.5h4M3 16.5h4M17 7.5h4M17 16.5h4"/>
+            </svg>
+            <svg v-else viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+              <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+            </svg>
+            <div>
+              <div class="extra__name">{{ m.title }}</div>
+              <div class="extra__desc">{{ m.description }}</div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- ===== Bonusy ===== -->
@@ -210,6 +234,7 @@ const course = product.course
 const heroFacts = course?.hero_facts ?? []
 const stats = course?.stats ?? []
 const tiles = course?.tiles ?? []
+const materials = course?.materials ?? []
 const bonuses = course?.bonuses ?? []
 const quotes = course?.quotes ?? []
 const offerItems = course?.offer_items ?? []
