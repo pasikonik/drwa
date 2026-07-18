@@ -147,14 +147,8 @@ interface NavChild { route: string; label: string; desc: string }
 interface NavItem { id: string; label: string; route?: string; children?: NavChild[] }
 
 const NAV: NavItem[] = [
-  { id: 'warsztaty', label: 'Warsztaty stacjonarne', route: '/warsztaty' },
+  { id: 'warsztaty', label: 'Warsztaty', route: '/warsztaty' },
   { id: 'kursy', label: 'Kursy', route: '/kursy' },
-  {
-    id: 'kursy-online', label: 'Kursy online', children: [
-      { route: '/kursy/od-wiaty-do-chaty', label: 'Od wiaty do chaty', desc: 'Pełny kurs wideo' },
-      { route: '/kursy/minikurs-podstaw', label: 'Minikurs podstaw', desc: 'Praca z drewnem od zera' },
-    ],
-  },
   { id: 'sklep', label: 'Sklep', route: '/sklep' },
   { id: 'blog', label: 'Blog', route: '/blog' },
   {

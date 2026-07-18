@@ -40,7 +40,7 @@ const TILES = [
     desc: 'Łączenia ciesielskie, więźby i konstrukcje — przy realnym drewnie i ognisku.',
   },
   {
-    to: '/kursy/od-wiaty-do-chaty', img: '/assets/forest-3.png', pos: '50% 60%',
+    to: '/kursy', img: '/assets/forest-3.png', pos: '50% 60%',
     eyebrow: 'Online · w swoim tempie', title: 'Kurs online',
     desc: '„Od wiaty do chaty" oraz minikurs podstaw pracy z drewnem — kiedy chcesz.',
   },
