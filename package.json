@@ -16,6 +16,7 @@
     "@directus/sdk": "^23.0.0",
     "@stripe/stripe-js": "^9.10.0",
     "nuxt": "^4.4.8",
+    "resend": "^6.17.2",
     "stripe": "^22.3.2",
     "vue": "^3.5.40",
     "vue-router": "^5.2.0"

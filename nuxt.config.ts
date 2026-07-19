@@ -32,6 +32,7 @@ export default defineNuxtConfig({
     directusUrl: process.env.DIRECTUS_URL || 'http://localhost:8055',
     mailerLiteApiKey: process.env.MAILERLITE_API_KEY || '',
     mailerLiteGroupId: process.env.MAILERLITE_GROUP_ID || '',
+    resendApiKey: process.env.RESEND_API_KEY || '',
     public: {
       directusUrl: process.env.NUXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_URL || 'http://localhost:8055',
       stripePublishableKey: process.env.NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
