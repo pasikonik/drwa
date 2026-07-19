@@ -129,6 +129,7 @@ export interface Course {
   sort: number | null
   modules: CourseModule[]
   // CMS-driven template sections — absent until the Directus schema has them.
+  subtitle?: string | null   // short tagline shown under the title on course cards
   hero_kicker?: string | null
   hero_facts?: CourseHeroFact[] | null
   stats?: CourseStat[] | null

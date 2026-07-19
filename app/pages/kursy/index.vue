@@ -29,7 +29,7 @@
               <DrwaImg :src="c.image" :alt="c.title" preset="card" :fallback="c.fallback" />
             </div>
             <div class="build__body">
-              <span class="build__eyebrow">Kurs online</span>
+              <span v-if="c.subtitle" class="build__eyebrow">{{ c.subtitle }}</span>
               <h3 class="build__title"><NuxtLink :to="c.route">{{ c.title }}</NuxtLink></h3>
               <p class="build__desc">{{ c.desc }}</p>
               <div class="build__pricerow">
@@ -65,6 +65,7 @@ const courses = computed(() =>
   (data.value?.products ?? []).map((p, i) => ({
     id: p.id,
     title: p.title,
+    subtitle: p.course?.subtitle ?? null,
     route: `/kursy/${p.slug ?? p.id}`,
     desc: p.short_description ?? stripHtml(p.description, 180),
     // Directus wysyła decimal jako string — Number() przed formatowaniem.
