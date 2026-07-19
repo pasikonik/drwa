@@ -85,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { formatPrice, formatDate } from '~/utils/format'
 import type { OrderWithItems } from '~/types/directus'
 
@@ -94,9 +94,42 @@ const id = route.params.id as string
 const redirectStatus = route.query.redirect_status as string | undefined
 
 const { fetchOne } = useOrders()
-const { data: order } = await fetchOne(id)
+const { data: order, refresh } = await fetchOne(id)
 
 const { clear } = useCart()
+
+// While Stripe has confirmed the payment but the webhook hasn't landed yet,
+// poll for the order to flip to 'paid' instead of making the customer refresh.
+const POLL_INTERVAL_MS = 2500
+const POLL_MAX_ATTEMPTS = 20 // ~50s — long enough for a slow webhook, not forever
+let pollTimer: ReturnType<typeof setInterval> | null = null
+let pollAttempts = 0
+
+function stopPolling(): void {
+  if (pollTimer) {
+    clearInterval(pollTimer)
+    pollTimer = null
+  }
+}
+
+function startPolling(): void {
+  if (pollTimer) return
+  pollTimer = setInterval(async () => {
+    pollAttempts++
+    await refresh()
+    if (order.value?.status !== 'pending' || pollAttempts >= POLL_MAX_ATTEMPTS) stopPolling()
+  }, POLL_INTERVAL_MS)
+}
+
+watch(
+  () => order.value?.status,
+  (status) => {
+    if (status === 'paid') clear()
+    if (status !== 'pending') stopPolling()
+  },
+)
+
+onBeforeUnmount(stopPolling)
 
 useHead({
   title: 'Zamówienie - DRWA',
@@ -139,7 +172,7 @@ const banner = computed<Banner>(() => {
       subtitle: 'Jeszcze chwila - księgujemy Twoją transakcję.',
       badge: 'W trakcie',
       badgeClass: 'badge--warning',
-      note: 'Potwierdzenie płatności może zająć kilka sekund. Odśwież stronę za moment, aby zobaczyć aktualny status.',
+      note: 'Potwierdzenie płatności może zająć kilka sekund — strona odświeży się sama.',
     }
   }
   if (o.status === 'pending') {
@@ -189,5 +222,6 @@ const shippingAddress = computed<ShippingAddress | null>(() => {
 
 onMounted(() => {
   if (order.value && (order.value.status === 'paid' || redirectStatus === 'succeeded')) clear()
+  if (order.value?.status === 'pending') startPolling()
 })
 </script>
