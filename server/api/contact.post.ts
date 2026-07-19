@@ -35,7 +35,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Wiadomość nie może być pusta.' })
   }
 
-  const topicLabel = (topic && TOPIC_LABELS[topic]) || 'Inne'
+  const topicLabel = (topic && Object.prototype.hasOwnProperty.call(TOPIC_LABELS, topic))
+    ? TOPIC_LABELS[topic]
+    : 'Inne'
   const resend = getResend()
 
   const { error } = await resend.emails.send({
