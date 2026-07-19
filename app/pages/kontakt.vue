@@ -73,17 +73,26 @@
               <button class="btn btn--secondary btn--sm" @click="sent = false">Wyślij kolejną</button>
             </div>
           </div>
-          <form v-else class="cform io" @submit.prevent="sent = true">
+          <form v-else class="cform io" @submit.prevent="submitForm">
+            <input
+              v-model="honeypot"
+              type="text"
+              name="website"
+              tabindex="-1"
+              autocomplete="off"
+              class="cform__hp"
+              aria-hidden="true"
+            />
             <h2>Formularz</h2>
             <p>Wszystkie pola poza tematem są wymagane.</p>
             <div class="cform__grid">
               <div class="field">
                 <label class="field__label" for="kf-name">Imię i nazwisko</label>
-                <input id="kf-name" class="field__input" type="text" name="name" required placeholder="Jan Kowalski" autocomplete="name" />
+                <input id="kf-name" v-model="name" class="field__input" type="text" name="name" required placeholder="Jan Kowalski" autocomplete="name" />
               </div>
               <div class="field">
                 <label class="field__label" for="kf-email">E-mail</label>
-                <input id="kf-email" class="field__input" type="email" name="email" required placeholder="twój@email.pl" autocomplete="email" />
+                <input id="kf-email" v-model="email" class="field__input" type="email" name="email" required placeholder="twój@email.pl" autocomplete="email" />
               </div>
               <div class="field full">
                 <label class="field__label" for="kf-topic">Temat</label>
@@ -97,16 +106,17 @@
               </div>
               <div class="field full">
                 <label class="field__label" for="kf-msg">Wiadomość</label>
-                <textarea id="kf-msg" class="field__textarea" name="message" rows="6" required placeholder="Napisz do nas…" />
+                <textarea id="kf-msg" v-model="message" class="field__textarea" name="message" rows="6" required placeholder="Napisz do nas…" />
               </div>
             </div>
+            <p v-if="errorMessage" class="cform__error">{{ errorMessage }}</p>
             <div class="cform__foot">
               <label class="field__check">
                 <input type="checkbox" name="newsletter" />
                 <span class="field__check-label">Zapisz mnie też na newsletter „Listy z lasu”</span>
               </label>
-              <button class="btn btn--primary btn--md" type="submit">
-                Wyślij wiadomość
+              <button class="btn btn--primary btn--md" type="submit" :disabled="sending">
+                {{ sending ? 'Wysyłanie…' : 'Wyślij wiadomość' }}
                 <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
@@ -222,6 +232,35 @@ useScrollReveal()
 const sent = ref(false)
 const topic = ref('warsztaty')
 const openFaq = ref(null)
+
+const name = ref('')
+const email = ref('')
+const message = ref('')
+const honeypot = ref('')
+const sending = ref(false)
+const errorMessage = ref('')
+
+async function submitForm() {
+  errorMessage.value = ''
+  sending.value = true
+  try {
+    await $fetch('/api/contact', {
+      method: 'POST',
+      body: {
+        name: name.value,
+        email: email.value,
+        topic: topic.value,
+        message: message.value,
+        website: honeypot.value,
+      },
+    })
+    sent.value = true
+  } catch (err) {
+    errorMessage.value = err?.data?.statusMessage || 'Nie udało się wysłać, spróbuj ponownie lub napisz na kontakt@drwa.pl.'
+  } finally {
+    sending.value = false
+  }
+}
 
 const FAQ = [
   { q: 'Jak zapisać się na warsztat?', a: 'Wybierz termin na stronie Warsztaty 2026 i kliknij „Zapisz się”. Po zapisie dostaniesz e-mail z potwierdzeniem, dokładnym adresem pracowni i listą rzeczy do zabrania.' },

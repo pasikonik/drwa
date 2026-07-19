@@ -66,5 +66,8 @@
 .cform__sent h3 { font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg); color: var(--text-strong); margin: 0; }
 .cform__sent p { margin: 0; font-size: var(--text-sm); color: var(--text-muted); line-height: 1.6; max-width: 44ch; }
 
+.cform__hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.cform__error { font-size: var(--text-sm); color: var(--rust); margin: var(--space-4) 0 0; }
+
 /* ============ FAQ ============ */
 .contact-faq { max-width: 760px; margin: 0 auto; }
