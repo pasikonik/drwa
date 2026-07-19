@@ -30,10 +30,13 @@ export default defineEventHandler(async (event) => {
     const orderId = orderIdFrom(evt.data.object as Stripe.PaymentIntent)
     if (orderId) {
       const order = (await client.request(readItem('orders', orderId, { fields: ['id', 'status'] }))) as Order | null
-      // Idempotency guard — only fulfill on the first pending→paid transition
+      // Idempotency guard — only fulfill on the first pending→paid transition.
+      // Fulfill BEFORE flipping the status: if fulfillOrder throws, the order
+      // stays 'pending' so the next retry of this event re-enters the guard
+      // instead of being silently skipped as "already paid".
       if (order && order.status !== 'paid' && order.status !== 'shipped') {
-        await client.request(updateItem('orders', orderId, { status: 'paid' }))
         await fulfillOrder(orderId)
+        await client.request(updateItem('orders', orderId, { status: 'paid' }))
       }
     }
   } else if (evt.type === 'payment_intent.payment_failed') {
