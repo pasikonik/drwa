@@ -6,10 +6,10 @@
     "node": ">=24.0.0"
   },
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "build": "NODE_OPTIONS=--dns-result-order=ipv4first nuxt build",
+    "dev": "NODE_OPTIONS=--dns-result-order=ipv4first nuxt dev",
+    "generate": "NODE_OPTIONS=--dns-result-order=ipv4first nuxt generate",
+    "preview": "NODE_OPTIONS=--dns-result-order=ipv4first nuxt preview",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
