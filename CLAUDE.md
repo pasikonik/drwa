@@ -23,6 +23,7 @@ STRIPE_WEBHOOK_SECRET
 NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 MAILERLITE_API_KEY
 MAILERLITE_GROUP_ID
+RESEND_API_KEY                   # server-only — sends /kontakt form submissions to kontakt@drwa.pl
 NUXT_PUBLIC_GTM_ID               # optional — GTM container; analytics disabled if empty
 ```
 
