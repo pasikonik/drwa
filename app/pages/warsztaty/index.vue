@@ -24,7 +24,7 @@
           <p>Każdy warsztat to jeden realny budynek — od przygotowania drewna po gotową konstrukcję. Pracujemy w grupach do dziesięciu osób.</p>
         </div>
         <div class="wlist">
-          <article v-for="w in workshops" :key="w.id" class="wrow io">
+          <article v-for="w in upcomingWorkshops" :key="w.id" class="wrow io">
             <div class="wrow__date">
               <span class="wrow__day">{{ w.day }}</span>
               <span class="wrow__month">{{ w.month }}</span>
@@ -106,16 +106,19 @@
       </section>
 
       <!-- ===== Archiwum ===== -->
-      <section class="section container" id="archiwum">
+      <section v-if="pastWorkshops.length" class="section container" id="archiwum">
         <div class="sec-head io">
           <span class="eyebrow">Archiwum</span>
           <h2>Minione warsztaty</h2>
           <p>To już za nami — konstrukcje stoją, kursanci wrócili do domów z nowymi umiejętnościami.</p>
         </div>
         <ul class="arch io">
-          <li v-for="p in PAST" :key="p.title" class="arch__row">
-            <span class="arch__date">{{ p.date }}</span>
-            <span class="arch__title">{{ p.title }}</span>
+          <li v-for="p in pastWorkshops" :key="p.id" class="arch__row">
+            <span class="arch__date">{{ p.dateLabel }}</span>
+            <span class="arch__title">
+              <NuxtLink v-if="p.route" :to="p.route">{{ p.title }}</NuxtLink>
+              <template v-else>{{ p.title }}</template>
+            </span>
             <span class="arch__done">Zakończony</span>
           </li>
         </ul>
@@ -171,7 +174,7 @@
                 <div class="field">
                   <label class="field__label" for="sf-workshop">Warsztat</label>
                   <select id="sf-workshop" v-model="form.workshopId" class="field__select">
-                    <option v-for="w in workshops" :key="w.id" :value="w.id">
+                    <option v-for="w in upcomingWorkshops" :key="w.id" :value="w.id">
                       {{ w.title }} · {{ w.day }} {{ w.month }} {{ w.year }}
                     </option>
                   </select>
@@ -276,6 +279,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { formatPrice, formatDateRange, stripHtml, workshopSpots } from '~/utils/format'
+import { isWorkshopPast } from '~/utils/product'
 import type { WorkshopInstructor } from '~/types/directus'
 
 function instructorLead(instructors?: WorkshopInstructor[]): string {
@@ -324,11 +328,13 @@ const workshops = computed(() =>
     return {
       id: p.id,
       raw: p,
+      isPast: isWorkshopPast(w),
       title: p.title,
       route: p.slug ? `/warsztaty/${p.slug}` : null,
       day: dates.day,
       month: dates.month,
       year: dates.year,
+      dateLabel: dates.year === '—' ? '—' : `${dates.day} ${dates.month} ${dates.year}`,
       days,
       level: levelLabelOf(w?.level ?? null),
       price: formatPrice(p.price),
@@ -345,13 +351,8 @@ const workshops = computed(() =>
   })
 )
 
-const PAST = [
-  { date: '10–12 kwietnia 2026',    title: 'Budowanie stolarni' },
-  { date: '17–19 października 2025', title: 'Budowanie małego domku' },
-  { date: '22–24 sierpnia 2025',    title: 'Budowanie sauny' },
-  { date: '13–15 czerwca 2025',     title: 'Budowanie wiaty' },
-  { date: '9–11 maja 2025',         title: 'Budowanie altany' },
-]
+const upcomingWorkshops = computed(() => workshops.value.filter((w) => !w.isPast))
+const pastWorkshops = computed(() => workshops.value.filter((w) => w.isPast))
 
 const FAQ = [
   {
@@ -374,7 +375,7 @@ const FAQ = [
 
 const openFaq = ref<number | null>(0)
 const form = reactive({
-  workshopId: workshops.value[0]?.id ?? null as number | null,
+  workshopId: upcomingWorkshops.value[0]?.id ?? null as number | null,
   name: '', email: '', message: '', newsletter: false,
 })
 const errors = reactive({ name: '', email: '' })

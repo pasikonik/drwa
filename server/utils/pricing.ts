@@ -7,7 +7,7 @@ import type {
   ShippingMethod,
 } from '~/types/shop'
 import { SHIPPING_RATES, FREE_SHIPPING_THRESHOLD } from '~/utils/shipping'
-import { normalizeProduct } from '~/utils/product'
+import { normalizeProduct, isWorkshopPast } from '~/utils/product'
 import { directusAdmin } from './directusAdmin'
 
 function fail(message: string): never {
@@ -47,7 +47,7 @@ export async function computeOrder(
       filter: { id: { _in: productIds } },
       fields: [
         'id', 'title', 'price',
-        { workshop: ['id', 'spots_total', 'spots_booked', 'advance'] },
+        { workshop: ['id', 'date_start', 'spots_total', 'spots_booked', 'advance'] },
         { course: ['id'] },
       ],
       limit: -1,
@@ -89,6 +89,7 @@ export async function computeOrder(
       }
     } else if (product.type === 'workshop') {
       const w = product.workshop
+      if (isWorkshopPast(w)) fail(`Nie można zapisać się na miniony warsztat „${product.title}".`)
       const free = (w?.spots_total ?? 0) - (w?.spots_booked ?? 0)
       if (free < qty) fail(`Za mało wolnych miejsc na „${product.title}".`)
     }

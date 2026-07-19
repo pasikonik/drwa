@@ -22,6 +22,15 @@ export const firstRelation = <T>(rel: T[] | T | null | undefined): T | null => {
   return rel ?? null
 }
 
+/**
+ * A workshop is "past" once it has started — booking closes at `date_start`.
+ * Shared by the listing, the detail page and the server-side pricing guard.
+ * A workshop with no `date_start` is treated as upcoming.
+ */
+export const isWorkshopPast = (
+  w: { date_start: string | null } | null | undefined,
+): boolean => !!w?.date_start && new Date(w.date_start).getTime() < Date.now()
+
 /** Product kind is determined by which extension a product carries. */
 export const deriveProductType = (raw: {
   workshop?: unknown

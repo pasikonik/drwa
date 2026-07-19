@@ -37,7 +37,7 @@
           </span>
         </div>
         <div class="dhero__cta">
-          <button class="btn btn--on-dark btn--lg" @click="jump('zapisy')">Zapisz się — {{ priceStr }}</button>
+          <button v-if="!isPast" class="btn btn--on-dark btn--lg" @click="jump('zapisy')">Zapisz się — {{ priceStr }}</button>
           <button class="btn btn--accent btn--lg" @click="jump('program')">Zobacz program</button>
         </div>
       </div>
@@ -126,15 +126,24 @@
               <span class="book__price">{{ priceStr }}</span>
               <span class="book__per">od osoby</span>
             </div>
-            <p class="book__deposit" v-if="hasAdvance">
+            <p class="book__deposit" v-if="hasAdvance && !isPast">
               Płacisz teraz <strong>zaliczkę {{ advanceStr }}</strong>, która rezerwuje Twoje miejsce - resztę dopłacasz przed warsztatem.
             </p>
             <div class="book__cta">
-              <div class="badge" :class="spots.tone === 'warning' ? 'badge--warning' : 'badge--success'">
-                <span class="badge__dot" />
-                {{ spots.label }}
-              </div>
-              <AddToCartButton :product="prod" label="Rezerwuj miejsce" />
+              <template v-if="isPast">
+                <div class="badge">
+                  <span class="badge__dot" />
+                  Zakończony
+                </div>
+                <p class="book__past">Ten warsztat już się odbył — zapisy są zamknięte.</p>
+              </template>
+              <template v-else>
+                <div class="badge" :class="spots.tone === 'warning' ? 'badge--warning' : 'badge--success'">
+                  <span class="badge__dot" />
+                  {{ spots.label }}
+                </div>
+                <AddToCartButton :product="prod" label="Rezerwuj miejsce" />
+              </template>
             </div>
           </div>
 
@@ -162,8 +171,14 @@
         <div class="signup">
           <div class="signup__intro io">
             <span class="eyebrow">Zapisy</span>
-            <h2 class="signup__heading">Zajmij miejsce przy drewnie</h2>
-            <p>Wyślij zgłoszenie, a w ciągu dwóch dni odezwiemy się z potwierdzeniem miejsca i szczegółami dojazdu. Zaliczka 400 zł rezerwuje miejsce.</p>
+            <template v-if="isPast">
+              <h2 class="signup__heading">Ten warsztat już się odbył</h2>
+              <p>Zapisy na tę edycję są zamknięte. Sprawdź <NuxtLink to="/warsztaty">nadchodzące terminy</NuxtLink> albo napisz do nas — chętnie damy znać o kolejnej odsłonie.</p>
+            </template>
+            <template v-else>
+              <h2 class="signup__heading">Zajmij miejsce przy drewnie</h2>
+              <p>Wyślij zgłoszenie, a w ciągu dwóch dni odezwiemy się z potwierdzeniem miejsca i szczegółami dojazdu. Zaliczka 400 zł rezerwuje miejsce.</p>
+            </template>
             <div class="signup__contact">
               <a href="mailto:czesc@drwa.pl">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -175,7 +190,11 @@
           </div>
           <div class="io">
             <div class="card card--padded">
-              <div v-if="sent" class="signup__sent">
+              <div v-if="isPast" class="signup__sent">
+                <h3>Warsztat zakończony</h3>
+                <p>Ta edycja już się odbyła. Zajrzyj na stronę <NuxtLink to="/warsztaty">Warsztaty 2026</NuxtLink>, żeby zapisać się na najbliższy termin.</p>
+              </div>
+              <div v-else-if="sent" class="signup__sent">
                 <h3>Dziękujemy za zgłoszenie.</h3>
                 <p>Odezwiemy się w ciągu dwóch dni roboczych z potwierdzeniem miejsca i szczegółami. Do zobaczenia w stolarni.</p>
               </div>
@@ -301,6 +320,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { formatPrice, formatDateRange, formatTimeRange, stripHtml, workshopSpots } from '~/utils/format'
+import { isWorkshopPast } from '~/utils/product'
 const LEVEL_LABEL: Record<string, string> = {
   beginner: 'podstawowy',
   intermediate: 'średni',
@@ -352,6 +372,8 @@ const advanceStr = computed(() => {
 })
 
 const hasAdvance = computed(() => workshop.value?.advance != null)
+
+const isPast = computed(() => isWorkshopPast(workshop.value))
 
 const dateStr = computed(() => {
   const s = workshop.value?.date_start
