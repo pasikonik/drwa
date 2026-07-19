@@ -50,9 +50,9 @@
           </ul>
 
           <OrderSummary
-            :subtotal="order.subtotal || 0"
-            :shipping-cost="order.shipping_cost || 0"
-            :total="order.total_price"
+            :subtotal="Number(order.subtotal) || 0"
+            :shipping-cost="Number(order.shipping_cost) || 0"
+            :total="Number(order.total_price)"
             :show-shipping="!!order.shipping_method"
           />
         </div>
