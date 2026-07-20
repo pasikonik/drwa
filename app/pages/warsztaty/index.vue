@@ -330,7 +330,7 @@ const workshops = computed(() =>
       raw: p,
       isPast: isWorkshopPast(w),
       title: p.title,
-      route: p.slug ? `/warsztaty/${p.slug}` : null,
+      route: `/warsztaty/${p.slug ?? p.id}`,
       day: dates.day,
       month: dates.month,
       year: dates.year,

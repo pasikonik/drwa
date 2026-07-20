@@ -2,15 +2,24 @@ import { readItems } from '@directus/sdk'
 import type { Product } from '~/types/directus'
 import { normalizeProduct } from '~/utils/product'
 
-export const useProduct = (slug: string) => {
+/**
+ * Fetch a single product by slug or — as a fallback for products that have no
+ * slug yet — a numeric product id (`/sklep/2`, `/warsztaty/2`).
+ */
+export const useProduct = (slugOrId: string | number) => {
   const { directus } = useDirectus()
 
+  const isId = typeof slugOrId === 'number' || /^\d+$/.test(slugOrId)
+  const filter = isId
+    ? { id: { _eq: Number(slugOrId) } }
+    : { slug: { _eq: String(slugOrId) } }
+
   return useAsyncData<Product | null>(
-    `product-${slug}`,
+    `product-${slugOrId}`,
     async () => {
       const results = (await directus.request(
         readItems('products', {
-          filter: { slug: { _eq: slug } },
+          filter,
           limit: 1,
           fields: [
             'id', 'title', 'slug', 'price', 'description', 'image', 'short_description',
