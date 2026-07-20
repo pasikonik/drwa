@@ -2,7 +2,7 @@
   <header class="nav">
     <div class="container nav__row">
       <NuxtLink class="brand" to="/" @click="closeMobile">
-        <img src="/assets/drwa-mark-ink.png" alt="DRWA" />
+        <img src="/assets/logo-no-bg-no-text.avif" alt="DRWA" />
         <span class="brand__wm">DRWA</span>
       </NuxtLink>
 

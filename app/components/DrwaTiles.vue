@@ -35,17 +35,17 @@
 <script setup>
 const TILES = [
   {
-    to: '/warsztaty', img: '/assets/forest-1.png', pos: '50% 50%',
+    to: '/warsztaty', img: '/assets/forest-1.avif', pos: '50% 50%',
     eyebrow: 'Stacjonarnie · 2026', title: 'Warsztaty 2026',
     desc: 'Łączenia ciesielskie, więźby i konstrukcje — przy realnym drewnie i ognisku.',
   },
   {
-    to: '/kursy', img: '/assets/forest-3.png', pos: '50% 60%',
+    to: '/kursy', img: '/assets/forest-3.avif', pos: '50% 60%',
     eyebrow: 'Online · w swoim tempie', title: 'Kurs online',
     desc: '„Od wiaty do chaty" oraz minikurs podstaw pracy z drewnem — kiedy chcesz.',
   },
   {
-    to: '/o-nas', img: '/assets/timber-2.png', pos: '50% 45%',
+    to: '/o-nas', img: '/assets/timber-2.avif', pos: '50% 45%',
     eyebrow: 'Ludzie · społeczność', title: 'O nas (DRWA)',
     desc: 'Kim jesteśmy, dlaczego budujemy naturalnie i co dotąd zbudowaliśmy razem.',
   },

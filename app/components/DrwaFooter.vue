@@ -4,8 +4,7 @@
       <div class="foot__top">
         <div class="foot__brand">
           <div class="brandrow">
-            <img src="/assets/drwa-mark.png" alt="DRWA" />
-            <span class="wm">DRWA</span>
+            <img src="/assets/logo-no-bg-white.avif" alt="DRWA" />
           </div>
           <p>Drewno, rzemiosło i szkolenia. Pracujemy z drewnem i budujemy wokół niego społeczność — w duchu natury i ekologii.</p>
         </div>
@@ -29,7 +28,7 @@
         <div>
           <h4>Kontakt</h4>
           <ul>
-            <li><a href="mailto:czesc@drwa.pl">czesc@drwa.pl</a></li>
+            <li><a href="mailto:kontakt@drwa.pl">kontakt@drwa.pl</a></li>
             <li><a>Stolarnia pod lasem</a></li>
           </ul>
         </div>
@@ -53,7 +52,7 @@
               <path d="m9.75 15.02 5.75-3.27-5.75-3.27v6.54z"/>
             </svg>
           </a>
-          <a aria-label="E-mail" href="mailto:czesc@drwa.pl">
+          <a aria-label="E-mail" href="mailto:kontakt@drwa.pl">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <rect width="20" height="16" x="2" y="4" rx="2"/>
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>

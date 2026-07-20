@@ -5,7 +5,7 @@
     <!-- ===== Hero ===== -->
     <section class="phero" id="top">
       <div class="phero__bg">
-        <img src="/assets/forest-band.png" alt="Las we mgle" />
+        <img src="/assets/forest-band.avif" alt="Las we mgle" />
       </div>
       <div class="phero__scrim" />
       <div class="container phero__inner">

@@ -77,7 +77,7 @@ picture { display: contents; }
 }
 .nav__row { display: flex; align-items: center; gap: var(--space-6); height: 76px; }
 .brand { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; }
-.brand img { width: 28px; height: 32px; }
+.brand img { width: 40px; height: 40px; }
 .brand__wm {
   font-family: var(--font-sans); font-weight: 800; font-size: 22px;
   letter-spacing: 0.26em; padding-left: 0.26em; color: var(--ink-900);
@@ -247,7 +247,7 @@ picture { display: contents; }
     rgba(19,29,24,var(--hero-scrim));
 }
 .hero__inner { position: relative; color: var(--cream-50); max-width: 920px; padding: var(--space-10) 0; }
-.hero__mark { width: 56px; margin-bottom: var(--space-5); opacity: 0.95; }
+.hero__mark { width: 120px; margin-bottom: var(--space-5); opacity: 0.95; }
 .hero__eyebrow { color: var(--timber-200); margin-bottom: var(--space-5); }
 
 .manifest { margin: 0; }
@@ -396,7 +396,7 @@ picture { display: contents; }
 .foot { background: var(--surface-inverse-2); color: var(--pine-200); }
 .foot__top { display: grid; grid-template-columns: 1.7fr 1fr 1fr 1fr; gap: var(--space-6); padding: var(--space-9) 0 var(--space-8); }
 .foot__brand .brandrow { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.foot__brand .brandrow img { width: 26px; }
+.foot__brand .brandrow img { width: 80px; }
 .foot__brand .brandrow .wm { font-family: var(--font-sans); font-weight: 800; font-size: 18px; letter-spacing: 0.26em; padding-left: 0.26em; color: var(--cream-100); }
 .foot__brand p { font-size: var(--text-sm); color: var(--pine-300); max-width: 34ch; line-height: 1.65; margin: 0; }
 .foot h4 { font-family: var(--font-ui); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.1em; color: var(--cream-100); margin: 0 0 16px; }
