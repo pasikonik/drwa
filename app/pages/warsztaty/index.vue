@@ -23,7 +23,7 @@
           <h2>Trzy warsztaty, trzy konstrukcje</h2>
           <p>Każdy warsztat to jeden realny budynek — od przygotowania drewna po gotową konstrukcję. Pracujemy w grupach do dziesięciu osób.</p>
         </div>
-        <div class="wlist">
+        <div v-if="upcomingWorkshops.length" class="wlist">
           <article v-for="w in upcomingWorkshops" :key="w.id" class="wrow io">
             <div class="wrow__date">
               <span class="wrow__day">{{ w.day }}</span>
@@ -68,6 +68,13 @@
               <DrwaImg :src="w.rawImage" :alt="w.title" preset="hero" :img-style="{ objectPosition: w.pos }" :fallback="w.img" />
             </div>
           </article>
+        </div>
+        <div v-else class="wlist-empty io">
+          <svg class="wlist-empty__icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/>
+          </svg>
+          <h3 class="wlist-empty__title">Aktualnie nie mamy zaplanowanych terminów</h3>
+          <p class="wlist-empty__text">Pracujemy nad kolejnym sezonem warsztatów. Zajrzyj tu wkrótce — nowe daty pojawią się niebawem.</p>
         </div>
       </section>
 
@@ -149,7 +156,7 @@
       </section>
 
       <!-- ===== Zapisy ===== -->
-      <section class="signup-sec" id="zapisy">
+      <section v-if="upcomingWorkshops.length" class="signup-sec" id="zapisy">
         <div class="signup">
           <div class="signup__intro io">
             <span class="eyebrow">Zapisy</span>
@@ -225,7 +232,7 @@
               <li><a @click.prevent="jump('lista')">Nadchodzące terminy</a></li>
               <li><a @click.prevent="jump('archiwum')">Minione warsztaty</a></li>
               <li><a @click.prevent="jump('faq')">FAQ</a></li>
-              <li><a @click.prevent="jump('zapisy')">Zapisy</a></li>
+              <li v-if="upcomingWorkshops.length"><a @click.prevent="jump('zapisy')">Zapisy</a></li>
             </ul>
           </div>
           <div>

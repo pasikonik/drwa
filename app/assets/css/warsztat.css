@@ -334,6 +334,21 @@
 
 /* ============ Workshop list rows ============ */
 .wlist { display: flex; flex-direction: column; border-bottom: 1px solid var(--border-soft); }
+.wlist-empty {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: var(--space-3); padding: var(--space-8) var(--space-5);
+  background: var(--surface-sunken); border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+}
+.wlist-empty__icon { color: var(--accent); opacity: 0.7; }
+.wlist-empty__title {
+  font-family: var(--font-display); font-weight: 500; font-size: var(--text-lg);
+  letter-spacing: -0.01em; color: var(--text-strong); margin: 0;
+}
+.wlist-empty__text {
+  font-size: var(--text-sm); line-height: 1.6; color: var(--text-muted);
+  margin: 0; max-width: 46ch;
+}
 .wrow {
   display: grid; grid-template-columns: 116px 1fr 264px; gap: var(--space-6);
   padding: var(--space-6) 0; border-top: 1px solid var(--border-soft); align-items: stretch;
