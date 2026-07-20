@@ -21,7 +21,7 @@ export const useProjects = () => {
           filter: { status: { _eq: 'published' } },
           sort: ['sort', '-date'],
           fields: [
-            'id', 'status', 'title', 'date', 'sort',
+            'id', 'status', 'title', 'date', 'description', 'sort',
             { images: [{ directus_files_id: ['id'] }] },
           ],
         })

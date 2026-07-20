@@ -26,6 +26,7 @@
             <div class="real-row__head">
               <h2 class="real-row__title">{{ p.title }}</h2>
               <span v-if="p.dateLabel" class="real-row__date">{{ p.dateLabel }}</span>
+              <p v-if="p.description" class="real-row__desc">{{ p.description }}</p>
             </div>
             <ul class="real-strip" :aria-label="'Zdjęcia: ' + p.title">
               <li v-for="(img, i) in p.images" :key="img">
@@ -130,6 +131,7 @@ const list = computed(() =>
     id: p.id,
     title: p.title,
     dateLabel: p.date ? formatDate(p.date) : '',
+    description: p.description ?? '',
     images: p.images
       .map((j) => fileId(j.directus_files_id))
       .filter((s): s is string => !!s),

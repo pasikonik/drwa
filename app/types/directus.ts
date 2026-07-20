@@ -242,6 +242,7 @@ export interface Project {
   status: ProjectStatus
   title: string
   date: string | null         // 'YYYY-MM-DD'
+  description: string | null
   sort: number | null
   images: ProjectImage[]
 }

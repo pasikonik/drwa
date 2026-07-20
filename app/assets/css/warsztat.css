@@ -178,13 +178,35 @@
 .pday ul li { display: flex; gap: 10px; font-size: var(--text-sm); line-height: 1.55; color: var(--text-muted); }
 .pday ul li::before { content: "·"; color: var(--accent); font-weight: 700; }
 @media (max-width: 720px) { .pday { grid-template-columns: 1fr; gap: var(--space-3); } }
-.prog__relacja {
-  display: inline-flex; align-items: center; gap: 8px; margin-top: var(--space-5);
-  font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--text-brand); text-decoration: none;
+.relacja {
+  display: flex; align-items: center; gap: var(--space-4);
+  margin-top: var(--space-6); padding: var(--space-5) var(--space-6);
+  background: var(--surface-inverse); border-radius: var(--radius-lg);
+  color: var(--pine-50); text-decoration: none;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.prog__relacja svg { transition: transform 0.2s ease; }
-.prog__relacja:hover svg { transform: translateX(3px); }
+.relacja:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.relacja__icon {
+  flex: none; display: grid; place-items: center;
+  width: 48px; height: 48px; border-radius: var(--radius-md);
+  background: rgba(212, 173, 125, 0.16); color: var(--timber-300);
+}
+.relacja__body { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+.relacja__kicker {
+  font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--timber-300);
+}
+.relacja__title {
+  font-family: var(--font-display); font-weight: 500; font-size: var(--text-lg);
+  letter-spacing: -0.01em; color: var(--pine-50); text-wrap: balance;
+}
+.relacja__arrow { flex: none; color: var(--timber-300); transition: transform 0.2s ease; }
+.relacja:hover .relacja__arrow { transform: translateX(4px); }
+@media (max-width: 720px) {
+  .relacja { padding: var(--space-4) var(--space-5); gap: var(--space-3); }
+  .relacja__title { font-size: var(--text-md); }
+}
 
 /* ============ Tutor ============ */
 .tutor { display: flex; gap: var(--space-5); align-items: flex-start; margin-top: var(--space-5); }
