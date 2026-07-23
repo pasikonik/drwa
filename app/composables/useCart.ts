@@ -25,6 +25,7 @@ export const useCart = () => {
   const count = computed(() => items.value.reduce((n, i) => n + i.qty, 0))
   const subtotal = computed(() => items.value.reduce((s, i) => s + i.price * i.qty, 0))
   const hasPhysical = computed(() => items.value.some((i) => i.type === 'merch'))
+  const hasCourse = computed(() => items.value.some((i) => i.type === 'course'))
   const isEmpty = computed(() => items.value.length === 0)
 
   function add(input: Omit<CartItem, 'key'>): void {
@@ -82,5 +83,5 @@ export const useCart = () => {
     return items.value.map((i) => ({ productId: i.productId, variantId: i.variantId, qty: i.qty }))
   }
 
-  return { items, count, subtotal, hasPhysical, isEmpty, add, addProduct, setQty, remove, clear, toCheckoutItems }
+  return { items, count, subtotal, hasPhysical, hasCourse, isEmpty, add, addProduct, setQty, remove, clear, toCheckoutItems }
 }

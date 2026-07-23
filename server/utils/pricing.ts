@@ -109,6 +109,7 @@ export async function computeOrder(
 
   const subtotal = round2(lines.reduce((sum, l) => sum + l.lineTotal, 0))
   const hasPhysical = lines.some((l) => l.type === 'merch')
+  const hasCourse = lines.some((l) => l.type === 'course')
 
   let shippingCost = 0
   if (hasPhysical) {
@@ -124,6 +125,7 @@ export async function computeOrder(
     total,
     totalGrosze: Math.round(total * 100),
     hasPhysical,
+    hasCourse,
   }
 }
 

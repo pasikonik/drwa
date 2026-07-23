@@ -193,6 +193,8 @@ export interface Order {
   shipping_method: string | null
   shipping_cost: number | null
   email: string | null
+  first_name: string | null      // buyer first name — required for course orders (Zanfia access)
+  last_name: string | null       // buyer last name — required for course orders (Zanfia access)
   payment_intent_id: string | null
   stripe_session_id: string | null
   customer: string | null         // relation → directus_users (nullable for guests)

@@ -31,6 +31,20 @@
               <span class="field__hint">Na ten adres wyślemy potwierdzenie{{ hasPhysical ? '' : ' i dostęp do kursów' }}.</span>
             </div>
 
+            <template v-if="hasCourse">
+              <div class="field">
+                <label class="field__label" for="co-first-name">Imię</label>
+                <input id="co-first-name" v-model="firstName" class="field__input" :class="{ 'field__input--error': errors.firstName }" type="text" autocomplete="given-name" />
+                <span v-if="errors.firstName" class="field__error" role="alert">{{ errors.firstName }}</span>
+              </div>
+              <div class="field">
+                <label class="field__label" for="co-last-name">Nazwisko</label>
+                <input id="co-last-name" v-model="lastName" class="field__input" :class="{ 'field__input--error': errors.lastName }" type="text" autocomplete="family-name" />
+                <span v-if="errors.lastName" class="field__error" role="alert">{{ errors.lastName }}</span>
+                <span class="field__hint">Potrzebne do nadania dostępu do kursu online.</span>
+              </div>
+            </template>
+
             <template v-if="hasPhysical">
               <h3 class="checkout__sub">Dostawa</h3>
               <div class="ship">
@@ -107,11 +121,13 @@ useHead({
   link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
-const { items, subtotal, hasPhysical, isEmpty, toCheckoutItems } = useCart()
+const { items, subtotal, hasPhysical, hasCourse, isEmpty, toCheckoutItems } = useCart()
 const { user } = useAuth()
 const { createIntent, creating, error: createError } = useCheckout()
 
 const email = ref(user.value?.email ?? '')
+const firstName = ref(user.value?.first_name ?? '')
+const lastName = ref(user.value?.last_name ?? '')
 const shippingMethod = ref<ShippingMethod>('paczkomat')
 const address = reactive<ShippingAddress>({ name: '', street: '', postalCode: '', city: '', phone: '', pointCode: '' })
 const errors = reactive<Record<string, string>>({})
@@ -137,6 +153,10 @@ onMounted(() => {
 function validate(): boolean {
   Object.keys(errors).forEach((k) => delete errors[k])
   if (!email.value.includes('@')) errors.email = 'Podaj poprawny adres e-mail.'
+  if (hasCourse.value) {
+    if (!firstName.value.trim()) errors.firstName = 'Podaj imię.'
+    if (!lastName.value.trim()) errors.lastName = 'Podaj nazwisko.'
+  }
   if (hasPhysical.value) {
     if (!address.name.trim()) errors.name = 'Podaj imię i nazwisko.'
     if (!address.street.trim()) errors.street = 'Podaj ulicę i numer.'
@@ -154,6 +174,8 @@ async function startPayment(): Promise<void> {
   const res = await createIntent({
     items: toCheckoutItems(),
     email: email.value,
+    firstName: hasCourse.value ? firstName.value.trim() : null,
+    lastName: hasCourse.value ? lastName.value.trim() : null,
     shippingMethod: hasPhysical.value ? shippingMethod.value : null,
     address: hasPhysical.value ? { ...address } : null,
   })

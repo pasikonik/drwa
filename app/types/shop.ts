@@ -54,6 +54,10 @@ export interface CheckoutItemInput {
 export interface CreateIntentPayload {
   items: CheckoutItemInput[]
   email: string
+  /** Buyer first name — required when the cart contains a course (Zanfia access). */
+  firstName: string | null
+  /** Buyer last name — required when the cart contains a course (Zanfia access). */
+  lastName: string | null
   shippingMethod: ShippingMethod | null
   address: ShippingAddress | null
 }
@@ -76,6 +80,7 @@ export interface ComputedOrder {
   total: number          // PLN
   totalGrosze: number    // Stripe minor units
   hasPhysical: boolean
+  hasCourse: boolean
 }
 
 export interface CreateIntentResponse {

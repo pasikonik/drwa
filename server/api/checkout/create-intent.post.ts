@@ -8,7 +8,7 @@ import { resolveUserId } from '../../utils/sessionUser'
 
 export default defineEventHandler(async (event): Promise<CreateIntentResponse> => {
   const body = await readBody<CreateIntentPayload>(event)
-  const { items, email, shippingMethod, address } = body ?? ({} as CreateIntentPayload)
+  const { items, email, firstName, lastName, shippingMethod, address } = body ?? ({} as CreateIntentPayload)
 
   if (!email || !email.includes('@')) {
     throw createError({ statusCode: 400, statusMessage: 'Podaj poprawny adres e-mail.' })
@@ -19,6 +19,15 @@ export default defineEventHandler(async (event): Promise<CreateIntentResponse> =
 
   if (computed.hasPhysical && !address) {
     throw createError({ statusCode: 400, statusMessage: 'Podaj adres dostawy.' })
+  }
+
+  // Course orders need buyer identity for external access provisioning (Zanfia).
+  // hasCourse is derived server-side from real Directus product types, so a
+  // crafted client cart cannot skip this by lying about item types.
+  const firstNameTrimmed = firstName?.trim() || null
+  const lastNameTrimmed = lastName?.trim() || null
+  if (computed.hasCourse && (!firstNameTrimmed || !lastNameTrimmed)) {
+    throw createError({ statusCode: 400, statusMessage: 'Podaj imię i nazwisko — są potrzebne do dostępu do kursu.' })
   }
   if (computed.totalGrosze < 1) {
     throw createError({ statusCode: 400, statusMessage: 'Kwota zamówienia jest nieprawidłowa.' })
@@ -38,6 +47,8 @@ export default defineEventHandler(async (event): Promise<CreateIntentResponse> =
       shipping_method: computed.hasPhysical ? shippingMethod : null,
       shipping_cost: computed.shippingCost,
       email,
+      first_name: firstNameTrimmed,
+      last_name: lastNameTrimmed,
       shpping_address: address ? JSON.stringify(address) : null,
       ...(customerId ? { customer: customerId } : {}),
     }),
