@@ -11,7 +11,7 @@
         <div>
           <h4>Warsztaty</h4>
           <ul>
-            <li><NuxtLink to="/warsztaty">Warsztaty 2026</NuxtLink></li>
+            <li><NuxtLink to="/warsztaty">Warsztaty {{ currentYear }}</NuxtLink></li>
             <li><NuxtLink to="/warsztaty">Informacje i oferta</NuxtLink></li>
             <li><a @click="jump('opinie')">Relacje i opinie</a></li>
             <li><NuxtLink to="/blog">Blog · Z lasu</NuxtLink></li>
@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="foot__bottom">
-        <span>© 2026 DRWA · Drewno · Rzemiosło · Szkolenia</span>
+        <span>© {{ currentYear }} DRWA · Drewno · Rzemiosło · Szkolenia</span>
         <div class="foot__social">
           <a aria-label="Instagram" href="https://www.instagram.com/drwa_yen/" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
@@ -65,6 +65,8 @@
 </template>
 
 <script setup>
+const currentYear = new Date().getFullYear()
+
 function jump(id) {
   const el = document.getElementById(id)
   if (el) el.scrollIntoView({ behavior: 'smooth' })

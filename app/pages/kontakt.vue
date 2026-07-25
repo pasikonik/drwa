@@ -201,8 +201,10 @@ async function submitForm() {
   }
 }
 
+const currentYear = new Date().getFullYear()
+
 const FAQ = [
-  { q: 'Jak zapisać się na warsztat?', a: 'Wybierz termin na stronie Warsztaty 2026 i kliknij „Zapisz się”. Po zapisie dostaniesz e-mail z potwierdzeniem, dokładnym adresem pracowni i listą rzeczy do zabrania.' },
+  { q: 'Jak zapisać się na warsztat?', a: `Wybierz termin na stronie Warsztaty ${currentYear} i kliknij „Zapisz się”. Po zapisie dostaniesz e-mail z potwierdzeniem, dokładnym adresem pracowni i listą rzeczy do zabrania.` },
   { q: 'Czy mogę zwrócić rzeczy ze sklepu?', a: 'Tak — masz 30 dni na zwrot bez podania przyczyny. Napisz na kontakt@drwa.pl, a odeślemy instrukcję i pokryjemy koszt pierwszej wysyłki zwrotnej.' },
   { q: 'Robicie warsztaty na zamówienie?', a: 'Robimy — dla firm, szkół i grup znajomych od 6 osób. Opisz w formularzu, co chcecie zbudować, a przygotujemy program i wycenę.' },
 ]

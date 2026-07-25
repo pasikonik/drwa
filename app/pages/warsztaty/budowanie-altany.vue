@@ -10,7 +10,7 @@
       <div class="dhero__scrim" />
       <div class="container dhero__inner">
         <div class="dhero__crumb">
-          <NuxtLink to="/warsztaty">Warsztaty 2026</NuxtLink>
+          <NuxtLink to="/warsztaty">Warsztaty {{ currentYear }}</NuxtLink>
           <span class="sep">·</span>
           <span class="cur">Budowanie altany</span>
         </div>
@@ -254,6 +254,8 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
+
+const currentYear = new Date().getFullYear()
 
 useHead({
   title: 'Budowanie altany — Warsztaty DRWA',

@@ -10,7 +10,7 @@
       <div class="phero__scrim" />
       <div class="container phero__inner">
         <span class="eyebrow eyebrow--ondark">STACJONARNIE</span>
-        <h1>Warsztaty 2026</h1>
+        <h1>Warsztaty {{ currentYear }}</h1>
         <p class="phero__lead">Kilka dni wspólnej pracy przy realnym drewnie — w małej grupie, pod okiem cieśli i przy ognisku. Sprawdź terminy i zajmij miejsce.</p>
       </div>
     </section>
@@ -241,8 +241,10 @@ const LEVEL_LABEL: Record<string, string> = {
 const levelLabelOf = (level: string | null) =>
   (level && LEVEL_LABEL[level.toLowerCase()]) || 'podstawowy'
 
+const currentYear = new Date().getFullYear()
+
 useHead({
-  title: 'Warsztaty 2026 — DRWA',
+  title: `Warsztaty ${currentYear} — DRWA`,
   link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 

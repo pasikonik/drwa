@@ -33,10 +33,12 @@
 </template>
 
 <script setup>
+const currentYear = new Date().getFullYear()
+
 const TILES = [
   {
     to: '/warsztaty', img: '/assets/forest-1.avif', pos: '50% 50%',
-    eyebrow: 'Stacjonarnie · 2026', title: 'Warsztaty 2026',
+    eyebrow: `Stacjonarnie · ${currentYear}`, title: `Warsztaty ${currentYear}`,
     desc: 'Łączenia ciesielskie, więźby i konstrukcje — przy realnym drewnie i ognisku.',
   },
   {

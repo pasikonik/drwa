@@ -10,7 +10,7 @@
       <div class="dhero__scrim" />
       <div class="container dhero__inner">
         <div class="dhero__crumb">
-          <NuxtLink to="/warsztaty">Warsztaty 2026</NuxtLink>
+          <NuxtLink to="/warsztaty">Warsztaty {{ currentYear }}</NuxtLink>
           <span class="sep">·</span>
           <span class="cur">{{ title }}</span>
         </div>
@@ -258,6 +258,9 @@
 import { ref, reactive, computed } from 'vue'
 import { formatPrice, formatDateRange, formatTimeRange, stripHtml, workshopSpots } from '~/utils/format'
 import { isWorkshopPast } from '~/utils/product'
+
+const currentYear = new Date().getFullYear()
+
 const LEVEL_LABEL: Record<string, string> = {
   beginner: 'podstawowy',
   intermediate: 'średni',
