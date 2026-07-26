@@ -41,19 +41,6 @@ export const deriveProductType = (raw: {
   return 'merch'
 }
 
-/** Sort a workshop's days by day_number and each day's agenda by `sort`. */
-const sortWorkshopProgram = (w: Workshop | null): Workshop | null => {
-  if (!w) return null
-  const days = [...(w.days ?? [])]
-    .sort((a, b) => (a.day_number ?? 0) - (b.day_number ?? 0))
-    .map((d) => ({
-      ...d,
-      agenda_items: [...(d.agenda_items ?? [])].sort(
-        (a, b) => (a.sort ?? 0) - (b.sort ?? 0),
-      ),
-    }))
-  return { ...w, days }
-}
 
 /** Ensure a course's modules/tiles/materials are always sorted arrays (when a course exists). */
 const normalizeCourse = (c: Course | null): Course | null => {
@@ -69,7 +56,7 @@ const normalizeCourse = (c: Course | null): Course | null => {
 /** Turn a raw Directus product (extensions as arrays) into the app-facing shape. */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const normalizeProduct = (raw: any): Product => {
-  const workshop = sortWorkshopProgram(firstRelation<Workshop>(raw.workshop))
+  const workshop = firstRelation<Workshop>(raw.workshop)
   const course = normalizeCourse(firstRelation<Course>(raw.course))
   return {
     id: raw.id,

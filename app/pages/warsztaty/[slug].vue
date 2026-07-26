@@ -68,18 +68,9 @@
             <span class="eyebrow">Program</span>
             <h2>Dzień po dniu</h2>
             <div class="prog">
-              <article v-for="day in PROGRAM" :key="day.id" class="pday">
-                <div class="pday__label">
-                  <span class="pday__num">{{ day.num }}</span>
-                  <span class="pday__sub">{{ day.sub }}</span>
-                  <span class="pday__hours">{{ day.hours }}</span>
-                </div>
-                <div>
-                  <h3 class="pday__title">{{ day.title }}</h3>
-                  <ul>
-                    <li v-for="it in day.items" :key="it.id">{{ it.text }}</li>
-                  </ul>
-                </div>
+              <article v-for="day in PROGRAM" :key="day.num" class="pday">
+                <span class="pday__num">{{ day.num }}</span>
+                <h3 class="pday__title">{{ day.title }}</h3>
               </article>
             </div>
             <a v-if="blogpostLink" :href="blogpostLink" class="relacja">
@@ -109,7 +100,7 @@
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
                 </svg>
-                {{ daysCount }}<template v-if="scheduleSummary"> · {{ scheduleSummary }}</template>
+                {{ daysCount }}
               </span>
               <span class="book__fact">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -256,7 +247,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
-import { formatPrice, formatDateRange, formatTimeRange, stripHtml, workshopSpots } from '~/utils/format'
+import { formatPrice, formatDateRange, stripHtml, workshopSpots } from '~/utils/format'
 import { isWorkshopPast } from '~/utils/product'
 
 const currentYear = new Date().getFullYear()
@@ -323,17 +314,11 @@ const dateStr = computed(() => {
   return `${dr.day} ${dr.month} ${dr.year}`
 })
 
-// Program — built from the workshop's days + agenda (sorted in normalizeProduct).
+// Program — built from the workshop's days.
 const PROGRAM = computed(() =>
-  (workshop.value?.days ?? []).map((d) => ({
-    id: d.id,
-    num: d.day_number != null ? `Dzień ${d.day_number}` : 'Dzień',
-    sub: d.day_name ?? '',
-    hours: formatTimeRange(d.start_time, d.end_time),
-    title: d.theme ?? '',
-    items: (d.agenda_items ?? [])
-      .filter((a) => !!a.description)
-      .map((a) => ({ id: a.id, text: a.description as string })),
+  (workshop.value?.days ?? []).map((d, index) => ({
+    num: `Dzień ${index + 1}`,
+    title: d.day_header ?? '',
   }))
 )
 
@@ -348,24 +333,6 @@ const daysCount = computed(() => {
     count = Math.round((new Date(e).getTime() - new Date(s).getTime()) / (1000 * 60 * 60 * 24)) + 1
   }
   return `${count} ${count === 1 ? 'dzień' : 'dni'}`
-})
-
-// e.g. 'Piątek–Niedziela, 9:00–17:00' — derived from the days when they exist.
-const scheduleSummary = computed(() => {
-  const days = workshop.value?.days ?? []
-  if (!days.length) return ''
-  const first = days[0]
-  if (!first) return ''
-  const last = days[days.length - 1]
-  // Show a name range only when every day is named (positional endpoints), so a
-  // multi-day block with partially-filled names isn't mislabelled as one day.
-  const allNamed = days.every((d) => !!d.day_name)
-  const range = days.length > 1
-    ? (allNamed ? `${first.day_name}–${last?.day_name}` : '')
-    : (first.day_name ?? '')
-  const sameHours = days.every((d) => d.start_time === first.start_time && d.end_time === first.end_time)
-  const hours = sameHours ? formatTimeRange(first.start_time, first.end_time) : ''
-  return [range, hours].filter(Boolean).join(', ')
 })
 
 const spots = computed(() =>

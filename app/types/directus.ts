@@ -43,22 +43,10 @@ export interface WorkshopInstructor {
   instructors_id: Instructor
 }
 
-// One agenda line within a workshop day (workshop_agenda collection).
-export interface WorkshopAgendaItem {
-  id: string
-  description: string | null
-  sort: number | null
-}
-
-// A single day of a workshop block (workshop_days collection).
+// A single day of a workshop block — Repeater JSON field (`days`) on `workshops`,
+// same pattern as the course template's hero_facts/stats/bonuses/etc.
 export interface WorkshopDay {
-  id: string
-  day_number: number | null
-  day_name: string | null      // e.g. 'Piątek'
-  start_time: string | null    // 'HH:MM:SS'
-  end_time: string | null      // 'HH:MM:SS'
-  theme: string | null         // e.g. 'Drewno i trasowanie'
-  agenda_items: WorkshopAgendaItem[]
+  day_header: string
 }
 
 // Workshop extension (workshops collection) — 1:1 with a product.
@@ -271,8 +259,6 @@ export interface Schema {
   products: RawProduct[]
   product_variants: ProductVariant[]
   workshops: Workshop[]
-  workshop_days: WorkshopDay[]
-  workshop_agenda: WorkshopAgendaItem[]
   instructors: Instructor[]
   workshops_instructors: WorkshopInstructor[]
   courses: Course[]

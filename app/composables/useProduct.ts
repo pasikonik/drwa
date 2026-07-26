@@ -26,13 +26,7 @@ export const useProduct = (slugOrId: string | number) => {
             {
               workshop: [
                 'id', 'product_id', 'date_start', 'date_end', 'location',
-                'spots_total', 'spots_booked', 'advance', 'level', 'blogpost_link',
-                {
-                  days: [
-                    'id', 'day_number', 'day_name', 'start_time', 'end_time', 'theme',
-                    { agenda_items: ['id', 'description', 'sort'] },
-                  ],
-                },
+                'spots_total', 'spots_booked', 'advance', 'level', 'blogpost_link', 'days',
                 { instructors: [{ instructors_id: ['id', 'name', 'photo', 'role', 'bio'] }] },
               ],
             },
