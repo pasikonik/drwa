@@ -36,9 +36,9 @@
             {{ location }}
           </span>
         </div>
-        <div class="dhero__cta">
+        <div class="dhero__cta" v-if="!isPast || hasProgram">
           <button v-if="!isPast" class="btn btn--on-dark btn--lg" @click="jump('zapisy')">Zapisz się — {{ priceStr }}</button>
-          <button v-if="PROGRAM.length" class="btn btn--accent btn--lg" @click="jump('program')">Zobacz program</button>
+          <button v-if="hasProgram" class="btn btn--accent btn--lg" @click="jump('program')">Zobacz program</button>
         </div>
       </div>
     </section>
@@ -64,15 +64,17 @@
           </section>
 
           <!-- Program -->
-          <section v-if="PROGRAM.length" class="dsec io" id="program">
-            <span class="eyebrow">Program</span>
-            <h2>Dzień po dniu</h2>
-            <div class="prog">
-              <article v-for="day in PROGRAM" :key="day.num" class="pday">
-                <span class="pday__num">{{ day.num }}</span>
-                <h3 class="pday__title">{{ day.title }}</h3>
-              </article>
-            </div>
+          <section v-if="hasProgram || blogpostLink" class="dsec io" id="program">
+            <template v-if="hasProgram">
+              <span class="eyebrow">Program</span>
+              <h2>Dzień po dniu</h2>
+              <div class="prog">
+                <article v-for="day in PROGRAM" :key="day.num" class="pday">
+                  <span class="pday__num">{{ day.num }}</span>
+                  <h3 class="pday__title">{{ day.title }}</h3>
+                </article>
+              </div>
+            </template>
             <a v-if="blogpostLink" :href="blogpostLink" class="relacja">
               <span class="relacja__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
@@ -321,6 +323,8 @@ const PROGRAM = computed(() =>
     title: d.day_header ?? '',
   }))
 )
+
+const hasProgram = computed(() => PROGRAM.value.length > 0)
 
 const daysCount = computed(() => {
   const days = workshop.value?.days ?? []
