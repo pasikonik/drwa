@@ -277,7 +277,6 @@ if (!product.value) {
 
 useHead({
   title: `${product.value.title} — Warsztaty DRWA`,
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 // ─── Display values ───────────────────────────────────────────────────────────

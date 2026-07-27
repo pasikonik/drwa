@@ -98,7 +98,6 @@ import { formatDate, stripHtml, readTime } from '~/utils/format'
 
 useHead({
   title: 'Blog · Z lasu — DRWA',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 const { data } = await useBlogPosts()

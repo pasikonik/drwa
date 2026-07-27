@@ -106,7 +106,6 @@
 <script setup>
 useHead({
   title: 'Dlaczego budujemy z drewna — Blog DRWA',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 useScrollReveal()

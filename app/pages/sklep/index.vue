@@ -103,7 +103,6 @@ import type { Product } from '~/types/directus'
 
 useHead({
   title: 'Sklep DRWA — Merch z lasu',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 const { data } = await useProducts('merch')

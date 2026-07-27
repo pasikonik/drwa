@@ -54,7 +54,6 @@ import { formatPrice, stripHtml } from '~/utils/format'
 useHead({
   title: 'Kursy online — DRWA',
   meta: [{ name: 'description', content: 'Kursy online DRWA — ciesielstwo i praca z drewnem krok po kroku, w swoim tempie.' }],
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 const { data } = await useProducts('course')

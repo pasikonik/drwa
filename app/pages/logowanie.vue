@@ -26,7 +26,6 @@
 <script setup lang="ts">
 useHead({
   title: 'Logowanie — DRWA',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 const route = useRoute()

@@ -71,7 +71,6 @@ definePageMeta({ middleware: 'auth' })
 
 useHead({
   title: 'Moje konto — DRWA',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 const { user, logout } = useAuth()

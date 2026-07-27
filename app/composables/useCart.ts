@@ -2,6 +2,7 @@ import { computed } from 'vue'
 import type { CartItem, CheckoutItemInput } from '~/types/shop'
 import type { Product, ProductVariant } from '~/types/directus'
 import { fileId } from '~/utils/directus'
+import { chargePriceFor } from '~/utils/product'
 
 export const CART_STATE_KEY = 'drwa-cart'
 
@@ -45,9 +46,6 @@ export const useCart = () => {
     opts: { variant?: ProductVariant | null; qty?: number; size?: string | null } = {},
   ): void {
     const variant = opts.variant ?? null
-    const chargePrice = product.type === 'workshop' && product.workshop?.advance != null
-      ? Number(product.workshop.advance)
-      : Number(product.price)
 
     add({
       productId: product.id,
@@ -55,7 +53,7 @@ export const useCart = () => {
       type: product.type,
       slug: product.slug,
       title: product.title,
-      price: chargePrice,
+      price: chargePriceFor(product),
       qty: opts.qty ?? 1,
       image: fileId(product.image),
       size: opts.size ?? variant?.size ?? null,

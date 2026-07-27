@@ -138,7 +138,6 @@
 <script setup>
 useHead({
   title: 'O nas — DRWA',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 useScrollReveal()

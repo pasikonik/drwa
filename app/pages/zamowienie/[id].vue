@@ -133,7 +133,6 @@ onBeforeUnmount(stopPolling)
 
 useHead({
   title: 'Zamówienie - DRWA',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 const shortId = computed(() => id.slice(0, 8))

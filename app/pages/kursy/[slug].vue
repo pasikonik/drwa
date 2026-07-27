@@ -227,7 +227,6 @@ useHead({
     name: 'description',
     content: product.short_description ?? stripHtml(product.description, 160),
   }],
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 const course = product.course

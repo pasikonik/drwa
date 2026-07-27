@@ -245,7 +245,6 @@ const currentYear = new Date().getFullYear()
 
 useHead({
   title: `Warsztaty ${currentYear} — DRWA`,
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 const { data } = await useProducts('workshop')

@@ -163,7 +163,6 @@ import { ref } from 'vue'
 
 useHead({
   title: 'Kontakt — DRWA',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 useScrollReveal()

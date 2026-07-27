@@ -17,6 +17,5 @@
 <script setup>
 useHead({
   title: 'DRWA — Drewno · Rzemiosło · Szkolenia',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 </script>

@@ -42,6 +42,26 @@ export const deriveProductType = (raw: {
 }
 
 
+/**
+ * The amount actually charged at checkout for one unit of a product.
+ *
+ * Workshops charge the `advance` deposit rather than the full price; everything
+ * else charges `price`. Directus sends both as decimal strings, so coerce.
+ *
+ * Single source of truth for the cart, the "added to cart" toast and the
+ * server-side re-pricing in `computeOrder` — these must never disagree.
+ */
+export const chargePriceFor = (product: {
+  type: ProductType
+  price: number | string
+  workshop?: { advance?: number | string | null } | null
+}): number =>
+  Number(
+    product.type === 'workshop' && product.workshop?.advance != null
+      ? product.workshop.advance
+      : product.price,
+  )
+
 /** Ensure a course's modules/tiles/materials are always sorted arrays (when a course exists). */
 const normalizeCourse = (c: Course | null): Course | null => {
   if (!c) return null

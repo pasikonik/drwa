@@ -39,9 +39,13 @@ const imgUrl = computed(() => {
   return assetUrl(product.value.image, { width: 112, height: 112, fit: 'cover' })
 })
 
-const priceText = computed(() =>
-  Number.isFinite(product.value?.price) ? formatPrice(product.value!.price) : '',
-)
+// Number.isFinite is strict — it rejects the decimal strings Directus sends,
+// which silently blanked the price. Coerce first, then test.
+const priceText = computed(() => {
+  const p = product.value?.price
+  if (p == null) return ''
+  return Number.isFinite(Number(p)) ? formatPrice(p) : ''
+})
 
 // Hide toast when navigating to the cart page
 function checkRoute() {

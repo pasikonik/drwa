@@ -145,7 +145,6 @@ if (!product) {
 
 useHead({
   title: `${product.title} — Sklep DRWA`,
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 const SIZE_ORDER = ['s', 'm', 'l', 'xl']

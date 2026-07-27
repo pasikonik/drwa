@@ -118,7 +118,6 @@ import type { ShippingAddress, ShippingMethod } from '~/types/shop'
 
 useHead({
   title: 'Zamówienie — DRWA',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 const { items, subtotal, hasPhysical, hasCourse, isEmpty, toCheckoutItems } = useCart()

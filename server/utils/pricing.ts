@@ -7,7 +7,7 @@ import type {
   ShippingMethod,
 } from '~/types/shop'
 import { SHIPPING_RATES, FREE_SHIPPING_THRESHOLD } from '~/utils/shipping'
-import { normalizeProduct, isWorkshopPast } from '~/utils/product'
+import { normalizeProduct, isWorkshopPast, chargePriceFor } from '~/utils/product'
 import { directusAdmin } from './directusAdmin'
 
 function fail(message: string): never {
@@ -76,9 +76,7 @@ export async function computeOrder(
     if (!product) fail(`Produkt #${item.productId} nie istnieje.`)
 
     const qty = Math.max(1, Math.floor(item.qty))
-    const unitPrice = product.type === 'workshop' && product.workshop?.advance != null
-      ? Number(product.workshop.advance)
-      : Number(product.price)
+    const unitPrice = chargePriceFor(product)
     if (!Number.isFinite(unitPrice) || unitPrice < 0) fail(`Niepoprawna cena produktu „${product.title}".`)
 
     if (product.type === 'merch') {

@@ -65,7 +65,6 @@ import { fileId } from '~/utils/directus'
 
 useHead({
   title: 'Realizacje — DRWA',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 const { data: projects } = await useProjects()

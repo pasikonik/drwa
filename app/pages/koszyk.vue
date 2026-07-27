@@ -49,7 +49,6 @@
 <script setup lang="ts">
 useHead({
   title: 'Koszyk — DRWA',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 const { items, isEmpty, subtotal, setQty, remove } = useCart()

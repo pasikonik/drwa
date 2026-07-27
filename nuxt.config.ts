@@ -6,6 +6,17 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-06-09',
   devtools: { enabled: true },
 
+  app: {
+    head: {
+      // Site-wide favicon. Pages only set their own `title` via useHead.
+      link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
+    },
+  },
+
+  // NOTE: this explicit list is load-bearing, not redundant. Nuxt runs listed
+  // plugins before auto-scanned ones; directus.ts must provide `$directus`
+  // before auth.ts calls useAuth(), and auto-scan order is alphabetical
+  // (auth → cart → directus), which would break it.
   plugins: [
     '~/plugins/directus.ts'
   ],

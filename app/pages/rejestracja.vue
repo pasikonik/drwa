@@ -27,7 +27,6 @@
 <script setup lang="ts">
 useHead({
   title: 'Rejestracja — DRWA',
-  link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
 })
 
 function onSuccess(): void {

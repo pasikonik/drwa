@@ -11,6 +11,7 @@
 <script setup lang="ts">
 import type { Product, ProductVariant } from '~/types/directus'
 import { fileId } from '~/utils/directus'
+import { chargePriceFor } from '~/utils/product'
 
 const props = defineProps<{
   product: Product
@@ -33,13 +34,9 @@ function onClick(): void {
     qty: props.qty ?? 1,
   })
 
-  const chargePrice = props.product.type === 'workshop' && props.product.workshop?.advance != null
-    ? Number(props.product.workshop.advance)
-    : Number(props.product.price)
-
   showToast({
     title: props.product.title ?? '',
-    price: chargePrice,
+    price: chargePriceFor(props.product),
     image: fileId(props.product.image),
     size: props.size ?? props.variant?.size ?? null,
   })

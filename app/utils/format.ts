@@ -2,9 +2,18 @@
 
 const PL = 'pl-PL'
 
-/** 1450 → '1 450 zł' */
-export const formatPrice = (price: number): string =>
-  new Intl.NumberFormat(PL).format(price) + ' zł'
+/**
+ * 14500 → '14 500 zł'. Accepts the raw Directus value as well: `decimal`
+ * columns arrive as strings ('1450.00'), so coerce here rather than relying on
+ * Intl's own string handling and on every call site remembering `Number()`.
+ *
+ * Note: pl-PL sets minimumGroupingDigits=2, so four-digit amounts are not
+ * grouped — 1450 formats as '1450 zł', not '1 450 zł'.
+ */
+export const formatPrice = (price: number | string): string => {
+  const n = Number(price)
+  return new Intl.NumberFormat(PL).format(Number.isFinite(n) ? n : 0) + ' zł'
+}
 
 /** ISO datetime → '4 maja 2026' */
 export const formatDate = (dateStr: string): string =>
