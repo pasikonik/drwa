@@ -69,6 +69,16 @@
             </div>
           </article>
         </div>
+        <div v-else-if="loadFailed" class="wlist-empty io">
+          <svg class="wlist-empty__icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+          </svg>
+          <h3 class="wlist-empty__title">Nie udało się wczytać terminów</h3>
+          <p class="wlist-empty__text">Coś nie zadziałało po naszej stronie — terminy są, tylko chwilowo do nas nie dotarły.</p>
+          <button type="button" class="btn btn--primary btn--md" :disabled="retrying" @click="refresh()">
+            {{ retrying ? 'Wczytuję…' : 'Spróbuj ponownie' }}
+          </button>
+        </div>
         <div v-else class="wlist-empty io">
           <svg class="wlist-empty__icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/>
@@ -221,7 +231,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch, nextTick } from 'vue'
 import { formatPrice, formatDateRange, stripHtml, workshopSpots } from '~/utils/format'
 import { isWorkshopPast } from '~/utils/product'
 import type { WorkshopInstructor } from '~/types/directus'
@@ -247,7 +257,7 @@ useHead({
   title: `Warsztaty ${currentYear} — DRWA`,
 })
 
-const { data } = await useProducts('workshop')
+const { data, error, refresh, status } = await useProducts('workshop')
 
 const FALLBACK_IMGS = ['/assets/forest-1.avif', '/assets/timber-2.avif', '/assets/forest-3.avif']
 
@@ -299,6 +309,12 @@ const workshops = computed(() =>
 const upcomingWorkshops = computed(() => workshops.value.filter((w) => !w.isPast))
 const pastWorkshops = computed(() => workshops.value.filter((w) => w.isPast))
 
+// A failed Directus read leaves `data` at its empty default, which must never be
+// presented as "no workshops planned" — that is a lie about the offer. The
+// composable retries once after hydration; `retrying` covers that window.
+const loadFailed = computed(() => !!error.value && !workshops.value.length)
+const retrying = computed(() => status.value === 'pending')
+
 const FAQ = [
   {
     q: 'Czy muszę mieć doświadczenie?',
@@ -326,11 +342,20 @@ const form = reactive({
 const errors = reactive({ name: '', email: '' })
 const sent = ref(false)
 
+// Data can land after setup (client-side recovery from a failed SSR fetch), so
+// the select would otherwise stay on its initial empty value.
+watch(upcomingWorkshops, (list) => {
+  if (form.workshopId == null) form.workshopId = list[0]?.id ?? null
+})
+
 function submit() {
   errors.name = form.name.trim() ? '' : 'Podaj imię i nazwisko.'
   errors.email = form.email.trim() && form.email.includes('@') ? '' : 'Podaj poprawny adres e-mail.'
   if (!errors.name && !errors.email) sent.value = true
 }
 
-useScrollReveal()
+const { reobserve } = useScrollReveal()
+
+// Rows rendered after mount are not observed yet and would stay at opacity: 0.
+watch(() => workshops.value.length, () => nextTick(reobserve))
 </script>

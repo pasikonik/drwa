@@ -1,6 +1,7 @@
 import { readItems } from '@directus/sdk'
 import type { Product } from '~/types/directus'
 import { normalizeProduct } from '~/utils/product'
+import { withRetry } from '~/utils/directus'
 
 /**
  * Fetch a single product by slug or — as a fallback for products that have no
@@ -14,9 +15,9 @@ export const useProduct = (slugOrId: string | number) => {
     ? { id: { _eq: Number(slugOrId) } }
     : { slug: { _eq: String(slugOrId) } }
 
-  return useAsyncData<Product | null>(
+  return recoverOnClient(useAsyncData<Product | null>(
     `product-${slugOrId}`,
-    async () => {
+    () => withRetry(async () => {
       const results = (await directus.request(
         readItems('products', {
           filter,
@@ -35,7 +36,7 @@ export const useProduct = (slugOrId: string | number) => {
         })
       )) as unknown[]
       return results[0] ? normalizeProduct(results[0]) : null
-    },
+    }),
     { default: () => null }
-  )
+  ))
 }

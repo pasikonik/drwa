@@ -1,5 +1,6 @@
 import { readItems } from '@directus/sdk'
 import type { BlogPost } from '~/types/directus'
+import { withRetry } from '~/utils/directus'
 
 /**
  * Fetch all published blog posts ordered by publish_date descending.
@@ -10,16 +11,16 @@ import type { BlogPost } from '~/types/directus'
 export const useBlogPosts = () => {
   const { directus } = useDirectus()
 
-  return useAsyncData<BlogPost[]>(
+  return recoverOnClient(useAsyncData<BlogPost[]>(
     'blog-posts-published',
-    () =>
+    () => withRetry(() =>
       directus.request(
         readItems('blog_posts', {
           filter: { status: { _eq: 'published' } },
           sort: ['-publish_date'],
           fields: ['id', 'title', 'slug', 'content', 'category', 'featured_image', 'publish_date'],
         })
-      ) as Promise<BlogPost[]>,
+      ) as Promise<BlogPost[]>),
     { default: () => [] as BlogPost[] }
-  )
+  ))
 }

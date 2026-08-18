@@ -1,5 +1,6 @@
 import { readItems } from '@directus/sdk'
 import type { Project } from '~/types/directus'
+import { withRetry } from '~/utils/directus'
 
 /**
  * Fetch all published projects (realizacje) with their M2M images.
@@ -13,9 +14,9 @@ import type { Project } from '~/types/directus'
 export const useProjects = () => {
   const { directus } = useDirectus()
 
-  return useAsyncData<Project[]>(
+  return recoverOnClient(useAsyncData<Project[]>(
     'projects-published',
-    () =>
+    () => withRetry(() =>
       directus.request(
         readItems('projects', {
           filter: { status: { _eq: 'published' } },
@@ -25,7 +26,7 @@ export const useProjects = () => {
             { images: [{ directus_files_id: ['id'] }] },
           ],
         })
-      ) as Promise<Project[]>,
+      ) as Promise<Project[]>),
     { default: () => [] as Project[] }
-  )
+  ))
 }

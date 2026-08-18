@@ -1,6 +1,7 @@
 import { readItems } from '@directus/sdk'
 import type { Product } from '~/types/directus'
 import { normalizeProduct } from '~/utils/product'
+import { withRetry, isTransientError } from '~/utils/directus'
 
 /**
  * Fetch a single course product together with its course extension, modules,
@@ -13,6 +14,10 @@ import { normalizeProduct } from '~/utils/product'
  * fails — we then retry with a core field set that works on the current
  * schema and warn loudly.
  *
+ * A dropped connection is NOT a schema problem: transient errors are retried
+ * and then rethrown, so they surface as a real error (and get another go via
+ * `recoverOnClient`) instead of quietly degrading the page to core fields.
+ *
  * @example const { data: course } = await useCourse(2)         // by id
  * @example const { data: course } = await useCourse('stodola') // by slug
  */
@@ -24,9 +29,9 @@ export const useCourse = (slugOrId: string | number) => {
     ? { id: { _eq: Number(slugOrId) } }
     : { slug: { _eq: String(slugOrId) } }
 
-  return useAsyncData<Product | null>(
+  return recoverOnClient(useAsyncData<Product | null>(
     `course-${slugOrId}`,
-    async () => {
+    () => withRetry(async () => {
       let rows: unknown[]
       try {
         rows = (await directus.request(
@@ -49,6 +54,7 @@ export const useCourse = (slugOrId: string | number) => {
           })
         )) as unknown[]
       } catch (err) {
+        if (isTransientError(err)) throw err
         console.warn(
           '[useCourse] Pełne zapytanie padło — w Directusie brakuje pól szablonu kursu '
             + 'albo uprawnień publicznych (spec 2026-07-15, Appendix A). Retry na polach podstawowych.',
@@ -71,7 +77,7 @@ export const useCourse = (slugOrId: string | number) => {
         )) as unknown[]
       }
       return rows[0] ? normalizeProduct(rows[0]) : null
-    },
+    }),
     { default: () => null }
-  )
+  ))
 }

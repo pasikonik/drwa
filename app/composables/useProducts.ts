@@ -1,6 +1,7 @@
 import { readItems } from '@directus/sdk'
 import type { Product, ProductVariant, ProductType } from '~/types/directus'
 import { normalizeProduct } from '~/utils/product'
+import { withRetry } from '~/utils/directus'
 
 // Returned by useProducts — contains both products and their variants in one
 // round-trip so pages can await a single composable.
@@ -17,15 +18,20 @@ export interface ProductsWithVariants {
  * with their (shallow) extensions and filter by the derived type in memory.
  * Results are cached by Nuxt's useAsyncData with a stable key.
  *
+ * Directus is remote, so the read is wrapped in `withRetry` (transient socket
+ * drops) and `recoverOnClient` (SSR failed → refetch after hydration). Without
+ * both, one dropped connection renders the page as an empty catalogue and it
+ * stays that way until the visitor reloads by hand.
+ *
  * @example const { data } = await useProducts('merch')
  * @example const { data } = await useProducts('workshop')
  */
 export const useProducts = (type: ProductType) => {
   const { directus } = useDirectus()
 
-  return useAsyncData<ProductsWithVariants>(
+  return recoverOnClient(useAsyncData<ProductsWithVariants>(
     `products-${type}`,
-    async () => {
+    () => withRetry(async () => {
       const raw = (await directus.request(
         readItems('products', {
           sort: ['id'],
@@ -60,9 +66,9 @@ export const useProducts = (type: ProductType) => {
           : []
 
       return { products, variants }
-    },
+    }),
     {
       default: (): ProductsWithVariants => ({ products: [], variants: [] }),
     }
-  )
+  ))
 }
