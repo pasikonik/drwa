@@ -13,7 +13,7 @@
 
     <main id="main-content" class="container">
       <!-- Filtry kategorii -->
-      <div class="bfilters io">
+      <div v-if="hasPosts" class="bfilters io">
         <div class="bfilters__tags" role="group" aria-label="Filtruj wpisy">
           <button
             v-for="c in CATS"
@@ -47,8 +47,27 @@
         </div>
       </NuxtLink>
 
+      <!-- Brak wpisów: nieudany odczyt vs. pusty blog -->
+      <div v-if="loadFailed" class="blist-empty io">
+        <svg class="blist-empty__icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+        </svg>
+        <h2 class="blist-empty__title">Nie udało się wczytać wpisów</h2>
+        <p class="blist-empty__text">Coś nie zadziałało po naszej stronie — wpisy są, tylko chwilowo do nas nie dotarły.</p>
+        <button type="button" class="btn btn--primary btn--md" :disabled="retrying" @click="refresh()">
+          {{ retrying ? 'Wczytuję…' : 'Spróbuj ponownie' }}
+        </button>
+      </div>
+      <div v-else-if="!hasPosts" class="blist-empty io">
+        <svg class="blist-empty__icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/>
+        </svg>
+        <h2 class="blist-empty__title">Pierwsze wpisy niedługo się pojawią</h2>
+        <p class="blist-empty__text">Piszemy je powoli, jak schnie dobre drewno. Zajrzyj tu wkrótce albo zapisz się na newsletter — damy znać, gdy tylko coś wyjdzie z warsztatu.</p>
+      </div>
+
       <!-- Siatka wpisów -->
-      <section class="section--tight" style="padding-top: 0">
+      <section v-if="list.length" class="section--tight" style="padding-top: 0">
         <div class="bgrid">
           <NuxtLink v-for="a in list" :key="a.id" class="drwa-pcard io" :to="`/blog/${a.slug}`">
             <div class="drwa-pcard__media">
@@ -100,9 +119,16 @@ useHead({
   title: 'Blog · Z lasu — DRWA',
 })
 
-const { data } = await useBlogPosts()
+const { data, error, status, refresh } = await useBlogPosts()
 
 const allPosts = computed(() => data.value ?? [])
+const hasPosts = computed(() => allPosts.value.length > 0)
+
+// Nieudany odczyt zostawia `data` na domyślnej pustej liście — nie wolno tego
+// pokazać jako „bloga bez wpisów". Composable ponawia raz po hydracji;
+// `retrying` obejmuje to okno oraz ręczne kliknięcie „Spróbuj ponownie".
+const loadFailed = computed(() => !!error.value && !hasPosts.value)
+const retrying = computed(() => status.value === 'pending')
 
 // Kategorie pobrane z realnych wpisów (unikalne, w kolejności pojawienia się)
 const categories = computed(() => {
@@ -143,6 +169,7 @@ function subscribe() {
 
 const { reobserve } = useScrollReveal()
 
-// Zmiana filtra tworzy nowe elementy .io — trzeba je dopiąć do obserwatora
-watch(cat, () => nextTick(reobserve))
+// Zmiana filtra oraz wpisy doczytane po hydracji tworzą nowe elementy .io —
+// trzeba je dopiąć do obserwatora, inaczej zostaną niewidoczne.
+watch([cat, allPosts], () => nextTick(reobserve))
 </script>
