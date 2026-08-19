@@ -21,7 +21,7 @@
           <h4>Kursy online</h4>
           <ul>
             <li><NuxtLink to="/kursy/od-wiaty-do-chaty">Od wiaty do chaty</NuxtLink></li>
-            <li><NuxtLink to="/kursy/minikurs-podstaw">Minikurs podstaw</NuxtLink></li>
+            <li><NuxtLink to="/kursy/minikurs">Minikurs podstaw</NuxtLink></li>
             <li><NuxtLink to="/o-nas">O nas</NuxtLink></li>
           </ul>
         </div>
@@ -29,7 +29,6 @@
           <h4>Kontakt</h4>
           <ul>
             <li><a href="mailto:kontakt@drwa.pl">kontakt@drwa.pl</a></li>
-            <li><a>Stolarnia pod lasem</a></li>
           </ul>
         </div>
       </div>
