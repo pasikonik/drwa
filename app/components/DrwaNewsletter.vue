@@ -1,9 +1,9 @@
 <template>
   <section class="section container">
-    <div class="news io">
+    <div class="news io" id="newsletter">
       <span class="eyebrow eyebrow--ondark">Newsletter</span>
-      <h2>Listy z lasu</h2>
-      <p>Raz w miesiącu: nowe terminy warsztatów, materiały z kursów online i krótkie historie zza warsztatu.</p>
+      <h2>Kurier Ciesielski</h2>
+      <p>Raz na dwa tygodnie: aktualności ciesielskie i materiały edukacyjne, inspiracje i historie z naszej stolarni.</p>
       <p v-if="sent" class="news__sent">Dziękujemy — do zobaczenia w lesie.</p>
       <form v-else class="news__form" @submit.prevent="submit">
         <input

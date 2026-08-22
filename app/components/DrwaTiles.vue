@@ -2,8 +2,8 @@
   <section class="section container" id="warsztaty">
     <div class="sec-head io">
       <span class="eyebrow">Trzy drogi do drewna</span>
-      <h2>Od czego zaczniesz?</h2>
-      <p>Przyjdź na warsztat, ucz się online albo poznaj nas bliżej. Każda droga prowadzi do tego samego — robienia rzeczy z drewna własnymi rękami.</p>
+      <h2>Od czego zaczynasz?</h2>
+      <p>Naucz się ciesielstwa, stolarki i snycerstwa na warsztatach stacjonarnych, buduj sam na podstawie lekcji online, lub dowiedz się, co rąbią Drwa.</p>
     </div>
     <div class="tiles">
       <NuxtLink
@@ -36,18 +36,20 @@
 const currentYear = new Date().getFullYear()
 
 const TILES = [
+  // Kadrowane do 3/4 — dokładnie proporcja `.tile`. `pos` działa dopiero
+  // poniżej 900px, gdzie kafelek przechodzi na 16/10 i przycina w pionie.
   {
-    to: '/warsztaty', img: '/assets/forest-1.avif', pos: '50% 50%',
+    to: '/warsztaty', img: '/assets/tile-warsztaty.avif', pos: '50% 45%',
     eyebrow: `Stacjonarnie · ${currentYear}`, title: `Warsztaty ${currentYear}`,
     desc: 'Łączenia ciesielskie, więźby i konstrukcje — przy realnym drewnie i ognisku.',
   },
   {
-    to: '/kursy', img: '/assets/forest-3.avif', pos: '50% 60%',
+    to: '/kursy', img: '/assets/tile-kursy.avif', pos: '50% 40%',
     eyebrow: 'Online · w swoim tempie', title: 'Kurs online',
     desc: '„Od wiaty do chaty" oraz minikurs podstaw pracy z drewnem — kiedy chcesz.',
   },
   {
-    to: '/o-nas', img: '/assets/timber-2.avif', pos: '50% 45%',
+    to: '/o-nas', img: '/assets/tile-o-nas.avif', pos: '50% 35%',
     eyebrow: 'Ludzie · społeczność', title: 'O nas (DRWA)',
     desc: 'Kim jesteśmy, dlaczego budujemy naturalnie i co dotąd zbudowaliśmy razem.',
   },

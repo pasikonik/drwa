@@ -8,9 +8,9 @@
       <div class="about-hero__scrim" />
       <div class="container">
         <div class="about-hero__inner">
-          <span class="eyebrow eyebrow--ondark">O nas · Drewno · Rzemiosło · Szkolenia</span>
-          <h1>Pracujemy z drewnem. I z ludźmi.</h1>
-          <p>DRWA to mała pracownia ciesielska i społeczność, która wokół niej rośnie. Uczymy pracy z drewnem, budujemy naturalnie i piszemy o tym, czego las uczy nas po drodze.</p>
+          <span class="eyebrow eyebrow--ondark">O nas · Ludzie · Drewno · Las</span>
+          <h1>Pracujemy z drewnem i z ludźmi.</h1>
+          <p>Drwa to pracownia rzemiosła drzewnego i społeczność, która wokół niej rośnie. Uczymy pracy z drewnem, budujemy naturalne domy i zdrowe relacje z ludźmi, z naturą i z samymi sobą. I nie zapominamy chodzić do lasu!</p>
         </div>
       </div>
     </section>
@@ -20,13 +20,16 @@
       <section class="section container">
         <div class="story">
           <div class="story__text io">
-            <span class="eyebrow">Skąd się wzięło DRWA</span>
-            <h2>Od jednego dłuta do wspólnego stołu</h2>
-            <p>DRWA zaczęło się od warsztatu — dosłownie: od stołu, paru dłut i przekonania, że praca z drewnem jest zbyt dobra, żeby zatrzymywać ją dla siebie. Pierwsze warsztaty odbyły się dla znajomych. Potem znajomi przyprowadzili znajomych.</p>
-            <p>Dziś DRWA to trzy nurty jednej rzeki: stacjonarne warsztaty ciesielskie, mały sklep z rzeczami, które sami nosimy, i blog o naturalnym budownictwie. Wszystko w tym samym duchu — powoli, uczciwie, blisko lasu.</p>
+            <span class="eyebrow">Skąd wyrosły Drwa</span>
+            <h2>Na początku był las.</h2>
+            <p>A tam zapach sosnowej żywicy i butwienia, ściółka z mchu, bezpieczne schronienie pod koronami niebosiężnych drzew. I dużo patyków — szałasów i ognisk. Czas wolności i eksploracji, leśnych przygód i poznawania świata.</p>
+            <p>Z tych nauk wyrosła szkoła Drew, w której do dziś budujemy schronienia (choć z trochę innych patyków) i uczymy się od świerków i brzóz. Spotykamy się przy stole warsztatowym, by wspólnie tworzyć w drewnie, poznawać świat i siebie nawzajem. Siadamy przy ogniu, by dzielić historie i pieśni.</p>
+            <p>Cenimy piękno i siłę natury, która daje nam materiał do obróbki i nieskończoną inspirację form i kształtów. Cenimy też pracę ludzkich rąk i dzieła ludzkiego umysłu — czerpiemy z wielowiekowej tradycji pracy z drewnem oraz ze współczesnych narzędzi i metod.</p>
+            <p>W efekcie tworzymy drewniane obiekty — solidne konstrukcje, naturalne domy, meble i przedmioty codziennego użytku, rzeźby i ozdoby. Uczymy innych, jak to robić dobrze, czyli skutecznie i z przyjemnością.</p>
+            <p>Kochamy smak lipowych wiórów o poranku, dźwięk ostrego hebla na suchym drewnie i zapach lasu po deszczu.</p>
           </div>
           <figure class="story__img io">
-            <img src="/assets/timber-2.avif" alt="Belki drewniane w pracowni DRWA" />
+            <img src="/assets/tile-o-nas.avif" alt="Znak DRWA na tle lasu w Górach Izerskich" />
           </figure>
         </div>
       </section>
@@ -41,16 +44,43 @@
             <div class="founder__body io">
               <span class="eyebrow">Założyciel</span>
               <h2>Jędrzej Cyganik</h2>
-              <p class="founder__role">Cieśla · prowadzący warsztaty · autor bloga</p>
-              <p>Jędrzej założył DRWA, żeby połączyć dwie rzeczy, bez których nie umie żyć: pracę z drewnem i ludzi. Jest entuzjastą naturalnego budownictwa i ekologii — wierzy, że dom można postawić z tego, co rośnie obok, i że najlepsza wiedza przechodzi z rąk do rąk, przy wspólnym stole.</p>
-              <p>Na warsztatach uczy od pierwszego cięcia: jak czytać słoje, jak ostrzyć, jak łączyć drewno bez gwoździ. A wieczorami, przy ognisku, najchętniej słucha.</p>
-              <blockquote class="founder__quote">
-                „Drewno pamięta. Każda deska przechowuje swoje suche i mokre lata — naszą robotą jest to uszanować.”
-                <cite>Jędrzej Cyganik · DRWA</cite>
-              </blockquote>
+              <p class="founder__role">Cieśla · instruktor · gospodarz · twórca Drew</p>
+              <p>Po studiach literaturoznawczych odbył podróż formacyjną do Kanady, gdzie odkrył poezję zapisaną w słojach czerwonych cedrów. Od tamtego czasu interpretuje kolejne bale, kantówki i konary rozmaitych gatunków, składając je w użyteczne całości.</p>
+              <p>Przez lata prowadził działalność rzemieślniczą, wykonując zlecenia dla klientów indywidualnych — naturalne domy, altany, tarasy, zabudowy lokali usługowych, meble i rzeźby na zamówienie.</p>
+              <p>Dziś uczy innych, jak to robić. Stworzył autorską formułę warsztatów, w której uczniowie, instruktorzy i inwestor współpracują w celu uzyskania wspólnej korzyści. Uwielbia budowanie z ludźmi i naukę, która z tego płynie.</p>
+              <p>Od lat dzieli się wiedzą w internecie, tworząc darmowe artykuły, filmy i tutoriale oraz płatne kursy online. Na co dzień współprowadzi rodzinne siedlisko agroturystyczne, gdzie buduje nowe rzeczy i remontuje stare, uprawia ogród, hoduje owce i sadzi drzewa.</p>
+              <p class="founder__closing">Z domu góral, z wyboru Izerianin, z serca mieszkaniec Ziemi i sługa życia — w poszukiwaniu głębokiego rozumienia jego ewolucji.</p>
             </div>
           </div>
         </div>
+      </section>
+
+      <!-- ===== Kadra ===== -->
+      <section class="section container" id="kadra">
+        <div class="sec-head io">
+          <span class="eyebrow">Zespół</span>
+          <h2>Kadra Drew</h2>
+          <p>Za Jędrzejem stoi grono instruktorów i pomocników, którzy razem tworzą warsztaty i stolarnię Drew.</p>
+        </div>
+
+        <div class="crew-grid">
+          <div v-for="c in CREW" :key="c.name" class="crew-card io">
+            <div class="crew-card__avatar">{{ initials(c.name) }}</div>
+            <div>
+              <h3 class="crew-card__name">{{ c.name }}</h3>
+              <p class="crew-card__role">{{ c.role }}</p>
+              <p class="crew-card__bio">{{ c.bio }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="crew-more io">
+          <div v-for="n in CREW_NAMES" :key="n" class="crew-chip">
+            <span class="crew-chip__avatar">{{ initials(n) }}</span>
+            <span class="crew-chip__name">{{ n }}</span>
+          </div>
+        </div>
+        <p class="crew-more__note io">Profile w przygotowaniu — już niedługo więcej o każdej z tych osób.</p>
       </section>
 
       <!-- ===== Trzy nurty ===== -->
@@ -96,7 +126,7 @@
                 <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/>
               </svg>
             </div>
-            <h3>Blog · Z lasu</h3>
+            <h3>Blog · Zapiski drzewne</h3>
             <p>Notatki o drewnie, naturalnym budownictwie i ekologii.</p>
             <span class="strand__go">
               Poczytaj
@@ -139,6 +169,40 @@
 useHead({
   title: 'O nas — DRWA',
 })
+
+// Bio dopisane dla osób, dla których mamy realny tekst źródłowy; reszta
+// kadry czeka na materiały — na razie tylko lista nazwisk (patrz CREW_NAMES).
+const CREW = [
+  {
+    name: 'Gregory Paszyński',
+    role: 'Instruktor · nauczyciel pracy z drewnem',
+    bio: 'Nauczyciel pracy z drewnem, muzyki i języka angielskiego — współprowadzi warsztaty Drew od samego początku. Miłośnik tradycyjnych metod i ostrych narzędzi, absolwent studiów agroleśniczych i Permaculture Design Course. Sam wytwarza przedmioty z drewna, od konstrukcji po snycerskie majstersztyki, i pomaga planować funkcjonalne, estetyczne siedliska.',
+  },
+  {
+    name: 'Michał „Igła" Kiełbik',
+    role: 'Instruktor · złota rączka',
+    bio: 'Fachowiec, złota rączka. Po warsztatach Drew rzucił pracę biurową i zaczął pracować rękami — dachówka na stolarni Drew to jedno z jego arcydzieł. Po kilku latach pracy na budowach otworzył własną działalność we Wrocławiu. Czasami zasila kadrę instruktorską Drew, szczególnie kiedy trzeba zbudować coś dużego.',
+  },
+]
+
+const CREW_NAMES = [
+  'Karol Sprawka',
+  'Michał „Olej" Olejniczak',
+  'Grzegorz „Saper" Wieczorek',
+  'Paweł Dulak',
+]
+
+function initials(name) {
+  return name
+    .replace(/„[^"]*"/g, '')
+    .trim()
+    .split(' ')
+    .filter(Boolean)
+    .map((n) => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
+}
 
 useScrollReveal()
 </script>

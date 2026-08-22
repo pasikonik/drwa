@@ -14,8 +14,10 @@
 
 <script setup>
 const PARTNERS = [
-  { name: 'Iseris', kind: 'Stwowarzyszenie', href: 'https://iseris.pl/' },
-  { name: 'Dobry Dom', kind: 'Naturalne Budownictwo', href: 'http://www.stankowice64.com/index_right.html' },
+  { name: 'Dłuta.pl', kind: 'Sklep narzędziowy', href: 'https://dluta.pl/' },
   { name: 'Festool', kind: 'Narzędzia', href: 'https://www.festool.pl/' },
+  { name: 'Iseris', kind: 'Stowarzyszenie', href: 'https://iseris.pl/' },
+  { name: 'Dolina Harmonii', kind: 'Siedlisko · warsztaty', href: 'http://www.dolinaharmonii.pl/' },
+  { name: 'Osada Earth', kind: 'Prosinko · partnerska osada', href: 'https://www.osada.earth/' },
 ]
 </script>

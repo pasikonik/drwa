@@ -6,29 +6,30 @@
           <div class="brandrow">
             <img src="/assets/logo-no-bg-white.avif" alt="DRWA" />
           </div>
-          <p>Drewno, rzemiosło i szkolenia. Pracujemy z drewnem i budujemy wokół niego społeczność — w duchu natury i ekologii.</p>
+          <p>Drewno, rzemiosło i szkolenia. Budujemy z drewna i tworzymy społeczność w duchu permakultury.</p>
         </div>
         <div>
           <h4>Warsztaty</h4>
           <ul>
             <li><NuxtLink to="/warsztaty">Warsztaty {{ currentYear }}</NuxtLink></li>
-            <li><NuxtLink to="/warsztaty">Informacje i oferta</NuxtLink></li>
-            <li><a @click="jump('opinie')">Relacje i opinie</a></li>
-            <li><NuxtLink to="/blog">Blog · Z lasu</NuxtLink></li>
+            <li><NuxtLink to="/warsztaty#informacje">Informacje i oferta</NuxtLink></li>
+            <li><NuxtLink to="/#opinie">Relacje i opinie</NuxtLink></li>
           </ul>
         </div>
         <div>
           <h4>Kursy online</h4>
           <ul>
             <li><NuxtLink to="/kursy/od-wiaty-do-chaty">Od wiaty do chaty</NuxtLink></li>
-            <li><NuxtLink to="/kursy/minikurs">Minikurs podstaw</NuxtLink></li>
-            <li><NuxtLink to="/o-nas">O nas</NuxtLink></li>
+            <li><NuxtLink to="/kursy/minikurs">Podstawy pracy z drewnem</NuxtLink></li>
+            <li><NuxtLink to="/kursy">Informacje o kursach</NuxtLink></li>
           </ul>
         </div>
         <div>
           <h4>Kontakt</h4>
           <ul>
             <li><a href="mailto:kontakt@drwa.pl">kontakt@drwa.pl</a></li>
+            <li><NuxtLink to="/#newsletter">Kurier Ciesielski</NuxtLink></li>
+            <li><NuxtLink to="/o-nas">O nas</NuxtLink></li>
           </ul>
         </div>
       </div>
@@ -65,9 +66,4 @@
 
 <script setup>
 const currentYear = new Date().getFullYear()
-
-function jump(id) {
-  const el = document.getElementById(id)
-  if (el) el.scrollIntoView({ behavior: 'smooth' })
-}
 </script>

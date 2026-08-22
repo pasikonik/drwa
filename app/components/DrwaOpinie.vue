@@ -25,13 +25,17 @@
 </template>
 
 <script setup>
+// Prawdziwe opinie z Google i komentarzy kursantów — zastępują wcześniejsze
+// przykładowe cytaty, które nie pochodziły od realnych osób.
 const QUOTES = [
-  { text: 'Trzy dni, których nie zapomnę. Wyszedłem z własnoręcznie zbudowaną ławą i głową pełną pomysłów.', name: 'Michał Zaremba', role: 'Warsztat · Altana', stars: 5 },
-  { text: 'Spokojnie, konkretnie, bez ściemy. Po raz pierwszy poczułem drewno „od środka".', name: 'Anna Lewandowska', role: 'Kurs · Od wiaty do chaty', stars: 5 },
-  { text: 'Ognisko, las i ludzie, którzy naprawdę kochają to, co robią. Wrócę po więcej.', name: 'Piotr Mazur', role: 'Warsztat · Łączenia', stars: 5 },
+  { text: 'Warsztaty Drew to fachowa i konkretna wiedza o pracy z drewnem oraz efektywna i miła współpraca ze wspaniałymi ludźmi.', name: 'Ewa Krecik', role: 'Warsztaty stacjonarne', stars: 5 },
+  { text: 'Cudowne miejsce, cudowni ludzie, wspaniałe warsztaty. Merytorycznie mistrzostwo. Wiele ambitnych i pięknych projektów ciesielskich. Bardzo polecam DRWA.', name: 'Wojciech Snoch', role: 'Warsztaty stacjonarne', stars: 5 },
+  { text: 'Jędrzej jest bardzo dobrym nauczycielem, a kurs jest solidnie skonstruowany — wszystko w prosty, przystępny, ale i wyczerpujący sposób. Dzięki lekcjom poczułem, że budowa własnego domku jest w moim zasięgu.', name: '@Thotep', role: 'Kurs online · Od wiaty do chaty', stars: 5 },
+  { text: 'Udział w tygodniowych Warsztatach Drewnianej Samodzielności był jedną z najlepszych rzeczy, jakie zrobiłem dla siebie w ostatnim czasie. Kadra prowadząca na najwyższym poziomie, a ja nabrałem pewności siebie, by stawiać pierwsze kroki z własnymi projektami.', name: 'Jacek Domagalski', role: 'Warsztaty stacjonarne', stars: 5 },
+  { text: 'Byłem na tygodniowych warsztatach i bardzo mi się podobało! Umiejętności pracy z drewnem to jedno, ale klimat samego miejsca i „slow life", którego tam doświadczyłem, to drugie. Polecam ;)', name: 'Sebastian Ścisłowski', role: 'Warsztaty stacjonarne', stars: 5 },
 ]
 
 function initials(name) {
-  return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+  return name.replace('@', '').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
 }
 </script>

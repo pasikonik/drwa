@@ -1,7 +1,16 @@
 <template>
   <section class="hero" data-anim :class="{ 'is-in': isIn }" id="top">
     <div class="hero__bg">
-      <img src="/assets/mist-hero.avif" alt="Świerkowy las we mgle o świcie" />
+      <!-- LCP candidate — eager + high priority so it is not queued behind the logo. -->
+      <img
+        src="/assets/hero-roof.avif"
+        alt="Cieśle stawiają więźbę dachową o zachodzie słońca"
+        width="1800"
+        height="1008"
+        loading="eager"
+        decoding="sync"
+        fetchpriority="high"
+      />
     </div>
     <div class="hero__scrim" />
     <div class="container">
@@ -9,9 +18,8 @@
         <img class="hero__mark reveal-up" src="/assets/logo-no-bg-white.avif" alt="DRWA" />
         <span class="eyebrow hero__eyebrow reveal-up">Drewno · Rzemiosło · Szkolenia</span>
         <h1 class="manifest">
-          <span class="manifest__line reveal-up">Robimy rzeczy z drewna.</span>
-          <span class="manifest__line reveal-up">Stawiamy solidne konstrukcje.</span>
-          <span class="manifest__line reveal-up">Budujemy naturalnie.</span>
+          <span class="manifest__line reveal-up">Budujemy</span>
+          <span class="manifest__line reveal-up">rzeczy z drewna.</span>
           <span class="manifest__line manifest__line--accent reveal-up">
             <span class="arrow">→</span> Uczymy tego innych.
           </span>

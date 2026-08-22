@@ -5,7 +5,7 @@
     <!-- ===== Hero ===== -->
     <section class="phero" id="top">
       <div class="phero__bg">
-        <img src="/assets/forest-band.avif" alt="Las we mgle" />
+        <img src="/assets/warsztaty-band.avif" alt="Grupa uczestników przy stole warsztatowym w stolarni" />
       </div>
       <div class="phero__scrim" />
       <div class="container phero__inner">
@@ -93,31 +93,44 @@
         <div class="strip__grid">
           <div class="io">
             <span class="eyebrow eyebrow--ondark">Co w cenie</span>
-            <h3>Przyjedź z pustymi rękami</h3>
+            <h3>Przyjedź z pustymi rękami, wróć z nowymi umiejętnościami</h3>
             <ul class="strip__list">
               <li>
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                Wszystkie narzędzia i materiały — pracujesz na naszym
+                Ok. 6h praktyki i 3h teorii dziennie — blisko 50h w ciągu tygodnia
               </li>
               <li>
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                Obiady przy ognisku, kawa i herbata przez cały dzień
+                Prowadzenie przez cały proces budowy obiektu, od A do Z
               </li>
               <li>
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                Notatki i rysunki konstrukcyjne w PDF po warsztacie
+                Zakwaterowanie i pełne wyżywienie
               </li>
               <li>
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                Mała grupa — maksymalnie 10 osób na dwóch prowadzących
+                Narzędzia, materiały i w pełni wyposażona stolarnia
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                Kameralna grupa i kilku prowadzących
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                Notatki, prezentacje i materiały edukacyjne po warsztacie
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                Włączenie do społeczności Drew — wsparcie, wydarzenia zamknięte, zniżki na warsztaty i w sklepie dluta.pl
               </li>
             </ul>
           </div>
           <div class="io">
             <span class="eyebrow eyebrow--ondark">Dla kogo</span>
-            <h3>Dla tych, którzy chcą zrobić, nie obejrzeć</h3>
-            <p>Nie musisz nic umieć — musisz chcieć pracować rękami. Warsztaty <strong>podstawowe</strong> zaczynamy od pierwszego cięcia i podstaw czytania drewna.</p>
-            <p>Poziom <strong>średni</strong> to projekty na kilka dni, przy których przyda się jeden warsztat za sobą albo własne doświadczenie przy drewnie.</p>
+            <h3>Dla nowicjuszy, hobbystów i tych, którzy nigdy nie przestają się uczyć</h3>
+            <p>Tak jak my! Budowanie z drewna to cały wszechświat, w którym wciąż odkrywamy nowe planety i kontynenty.</p>
+            <p>Każdy projekt jest inny — podczas każdego warsztatu uczymy się czegoś nowego. Osoby początkujące i te bardziej doświadczone znajdują swoje miejsce w grupie i rozwijają rzemiosło według własnych możliwości, a dba o to kadra instruktorska.</p>
+            <p>Jedyny warunek uczestnictwa to <strong>chęć pracy własnymi rękami</strong> i bliskiego spotkania z drewnem. Warsztaty kierujemy do osób pełnoletnich — niepełnoletni mogą wziąć udział pod opieką rodziców.</p>
           </div>
         </div>
       </section>
@@ -127,7 +140,7 @@
         <div class="sec-head io">
           <span class="eyebrow">Archiwum</span>
           <h2>Minione warsztaty</h2>
-          <p>To już za nami — konstrukcje stoją, kursanci wrócili do domów z nowymi umiejętnościami.</p>
+          <p>Te konstrukcje i przedmioty już służą ludziom, a na podwórkach absolwentów powstają kolejne.</p>
         </div>
         <ul class="arch io">
           <li v-for="p in pastWorkshops" :key="p.id" class="arch__row">
@@ -296,7 +309,7 @@ const workshops = computed(() =>
       advance: w?.advance != null ? formatPrice(Number(w.advance)) : null,
       spotsLabel: spots.label,
       spotsTone: spots.tone,
-      place: w?.location ?? 'Stolarnia pod lasem · Beskid Niski',
+      place: w?.location ?? 'Dolina Harmonii · Kopaniec, Góry Izerskie',
       lead: instructorLead(w?.instructors),
       rawImage: p.image,
       img: FALLBACK_IMGS[i % FALLBACK_IMGS.length],
@@ -317,20 +330,40 @@ const retrying = computed(() => status.value === 'pending')
 
 const FAQ = [
   {
-    q: 'Czy muszę mieć doświadczenie?',
-    a: 'Nie. Większość uczestników zaczyna od zera — warsztaty podstawowe prowadzimy od pierwszego cięcia. Przy poziomie średnim przyda się jeden warsztat za sobą albo trochę pracy z drewnem na własną rękę.',
+    q: 'Gdzie odbywają się warsztaty?',
+    a: 'Większość warsztatów odbywa się w naszym siedlisku w Górach Izerskich, w Kopańcu koło Jeleniej Góry. Organizujemy też warsztaty w innych lokalizacjach — sprawdź aktualne terminy w sekcji powyżej.',
   },
   {
-    q: 'Czy potrzebuję własnych narzędzi?',
-    a: 'Nie — wszystkie narzędzia i materiały są w cenie. Jeśli masz swoje dłuto czy piłę, którą lubisz, śmiało przywieź; chętnie popracujemy na twoim.',
+    q: 'Ile trwają warsztaty stacjonarne?',
+    a: 'Zależnie od terminu najczęściej organizujemy warsztaty tygodniowe, ale zdarzają się też krótsze — 4, 5 i 6-dniowe.',
   },
   {
-    q: 'Co z noclegiem i wyżywieniem?',
-    a: 'Obiady przy ognisku są w cenie warsztatu. Noclegi organizujesz we własnym zakresie — po zapisie wyślemy listę sprawdzonych miejsc w okolicy, od pola namiotowego po agroturystykę.',
+    q: 'Jak wygląda zakwaterowanie i wyżywienie?',
+    a: 'Zakwaterowanie zależy od miejsca — w naszym siedlisku mamy komfortowe pokoje dwu- i trzyosobowe z łazienkami. Zapewniamy pełne wyżywienie, 3 posiłki dziennie. Z zasady gotujemy wegetariańsko, pysznie i wystarczająco pożywnie, by nasycić mięsożerców.',
   },
   {
-    q: 'Co, jeśli będzie padać?',
-    a: 'Pracujemy niezależnie od pogody — większość zajęć odbywa się pod zadaszeniem stolarni. Weź ubranie robocze i buty, które mogą się ubrudzić.',
+    q: 'Jak zarezerwować miejsce?',
+    a: 'Wypełnij formularz zgłoszeniowy, który znajdziesz w opisie odpowiedniego warsztatu. W odpowiedzi na formularz otrzymasz email z danymi do zaliczki, której wpłata stanowi o rezerwacji miejsca na warsztatach.',
+  },
+  {
+    q: 'Czy potrzebuję mieć jakieś doświadczenie?',
+    a: 'Nie. Na każdy warsztat można przyjechać bez żadnego doświadczenia — wiemy, jak przekazywać wiedzę i budować z osobami, które robią to po raz pierwszy. Każdy może bezpiecznie i skutecznie nauczyć się tworzyć rzeczy z drewna.',
+  },
+  {
+    q: 'Czy potrzebuję mieć swoje narzędzia?',
+    a: 'Nie musisz nic zabierać — mamy w pełni wyposażoną stolarnię. Jeśli masz swoje narzędzia ręczne, wkrętarkę czy pilarkę, śmiało przywieź; ułatwią pracę Tobie i innym.',
+  },
+  {
+    q: 'Czy zrobicie taki warsztat u mnie?',
+    a: 'Warsztaty wyjazdowe organizujemy tylko dla organizacji społecznych oraz dla naszych absolwentów. Jeśli chcesz zorganizować coś takiego u siebie, poznajmy się najpierw na naszych warsztatach.',
+  },
+  {
+    q: 'To jak, mam coś komuś zbudować i jeszcze za to zapłacić?',
+    a: 'Dokładnie tak :) Tylko poprzez realną praktykę można nauczyć się samodzielnie tworzyć z drewna, a dzięki tej nauce powstaje użyteczny, służący ludziom obiekt. W ramach wymiany za wykonaną pracę gospodarze warsztatu pokrywają część kosztów zakwaterowania i wyżywienia — dzięki temu cały warsztat jest tańszy dla uczestników (obniżka jest już wliczona w podane ceny).',
+  },
+  {
+    q: 'Czy mogę przyjechać z dzieckiem, z psem, z osobą towarzyszącą?',
+    a: 'W większości przypadków zdecydowanie tak. Szczegóły ustalamy indywidualnie, zależnie od miejsca i charakteru warsztatu.',
   },
 ]
 

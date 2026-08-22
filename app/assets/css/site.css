@@ -258,7 +258,13 @@ picture { display: contents; }
   color: var(--cream-50); margin: 0; text-wrap: balance;
 }
 .manifest__line + .manifest__line { margin-top: 6px; }
-.manifest__line--accent { font-style: italic; color: var(--timber-200); display: flex; align-items: baseline; gap: 0.32em; }
+.manifest__line--accent {
+  font-style: italic; color: var(--timber-200); display: flex; align-items: baseline; gap: 0.32em;
+  font-size: clamp(18px, 2.6vw, 28px); font-weight: 400;
+}
+/* `.manifest__line + .manifest__line` (two classes) otherwise beats the single
+   class above on specificity and keeps the 6px gap sized for the large type. */
+.manifest__line + .manifest__line.manifest__line--accent { margin-top: var(--space-3); }
 .manifest__line--accent .arrow { color: var(--accent); font-style: normal; }
 .hero__cta { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-7); }
 
@@ -332,6 +338,15 @@ picture { display: contents; }
   display: flex; align-items: center; justify-content: center; font-size: 24px;
 }
 .value-card__icon svg { width: 24px; height: 24px; }
+/* Rysunki tuszem zamiast glifów: bez zielonego kafelka i większe, bo przy
+   24px kreska zlewa się w plamę. Szerokość zostaje 48px, więc siatka
+   i odstępy w .value-card nie ruszają się. */
+.value-card__icon--art {
+  width: 56px; height: 56px;
+  background: none; border-radius: 0;
+  justify-content: flex-start;
+}
+.value-card__icon--art img { width: 56px; height: 56px; object-fit: contain; }
 .value-card__title {
   font-family: var(--font-display); font-size: var(--text-lg); margin: 0;
   color: var(--text-strong); letter-spacing: -0.01em;

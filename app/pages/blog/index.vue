@@ -5,9 +5,9 @@
     <!-- ===== Nagłówek strony ===== -->
     <div class="pagehead">
       <div class="container">
-        <span class="eyebrow eyebrow--ondark">Blog · Z lasu</span>
-        <h1>Notatki zza warsztatu</h1>
-        <p>O pracy z drewnem, naturalnym budownictwie i ludziach, których spotykamy przy wspólnym stole. Pisane powoli, jak schnie dobre drewno.</p>
+        <span class="eyebrow eyebrow--ondark">Blog · Zapiski drzewne</span>
+        <h1>Notatki z warsztatu</h1>
+        <p>Historie o drzewach i ludziach, które piszą się w stolarni Drew — opisy konstrukcji, relacje z warsztatów, odkrycia, inspiracje i refleksje z pogranicza ciesielstwa, lasu i codziennego życia w drewnie.</p>
       </div>
     </div>
 
@@ -96,8 +96,8 @@
     <section class="section container" style="padding-top: 0">
       <div class="news io">
         <span class="eyebrow eyebrow--ondark">Newsletter</span>
-        <h2>Listy z lasu</h2>
-        <p>Nowe wpisy, terminy warsztatów i krótkie historie zza warsztatu — raz w miesiącu, bez spamu.</p>
+        <h2>Kurier Ciesielski</h2>
+        <p>Raz na dwa tygodnie: nowe wpisy, terminy warsztatów i krótkie historie zza warsztatu.</p>
         <p v-if="sent" class="news__sent">Dziękujemy — do zobaczenia w lesie.</p>
         <form v-else class="news__form" @submit.prevent="subscribe">
           <input v-model="email" type="email" required placeholder="twój@email.pl" aria-label="E-mail" />
@@ -116,7 +116,7 @@ import { ref, computed, watch, nextTick } from 'vue'
 import { formatDate, stripHtml, readTime } from '~/utils/format'
 
 useHead({
-  title: 'Blog · Z lasu — DRWA',
+  title: 'Blog · Zapiski drzewne — DRWA',
 })
 
 const { data, error, status, refresh } = await useBlogPosts()

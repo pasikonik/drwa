@@ -12,7 +12,7 @@
         <div class="shop-hero__inner io">
           <span class="eyebrow eyebrow--ondark">Sklep · Merch DRWA</span>
           <h1>Noś las ze sobą.</h1>
-          <p>Bluzy i koszulki z naszej stolarni — bawełna organiczna, spokojne kolory lasu i znak DRWA. Garść rzeczy, które naprawdę nosimy na warsztatach.</p>
+          <p>Bluzy, koszulki i koszule robocze z naszej stolarni — bawełna organiczna, spokojne kolory lasu i znak DRWA. Garść rzeczy, które naprawdę nosimy na warsztatach.</p>
         </div>
       </div>
     </section>
