@@ -50,7 +50,7 @@ const TILES = [
   },
   {
     to: '/o-nas', img: '/assets/tile-o-nas.avif', pos: '50% 35%',
-    eyebrow: 'Ludzie · społeczność', title: 'O nas (DRWA)',
+    eyebrow: 'Ludzie · społeczność', title: 'O nas',
     desc: 'Kim jesteśmy, dlaczego budujemy naturalnie i co dotąd zbudowaliśmy razem.',
   },
 ]
