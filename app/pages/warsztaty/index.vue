@@ -135,25 +135,6 @@
         </div>
       </section>
 
-      <!-- ===== Archiwum ===== -->
-      <section v-if="pastWorkshops.length" class="section container" id="archiwum">
-        <div class="sec-head io">
-          <span class="eyebrow">Archiwum</span>
-          <h2>Minione warsztaty</h2>
-          <p>Te konstrukcje i przedmioty już służą ludziom, a na podwórkach absolwentów powstają kolejne.</p>
-        </div>
-        <ul class="arch io">
-          <li v-for="p in pastWorkshops" :key="p.id" class="arch__row">
-            <span class="arch__date">{{ p.dateLabel }}</span>
-            <span class="arch__title">
-              <NuxtLink v-if="p.route" :to="p.route">{{ p.title }}</NuxtLink>
-              <template v-else>{{ p.title }}</template>
-            </span>
-            <span class="arch__done">Zakończony</span>
-          </li>
-        </ul>
-      </section>
-
       <!-- ===== FAQ ===== -->
       <section class="section container" id="faq">
         <div class="sec-head io">
@@ -176,6 +157,25 @@
             <p v-show="openFaq === i" class="faq__a">{{ item.a }}</p>
           </div>
         </div>
+      </section>
+
+      <!-- ===== Archiwum ===== -->
+      <section v-if="pastWorkshops.length" class="section container" id="archiwum">
+        <div class="sec-head io">
+          <span class="eyebrow">Archiwum</span>
+          <h2>Minione warsztaty</h2>
+          <p>Te konstrukcje i przedmioty już służą ludziom, a na podwórkach absolwentów powstają kolejne.</p>
+        </div>
+        <ul class="arch io">
+          <li v-for="p in pastWorkshops" :key="p.id" class="arch__row">
+            <span class="arch__date">{{ p.dateLabel }}</span>
+            <span class="arch__title">
+              <NuxtLink v-if="p.route" :to="p.route">{{ p.title }}</NuxtLink>
+              <template v-else>{{ p.title }}</template>
+            </span>
+            <span class="arch__done">Zakończony</span>
+          </li>
+        </ul>
       </section>
 
       <!-- ===== Zapisy ===== -->

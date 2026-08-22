@@ -3,17 +3,15 @@
     <DrwaNav />
 
     <!-- ===== Hero ===== -->
-    <section class="shop-hero">
-      <div class="shop-hero__bg">
+    <section class="phero">
+      <div class="phero__bg">
         <img src="/assets/forest-band.avif" alt="Las świerkowy we mgle" />
       </div>
-      <div class="shop-hero__scrim" />
-      <div class="container">
-        <div class="shop-hero__inner io">
-          <span class="eyebrow eyebrow--ondark">Sklep · Merch DRWA</span>
-          <h1>Noś las ze sobą.</h1>
-          <p>Bluzy, koszulki i koszule robocze z naszej stolarni — bawełna organiczna, spokojne kolory lasu i znak DRWA. Garść rzeczy, które naprawdę nosimy na warsztatach.</p>
-        </div>
+      <div class="phero__scrim" />
+      <div class="container phero__inner">
+        <span class="eyebrow eyebrow--ondark">Sklep · Merch DRWA</span>
+        <h1>Noś las ze sobą.</h1>
+        <p class="phero__lead">Bluzy, koszulki i koszule robocze z naszej stolarni — bawełna organiczna, spokojne kolory lasu i znak DRWA. Garść rzeczy, które naprawdę nosimy na warsztatach.</p>
       </div>
     </section>
 

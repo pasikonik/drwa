@@ -1,26 +1,7 @@
 /* DRWA — O nas. Zbudowane na tokenach DRWA + site.css. */
 
-/* ============ Hero (forest register, z foto) ============ */
-.about-hero {
-  position: relative; min-height: 52vh; display: flex; align-items: flex-end;
-  overflow: hidden; background: var(--surface-inverse);
-}
-.about-hero__bg { position: absolute; inset: 0; }
-.about-hero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; }
-.about-hero__scrim {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(19,29,24,0.42) 0%, rgba(19,29,24,0.24) 40%, rgba(19,29,24,0.92) 100%);
-}
-.about-hero__inner { position: relative; color: var(--cream-50); max-width: 760px; padding: var(--space-10) 0 var(--space-9); }
-.about-hero h1 {
-  font-family: var(--font-display); font-weight: 500;
-  font-size: clamp(36px, 5.2vw, 62px); line-height: 1.04; letter-spacing: -0.02em;
-  color: var(--cream-50); margin: 14px 0 0; text-wrap: balance;
-}
-.about-hero p {
-  font-size: var(--text-md); line-height: 1.65; color: var(--pine-100);
-  max-width: 54ch; margin: var(--space-5) 0 0;
-}
+/* Hero: strona używa wspólnego `.phero` z warsztat.css — te same style
+   co warsztaty/kursy/sklep, dla spójnego wyglądu podstron. */
 
 /* ============ Historia (split) ============ */
 .story { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-8); align-items: center; }
