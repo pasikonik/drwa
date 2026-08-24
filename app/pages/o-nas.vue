@@ -53,25 +53,58 @@
         </div>
       </section>
 
-      <!-- ===== Kadra ===== -->
-      <section class="section container" id="kadra">
-        <div class="sec-head io">
-          <span class="eyebrow">Zespół</span>
-          <h2>Kadra Drew</h2>
-          <p>Za Jędrzejem stoi grono instruktorów i pomocników, którzy razem tworzą warsztaty i stolarnię Drew.</p>
-        </div>
-
-        <div class="crew-grid">
-          <div v-for="c in CREW" :key="c.name" class="crew-card io">
-            <div class="crew-card__avatar">{{ initials(c.name) }}</div>
-            <div>
-              <h3 class="crew-card__name">{{ c.name }}</h3>
-              <p class="crew-card__role">{{ c.role }}</p>
-              <p class="crew-card__bio">{{ c.bio }}</p>
+      <!-- ===== Gregory Paszyński ===== -->
+      <section class="founder-wrap founder-wrap--alt">
+        <div class="section container">
+          <div class="founder">
+            <div class="founder__photo founder__photo--avatar io">
+              <span class="founder__avatar">{{ initials('Gregory Paszyński') }}</span>
+            </div>
+            <div class="founder__body io">
+              <span class="eyebrow">Zespół</span>
+              <h2>Gregory Paszyński</h2>
+              <p class="founder__role">Instruktor · nauczyciel pracy z drewnem</p>
+              <p>Nauczyciel pracy z drewnem, muzyki i języka angielskiego — współprowadzi warsztaty Drew od samego początku. Miłośnik tradycyjnych metod i ostrych narzędzi, absolwent studiów agroleśniczych i Permaculture Design Course. Sam wytwarza przedmioty z drewna, od konstrukcji po snycerskie majstersztyki, i pomaga planować funkcjonalne, estetyczne siedliska.</p>
             </div>
           </div>
         </div>
+      </section>
 
+      <!-- ===== Michał „Igła" Kiełbik ===== -->
+      <section class="founder-wrap" id="kadra">
+        <div class="section container">
+          <div class="founder founder--compact">
+            <div class="founder__photo founder__photo--avatar io">
+              <span class="founder__avatar founder__avatar--sm">{{ initials('Michał „Igła" Kiełbik') }}</span>
+            </div>
+            <div class="founder__body io">
+              <h3 class="founder__compact-name">Michał „Igła" Kiełbik</h3>
+              <p class="founder__role">Instruktor · złota rączka</p>
+              <p>Fachowiec, złota rączka. Po warsztatach Drew rzucił pracę biurową i zaczął pracować rękami — dachówka na stolarni Drew to jedno z jego arcydzieł. Po kilku latach pracy na budowach otworzył własną działalność we Wrocławiu. Czasami zasila kadrę instruktorską Drew, szczególnie kiedy trzeba zbudować coś dużego.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Michał „Olej" Olejniczak ===== -->
+      <section class="founder-wrap founder-wrap--alt">
+        <div class="section container">
+          <div class="founder founder--compact">
+            <figure class="founder__photo io">
+              <img class="founder__img" src="/olej.avif" alt="Michał &quot;Olej&quot; Olejniczak" />
+            </figure>
+            <div class="founder__body io">
+              <h3 class="founder__compact-name">Michał „Olej" Olejniczak</h3>
+              <p class="founder__role">Instruktor · Web Master · Rzeźbiarz</p>
+              <p>Postprogramista, który zamienił cyfrowy świat na zapach żywicy i pracę z naturalnym surowcem. Każda nowa próba w stolarstwie szybko przeradzała się u niego w prawdziwą pasję — od precyzyjnego rzeźbienia i małych form, po ambitne konstrukcje.</p>
+              <p>Fascynuje go koncepcja małych przestrzeni, dlatego obecnie własnoręcznie buduje swój domek na kółkach. Wierzy, że powrót do rzemiosła i dokładanie swojej „beleczki” do wspólnego dobra to jedyny słuszny kierunek dla naszej planety. Na co dzień wybiera minimalizm, żyjąc blisko natury i w zgodzie z jej naturalnym rytmem.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Kadra — reszta ===== -->
+      <section class="section container">
         <div class="crew-more io">
           <div v-for="n in CREW_NAMES" :key="n" class="crew-chip">
             <span class="crew-chip__avatar">{{ initials(n) }}</span>
@@ -168,24 +201,11 @@ useHead({
   title: 'O nas — DRWA',
 })
 
-// Bio dopisane dla osób, dla których mamy realny tekst źródłowy; reszta
-// kadry czeka na materiały — na razie tylko lista nazwisk (patrz CREW_NAMES).
-const CREW = [
-  {
-    name: 'Gregory Paszyński',
-    role: 'Instruktor · nauczyciel pracy z drewnem',
-    bio: 'Nauczyciel pracy z drewnem, muzyki i języka angielskiego — współprowadzi warsztaty Drew od samego początku. Miłośnik tradycyjnych metod i ostrych narzędzi, absolwent studiów agroleśniczych i Permaculture Design Course. Sam wytwarza przedmioty z drewna, od konstrukcji po snycerskie majstersztyki, i pomaga planować funkcjonalne, estetyczne siedliska.',
-  },
-  {
-    name: 'Michał „Igła" Kiełbik',
-    role: 'Instruktor · złota rączka',
-    bio: 'Fachowiec, złota rączka. Po warsztatach Drew rzucił pracę biurową i zaczął pracować rękami — dachówka na stolarni Drew to jedno z jego arcydzieł. Po kilku latach pracy na budowach otworzył własną działalność we Wrocławiu. Czasami zasila kadrę instruktorską Drew, szczególnie kiedy trzeba zbudować coś dużego.',
-  },
-]
-
+// Profile Jędrzeja, Gregory'ego i Michałów są wpisane wprost w szablonie
+// (jak founder) — reszta kadry czeka na materiały, na razie tylko lista
+// nazwisk (patrz CREW_NAMES).
 const CREW_NAMES = [
   'Karol Sprawka',
-  'Michał „Olej" Olejniczak',
   'Grzegorz „Saper" Wieczorek',
   'Paweł Dulak',
 ]

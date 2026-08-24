@@ -37,7 +37,7 @@
           </span>
         </div>
         <div class="dhero__cta" v-if="!isPast || hasProgram">
-          <button v-if="!isPast" class="btn btn--on-dark btn--lg" @click="jump('zapisy')">Zapisz się — {{ priceStr }}</button>
+          <button v-if="!isPast" class="btn btn--on-dark btn--lg" @click="jump('zapisy')">Zapisz się</button>
           <button v-if="hasProgram" class="btn btn--accent btn--lg" @click="jump('program')">Zobacz program</button>
         </div>
       </div>
@@ -136,7 +136,8 @@
                 <span class="badge__dot" />
                 {{ spots.label }}
               </div>
-              <AddToCartButton :product="prod" label="Rezerwuj miejsce" />
+              <!-- Tymczasowo ukryte — przywrócić usuwając v-if="false" poniżej. -->
+              <AddToCartButton v-if="false" :product="prod" label="Rezerwuj miejsce" />
             </div>
           </div>
 
@@ -326,15 +327,10 @@ const PROGRAM = computed(() =>
 const hasProgram = computed(() => PROGRAM.value.length > 0)
 
 const daysCount = computed(() => {
-  const days = workshop.value?.days ?? []
-  let count = days.length
-  if (!count) {
-    // Fall back to the date span when the program isn't filled in.
-    const s = workshop.value?.date_start
-    const e = workshop.value?.date_end
-    if (!s || !e) return '—'
-    count = Math.round((new Date(e).getTime() - new Date(s).getTime()) / (1000 * 60 * 60 * 24)) + 1
-  }
+  const s = workshop.value?.date_start
+  const e = workshop.value?.date_end
+  if (!s || !e) return '—'
+  const count = Math.round((new Date(e).getTime() - new Date(s).getTime()) / (1000 * 60 * 60 * 24)) + 1
   return `${count} ${count === 1 ? 'dzień' : 'dni'}`
 })
 

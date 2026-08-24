@@ -16,6 +16,9 @@
 
 /* ============ Założyciel ============ */
 .founder-wrap { background: var(--surface-raised); border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); }
+/* Ten sam odcień co domyślne tło strony (--surface-page) — dokładnie ten
+   kontrast, co między sekcją Historii a sekcją Jędrzeja (surface-raised). */
+.founder-wrap--alt { background: var(--surface-page); }
 .founder { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-8); align-items: center; }
 .founder__photo { position: relative; border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4 / 5; background: var(--pine-50); box-shadow: var(--shadow-sm); margin: 0; }
 .founder__placeholder {
@@ -39,6 +42,27 @@
 .founder__role { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin: 10px 0 0; }
 .founder__body > p { font-family: var(--font-serif); font-size: var(--text-base); line-height: 1.75; color: var(--text-body); margin: var(--space-5) 0 0; max-width: 56ch; }
 @media (max-width: 880px) { .founder { grid-template-columns: 1fr; } .founder__photo { max-width: 420px; } }
+
+/* Wariant bez zdjęcia: duży awatar z inicjałami na tle placeholdera. */
+.founder__photo--avatar { display: flex; align-items: center; justify-content: center; }
+.founder__avatar {
+  width: 42%; aspect-ratio: 1 / 1; border-radius: 50%;
+  background: var(--pine-200); color: var(--pine-700);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-ui); font-weight: 700; font-size: var(--text-2xl);
+}
+
+/* ============ Kadra — sekcja kompaktowa (mniej wyróżniona) ============ */
+.founder--compact {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 10fr);
+  gap: var(--space-5); align-items: center;
+}
+.founder--compact .founder__photo { aspect-ratio: 1 / 1; border-radius: 50%; }
+.founder__avatar--sm { width: 100%; font-size: var(--text-lg); }
+.founder__compact-name { font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg); color: var(--text-strong); margin: 0; letter-spacing: -0.01em; }
+.founder--compact .founder__role { margin-top: 6px; }
+.founder--compact .founder__body > p { font-size: var(--text-sm); line-height: 1.65; margin-top: var(--space-3); max-width: 60ch; }
+@media (max-width: 700px) { .founder--compact { grid-template-columns: 1fr; } .founder--compact .founder__photo { max-width: 96px; margin: 0 auto; } }
 
 /* ============ Trzy nurty ============ */
 .strands { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
@@ -88,24 +112,7 @@ p.founder__closing {
   letter-spacing: 0.04em; color: var(--text-faint); margin-top: var(--space-6);
 }
 
-/* ============ Kadra ============ */
-.crew-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); }
-.crew-card {
-  display: flex; gap: var(--space-4); padding: var(--space-5);
-  background: var(--surface-card); border: 1px solid var(--border-soft); border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-}
-.crew-card__avatar {
-  width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
-  background: var(--pine-200); color: var(--pine-700);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-ui); font-weight: 700; font-size: var(--text-sm);
-}
-.crew-card__name { font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); color: var(--text-strong); margin: 0; letter-spacing: -0.01em; }
-.crew-card__role { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin: 4px 0 10px; }
-.crew-card__bio { font-size: var(--text-sm); line-height: 1.6; color: var(--text-muted); margin: 0; }
-@media (max-width: 700px) { .crew-grid { grid-template-columns: 1fr; } }
-
+/* ============ Kadra — chipy (reszta bez profilu) ============ */
 .crew-more { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-7) 0 0; }
 .crew-chip {
   display: inline-flex; align-items: center; gap: 9px; padding: 7px 16px 7px 7px;
