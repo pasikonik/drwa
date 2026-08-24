@@ -261,9 +261,9 @@ const LEVEL_LABEL: Record<string, string> = {
 }
 
 const LEVEL_NOTE: Record<string, string> = {
-  beginner: 'poziom podstawowy — zaczynamy od zera',
-  intermediate: 'poziom średni — przyda się jedno doświadczenie',
-  advanced: 'poziom zaawansowany — dla wprawionych w drewnie',
+  beginner: 'poziom podstawowy',
+  intermediate: 'poziom średni',
+  advanced: 'poziom zaawansowany',
 }
 
 const levelKey = (level: string | null) => level?.toLowerCase() ?? ''
