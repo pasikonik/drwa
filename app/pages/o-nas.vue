@@ -37,17 +37,17 @@
         <div class="section container">
           <div class="founder">
             <figure class="founder__photo io">
-              <img class="founder__img" src="/Jedrzej.avif" alt="Jędrzej Cyganik — założyciel DRWA" />
+              <img class="founder__img" src="/Jedrzej.avif" alt="Jędrzej „Pan Skrzat” Cyganik — założyciel DRWA" />
             </figure>
             <div class="founder__body io">
               <span class="eyebrow">Założyciel</span>
-              <h2>Jędrzej Cyganik</h2>
+              <h2>Jędrzej „Pan Skrzat” Cyganik</h2>
               <p class="founder__role">Cieśla · instruktor · gospodarz · twórca Drew</p>
               <p>Po studiach literaturoznawczych odbył podróż formacyjną do Kanady, gdzie odkrył poezję zapisaną w słojach czerwonych cedrów. Od tamtego czasu interpretuje kolejne bale, kantówki i konary rozmaitych gatunków, składając je w użyteczne całości.</p>
               <p>Przez lata prowadził działalność rzemieślniczą, wykonując zlecenia dla klientów indywidualnych — naturalne domy, altany, tarasy, zabudowy lokali usługowych, meble i rzeźby na zamówienie.</p>
               <p>Dziś uczy innych, jak to robić. Stworzył autorską formułę warsztatów, w której uczniowie, instruktorzy i inwestor współpracują w celu uzyskania wspólnej korzyści. Uwielbia budowanie z ludźmi i naukę, która z tego płynie.</p>
               <p>Od lat dzieli się wiedzą w internecie, tworząc darmowe artykuły, filmy i tutoriale oraz płatne kursy online. Na co dzień współprowadzi rodzinne siedlisko agroturystyczne, gdzie buduje nowe rzeczy i remontuje stare, uprawia ogród, hoduje owce i sadzi drzewa.</p>
-              <p class="founder__closing">Z domu góral, z wyboru Izerianin, z serca mieszkaniec Ziemi i sługa życia — w poszukiwaniu głębokiego rozumienia jego ewolucji.</p>
+              <p class="founder__closing">Z domu góral, z wyboru Izerianin, z serca Ziemianin, miłośnik Życia w każdej formie.</p>
             </div>
           </div>
         </div>
@@ -57,14 +57,15 @@
       <section class="founder-wrap founder-wrap--alt">
         <div class="section container">
           <div class="founder">
-            <div class="founder__photo founder__photo--avatar io">
-              <span class="founder__avatar">{{ initials('Gregory Paszyński') }}</span>
-            </div>
+            <figure class="founder__photo io">
+              <img class="founder__img" src="/Gregory.avif" alt="Gregory Paszyński — instruktor DRWA" />
+            </figure>
             <div class="founder__body io">
-              <span class="eyebrow">Zespół</span>
               <h2>Gregory Paszyński</h2>
               <p class="founder__role">Instruktor · nauczyciel pracy z drewnem</p>
-              <p>Nauczyciel pracy z drewnem, muzyki i języka angielskiego — współprowadzi warsztaty Drew od samego początku. Miłośnik tradycyjnych metod i ostrych narzędzi, absolwent studiów agroleśniczych i Permaculture Design Course. Sam wytwarza przedmioty z drewna, od konstrukcji po snycerskie majstersztyki, i pomaga planować funkcjonalne, estetyczne siedliska.</p>
+              <p>Nauczyciel pracy z drewnem, muzyki i języka angielskiego — współprowadzi warsztaty Drew od samego początku tej działalności. Miłośnik tradycyjnych metod, ostrych narzędzi i piękna w każdej postaci — najbardziej lubi je znajdować w harmonijnym krajobrazie, w rysunkach słojów i w swoim najbliższym otoczeniu. Sam wytwarza piękne przedmioty z drewna, od tradycyjnych konstrukcji, przez solidne, lite meble, po snycerskie majstersztyki.</p>
+              <p>Oprócz tego rzeźbi w terenie i obsadza krawędzie leśnymi ogrodami. Absolwent studiów agroleśniczych i Permaculture Design Course, dzieli się tą wiedzą podczas warsztatów i pomaga innym planować funkcjonalne i estetyczne siedliska. Sam od lat remontuje stary poniemiecki dom i rozwija swoje gospodarstwo.</p>
+              <p>Urodzony w Anglii native speaker, piewca polskiej mowy i nosiciel nietuzinkowego poczucia humoru. Głowa rodziny i gospodarz, członek dwóch zespołów muzycznych i lokalnych inicjatyw społecznych. Lubi pogadać — i dobrze gada!</p>
             </div>
           </div>
         </div>
@@ -80,7 +81,7 @@
             <div class="founder__body io">
               <h3 class="founder__compact-name">Michał „Igła" Kiełbik</h3>
               <p class="founder__role">Instruktor · złota rączka</p>
-              <p>Fachowiec, złota rączka. Po warsztatach Drew rzucił pracę biurową i zaczął pracować rękami — dachówka na stolarni Drew to jedno z jego arcydzieł. Po kilku latach pracy na budowach otworzył własną działalność we Wrocławiu. Czasami zasila kadrę instruktorską Drew, szczególnie kiedy trzeba zbudować coś dużego.</p>
+              <p>Fachowiec, złota rączka. Po warsztatach Drew rzucił pracę biurową i zaczął pracować rękami. Drewno to tylko jeden z obszarów jego zainteresowań — dachówka na stolarni Drew to jedno z jego arcydzieł. Po kilku latach pracy na budowach otworzył we Wrocławiu własną działalność — Złota Rączka — pomaga naprawiać usterki i gasi pożary. Czasami zasila kadrę instruktorską Drew i współpracuje przy warsztatach, szczególnie kiedy trzeba zbudować coś dużego.</p>
             </div>
           </div>
         </div>
@@ -96,7 +97,7 @@
             <div class="founder__body io">
               <h3 class="founder__compact-name">Michał „Olej" Olejniczak</h3>
               <p class="founder__role">Instruktor · Web Master · Rzeźbiarz</p>
-              <p>Postprogramista, który zamienił cyfrowy świat na zapach żywicy i pracę z naturalnym surowcem. Każda nowa próba w stolarstwie szybko przeradzała się u niego w prawdziwą pasję — od precyzyjnego rzeźbienia i małych form, po ambitne konstrukcje.</p>
+              <p>Postprogramista i twórca tej strony, który zamienił cyfrowy świat na zapach żywicy i pracę z naturalnym surowcem. Każda nowa próba w stolarstwie szybko przeradzała się u niego w prawdziwą pasję — od precyzyjnego rzeźbienia i małych form, po ambitne konstrukcje.</p>
               <p>Fascynuje go koncepcja małych przestrzeni, dlatego obecnie własnoręcznie buduje swój domek na kółkach. Wierzy, że powrót do rzemiosła i dokładanie swojej „beleczki” do wspólnego dobra to jedyny słuszny kierunek dla naszej planety. Na co dzień wybiera minimalizm, żyjąc blisko natury i w zgodzie z jej naturalnym rytmem.</p>
             </div>
           </div>

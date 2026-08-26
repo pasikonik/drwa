@@ -49,7 +49,7 @@
         <div class="detail__main">
 
           <!-- O warsztacie -->
-          <section class="dsec io" id="o-warsztacie">
+          <section class="dsec" id="o-warsztacie">
             <span class="eyebrow">O warsztacie</span>
             <h2>{{ title }}</h2>
             <div v-if="descHtml" v-html="descHtml" class="dsec__content" />
@@ -171,7 +171,7 @@
             </template>
             <template v-else>
               <h2 class="signup__heading">Zajmij miejsce przy drewnie</h2>
-              <p>Wyślij zgłoszenie, a w ciągu dwóch dni odezwiemy się z potwierdzeniem miejsca i szczegółami dojazdu. Zaliczka 400 zł rezerwuje miejsce.</p>
+              <p>Wyślij zgłoszenie, a w ciągu dwóch dni odezwiemy się z potwierdzeniem miejsca i szczegółami dojazdu. <template v-if="hasAdvance">Zaliczka {{ advanceStr }} rezerwuje miejsce.</template></p>
             </template>
             <div class="signup__contact">
               <a href="mailto:kontakt@drwa.pl">
