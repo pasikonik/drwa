@@ -16,6 +16,11 @@ const TOPIC_LABELS: Record<string, string> = {
   inne: 'Inne',
 }
 
+const TOPIC_RECIPIENTS: Record<string, string> = {
+  warsztaty: 'warsztaty@drwa.pl',
+}
+const DEFAULT_RECIPIENT = 'kontakt@drwa.pl'
+
 export default defineEventHandler(async (event) => {
   const body = await readBody<ContactPayload>(event)
   const { name, email, topic, message, website } = body ?? {}
@@ -38,11 +43,12 @@ export default defineEventHandler(async (event) => {
   const topicLabel = (topic && Object.prototype.hasOwnProperty.call(TOPIC_LABELS, topic))
     ? TOPIC_LABELS[topic]
     : 'Inne'
+  const recipient = (topic && TOPIC_RECIPIENTS[topic]) || DEFAULT_RECIPIENT
   const resend = getResend()
 
   const { error } = await resend.emails.send({
-    from: 'DRWA · Formularz kontaktowy <kontakt@drwa.pl>',
-    to: 'kontakt@drwa.pl',
+    from: `DRWA · Formularz kontaktowy <${recipient}>`,
+    to: recipient,
     replyTo: email,
     subject: `Formularz kontaktowy — ${topicLabel}`,
     text: `Imię i nazwisko: ${name}\nE-mail: ${email}\nTemat: ${topicLabel}\n\nWiadomość:\n${message}`,

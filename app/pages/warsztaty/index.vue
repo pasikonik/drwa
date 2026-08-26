@@ -186,11 +186,11 @@
             <h2 class="signup__heading">Dołącz do warsztatu</h2>
             <p>Wyślij zgłoszenie, a w ciągu dwóch dni odezwiemy się z potwierdzeniem miejsca i szczegółami dojazdu. Miejsce rezerwuje zaliczka.</p>
             <div class="signup__contact">
-              <a href="mailto:kontakt@drwa.pl">
+              <a href="mailto:warsztaty@drwa.pl">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
                 </svg>
-                kontakt@drwa.pl
+                warsztaty@drwa.pl
               </a>
             </div>
           </div>
@@ -201,6 +201,15 @@
                 <p>Odezwiemy się w ciągu dwóch dni roboczych z potwierdzeniem miejsca i szczegółami. Do zobaczenia w stolarni.</p>
               </div>
               <form v-else class="signup__form" @submit.prevent="submit">
+                <input
+                  v-model="form.website"
+                  type="text"
+                  name="website"
+                  tabindex="-1"
+                  autocomplete="off"
+                  class="signup__hp"
+                  aria-hidden="true"
+                />
                 <div class="field">
                   <label class="field__label" for="sf-workshop">Warsztat</label>
                   <select id="sf-workshop" v-model="form.workshopId" class="field__select">
@@ -228,8 +237,11 @@
                   <input v-model="form.newsletter" type="checkbox" />
                   <span class="field__check-label">Zapisz mnie też do newslettera „Listy z lasu"</span>
                 </label>
+                <p v-if="errorMessage" class="signup__error">{{ errorMessage }}</p>
                 <div class="signup__actions">
-                  <button type="submit" class="btn btn--primary btn--lg">Wyślij zgłoszenie</button>
+                  <button type="submit" class="btn btn--primary btn--lg" :disabled="sending">
+                    {{ sending ? 'Wysyłanie…' : 'Wyślij zgłoszenie' }}
+                  </button>
                 </div>
               </form>
             </div>
@@ -298,6 +310,7 @@ const workshops = computed(() =>
       raw: p,
       isPast: isWorkshopPast(w),
       title: p.title,
+      slug: p.slug ?? String(p.id),
       route: `/warsztaty/${p.slug ?? p.id}`,
       day: dates.day,
       month: dates.month,
@@ -370,10 +383,16 @@ const FAQ = [
 const openFaq = ref<number | null>(0)
 const form = reactive({
   workshopId: upcomingWorkshops.value[0]?.id ?? null as number | null,
-  name: '', email: '', message: '', newsletter: false,
+  name: '', email: '', message: '', newsletter: false, website: '',
 })
 const errors = reactive({ name: '', email: '' })
 const sent = ref(false)
+const sending = ref(false)
+const errorMessage = ref('')
+
+const selectedWorkshop = computed(() =>
+  upcomingWorkshops.value.find((w) => w.id === form.workshopId) ?? null
+)
 
 // Data can land after setup (client-side recovery from a failed SSR fetch), so
 // the select would otherwise stay on its initial empty value.
@@ -381,10 +400,34 @@ watch(upcomingWorkshops, (list) => {
   if (form.workshopId == null) form.workshopId = list[0]?.id ?? null
 })
 
-function submit() {
+async function submit() {
   errors.name = form.name.trim() ? '' : 'Podaj imię i nazwisko.'
   errors.email = form.email.trim() && form.email.includes('@') ? '' : 'Podaj poprawny adres e-mail.'
-  if (!errors.name && !errors.email) sent.value = true
+  if (errors.name || errors.email) return
+
+  errorMessage.value = ''
+  sending.value = true
+  try {
+    await $fetch('/api/warsztaty-signup', {
+      method: 'POST',
+      body: {
+        name: form.name,
+        email: form.email,
+        message: form.message,
+        workshopTitle: selectedWorkshop.value?.title,
+        workshopSlug: selectedWorkshop.value?.slug,
+        website: form.website,
+      },
+    })
+    if (form.newsletter) {
+      $fetch('/api/newsletter', { method: 'POST', body: { email: form.email } }).catch(() => {})
+    }
+    sent.value = true
+  } catch (err: any) {
+    errorMessage.value = err?.data?.statusMessage || 'Nie udało się wysłać zgłoszenia, spróbuj ponownie lub napisz na warsztaty@drwa.pl.'
+  } finally {
+    sending.value = false
+  }
 }
 
 const { reobserve } = useScrollReveal()
