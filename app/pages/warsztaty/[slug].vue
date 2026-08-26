@@ -193,6 +193,15 @@
                 <p>Odezwiemy się w ciągu dwóch dni roboczych z potwierdzeniem miejsca i szczegółami. Do zobaczenia w stolarni.</p>
               </div>
               <form v-else class="signup__form" @submit.prevent="submit">
+                <input
+                  v-model="form.website"
+                  type="text"
+                  name="website"
+                  tabindex="-1"
+                  autocomplete="off"
+                  class="signup__hp"
+                  aria-hidden="true"
+                />
                 <div class="eyebrow">{{ formEyebrow }}</div>
                 <div class="field">
                   <label class="field__label" for="f-name">Imię i nazwisko</label>
@@ -233,8 +242,11 @@
                   <input v-model="form.newsletter" type="checkbox" />
                   <span class="field__check-label">Zapisz mnie też do newslettera „Listy z lasu"</span>
                 </label>
+                <p v-if="errorMessage" class="signup__error">{{ errorMessage }}</p>
                 <div class="signup__actions">
-                  <button type="submit" class="btn btn--primary btn--lg">Wyślij zgłoszenie</button>
+                  <button type="submit" class="btn btn--primary btn--lg" :disabled="sending">
+                    {{ sending ? 'Wysyłanie…' : 'Wyślij zgłoszenie' }}
+                  </button>
                 </div>
               </form>
             </div>
@@ -382,19 +394,45 @@ const LEARN = [
 
 // ─── Form ─────────────────────────────────────────────────────────────────────
 
-const form = reactive({ name: '', email: '', message: '', newsletter: false })
+const form = reactive({ name: '', email: '', message: '', newsletter: false, website: '' })
 const errors = reactive({ name: '', email: '' })
 const sent = ref(false)
+const sending = ref(false)
+const errorMessage = ref('')
 
 function jump(id: string) {
   const el = document.getElementById(id)
   if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 88, behavior: 'smooth' })
 }
 
-function submit() {
+async function submit() {
   errors.name = form.name.trim() ? '' : 'Podaj imię i nazwisko.'
   errors.email = form.email.trim() && form.email.includes('@') ? '' : 'Podaj poprawny adres e-mail.'
-  if (!errors.name && !errors.email) sent.value = true
+  if (errors.name || errors.email) return
+
+  errorMessage.value = ''
+  sending.value = true
+  try {
+    await $fetch('/api/warsztaty-signup', {
+      method: 'POST',
+      body: {
+        name: form.name,
+        email: form.email,
+        message: form.message,
+        workshopTitle: title.value,
+        workshopSlug: route.params.slug as string,
+        website: form.website,
+      },
+    })
+    if (form.newsletter) {
+      $fetch('/api/newsletter', { method: 'POST', body: { email: form.email } }).catch(() => {})
+    }
+    sent.value = true
+  } catch (err: any) {
+    errorMessage.value = err?.data?.statusMessage || 'Nie udało się wysłać zgłoszenia, spróbuj ponownie lub napisz na kontakt@drwa.pl.'
+  } finally {
+    sending.value = false
+  }
 }
 
 // ─── Intersection observer ────────────────────────────────────────────────────

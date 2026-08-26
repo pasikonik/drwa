@@ -70,7 +70,7 @@
               </div>
               <h3>Wiadomość poszła w las.</h3>
               <p>Dziękujemy! Odpiszemy zwykle w ciągu dwóch dni roboczych — na adres, który podałeś.</p>
-              <button class="btn btn--secondary btn--sm" @click="sent = false">Wyślij kolejną</button>
+              <button class="btn btn--secondary btn--sm" @click="sendAnother">Wyślij kolejną</button>
             </div>
           </div>
           <form v-else class="cform io" @submit.prevent="submitForm">
@@ -159,13 +159,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 
 useHead({
   title: 'Kontakt — DRWA',
 })
 
-useScrollReveal()
+const { reobserve } = useScrollReveal()
 
 const sent = ref(false)
 const topic = ref('warsztaty')
@@ -177,6 +177,11 @@ const message = ref('')
 const honeypot = ref('')
 const sending = ref(false)
 const errorMessage = ref('')
+
+function sendAnother() {
+  sent.value = false
+  nextTick(reobserve)
+}
 
 async function submitForm() {
   errorMessage.value = ''

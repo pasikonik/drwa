@@ -319,6 +319,8 @@
 .signup__contact a:hover { color: var(--text-brand); }
 .signup__contact svg { color: var(--accent); flex: none; }
 .signup__form { display: flex; flex-direction: column; gap: var(--space-4); }
+.signup__hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.signup__error { font-size: var(--text-sm); color: var(--rust); margin: 0; }
 .signup__actions { display: flex; justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-2); }
 .signup__sent { display: flex; flex-direction: column; gap: 10px; padding: var(--space-4) 0; }
 .signup__sent h3 {
