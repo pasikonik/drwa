@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
 
   const { error } = await resend.emails.send({
     from: 'DRWA · Zapisy na warsztaty <warsztaty@drwa.pl>',
-    to: 'warsztatydrwa@gmail.com',
+    to: 'warsztaty@drwa.pl',
     replyTo: email,
     subject: `Zgłoszenie na warsztat — ${workshopLabel}`,
     text: `Warsztat: ${workshopLabel}\nImię i nazwisko: ${name}\nE-mail: ${email}\n\nWiadomość:\n${message?.trim() || '(brak)'}`,
