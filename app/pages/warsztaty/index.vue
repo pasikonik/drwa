@@ -69,22 +69,22 @@
             </div>
           </article>
         </div>
-        <div v-else-if="loadFailed" class="wlist-empty io">
-          <svg class="wlist-empty__icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <div v-else-if="loadFailed" class="list-empty io">
+          <svg class="list-empty__icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
           </svg>
-          <h3 class="wlist-empty__title">Nie udało się wczytać terminów</h3>
-          <p class="wlist-empty__text">Coś nie zadziałało po naszej stronie — terminy są, tylko chwilowo do nas nie dotarły.</p>
+          <h3 class="list-empty__title">Nie udało się wczytać terminów</h3>
+          <p class="list-empty__text">Coś nie zadziałało po naszej stronie — terminy są, tylko chwilowo do nas nie dotarły.</p>
           <button type="button" class="btn btn--primary btn--md" :disabled="retrying" @click="refresh()">
             {{ retrying ? 'Wczytuję…' : 'Spróbuj ponownie' }}
           </button>
         </div>
-        <div v-else class="wlist-empty io">
-          <svg class="wlist-empty__icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <div v-else class="list-empty io">
+          <svg class="list-empty__icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/>
           </svg>
-          <h3 class="wlist-empty__title">Aktualnie nie mamy zaplanowanych terminów</h3>
-          <p class="wlist-empty__text">Pracujemy nad kolejnym sezonem warsztatów. Zajrzyj tu wkrótce — nowe daty pojawią się niebawem.</p>
+          <h3 class="list-empty__title">Aktualnie nie mamy zaplanowanych terminów</h3>
+          <p class="list-empty__text">Pracujemy nad kolejnym sezonem warsztatów. Zajrzyj tu wkrótce — nowe daty pojawią się niebawem.</p>
         </div>
       </section>
 

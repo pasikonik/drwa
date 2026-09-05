@@ -236,6 +236,23 @@ picture { display: contents; }
 .btn--on-dark { background: rgba(245,239,226,0.12); color: var(--cream-50); border-color: rgba(245,239,226,0.28); }
 .btn--on-dark:hover { background: rgba(245,239,226,0.22); border-color: rgba(245,239,226,0.45); }
 
+/* ============ Empty state (chwilowy brak pozycji na liście) ============ */
+.list-empty {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: var(--space-3); padding: var(--space-8) var(--space-5);
+  background: var(--surface-sunken); border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+}
+.list-empty__icon { color: var(--accent); opacity: 0.7; }
+.list-empty__title {
+  font-family: var(--font-display); font-weight: 500; font-size: var(--text-lg);
+  letter-spacing: -0.01em; color: var(--text-strong); margin: 0;
+}
+.list-empty__text {
+  font-size: var(--text-sm); line-height: 1.6; color: var(--text-muted);
+  margin: 0; max-width: 46ch;
+}
+
 /* ============ Hero ============ */
 .hero { position: relative; min-height: 88vh; display: flex; align-items: center; overflow: hidden; }
 .hero__bg { position: absolute; inset: 0; }
