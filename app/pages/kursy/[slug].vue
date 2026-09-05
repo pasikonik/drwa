@@ -3,37 +3,33 @@
     <DrwaNav />
 
     <!-- ===== Hero ===== -->
-    <section class="khero khero--paper" id="top">
-      <div class="container khero__inner" :class="{ 'khero__inner--single': !product.image }">
-        <div>
-          <div class="khero__crumb">
-            <NuxtLink to="/">DRWA</NuxtLink>
-            <span class="sep">·</span>
-            <NuxtLink to="/kursy">Kursy online</NuxtLink>
-            <span class="sep">·</span>
-            <span class="cur">{{ product.title }}</span>
-          </div>
-          <p v-if="course?.hero_kicker" class="khero__kicker">{{ course.hero_kicker }}</p>
-          <h1>{{ product.title }}</h1>
-          <p v-if="product.short_description" class="khero__lead">{{ product.short_description }}</p>
-          <div v-if="heroFacts.length" class="khero__meta">
-            <span v-for="f in heroFacts" :key="f.text" class="khero__fact">
-              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/>
-              </svg>
-              {{ f.text }}
-            </span>
-          </div>
-          <div class="khero__cta">
-            <button class="btn btn--primary btn--lg" @click="scrollTo('cena')">Dołącz do kursu — {{ priceLabel }}</button>
-            <button v-if="modules.length" class="btn btn--secondary btn--lg" @click="scrollTo('program')">Zobacz program</button>
-          </div>
-        </div>
-        <figure v-if="product.image" class="khero__media" style="margin:0">
-          <DrwaImg :src="product.image" :alt="product.title" preset="hero" priority />
-        </figure>
-      </div>
-    </section>
+    <DrwaPageHero id="top">
+      <template #bg>
+        <DrwaImg :src="product.image" :alt="product.title" preset="hero" priority fallback="/assets/kursy-band.avif" />
+      </template>
+      <template #crumb>
+        <NuxtLink to="/">DRWA</NuxtLink>
+        <span class="sep">·</span>
+        <NuxtLink to="/kursy">Kursy online</NuxtLink>
+        <span class="sep">·</span>
+        <span class="cur">{{ product.title }}</span>
+      </template>
+      <template v-if="course?.hero_kicker" #eyebrow>{{ course.hero_kicker }}</template>
+      <template #title>{{ product.title }}</template>
+      <template v-if="product.short_description" #lead>{{ product.short_description }}</template>
+      <template v-if="heroFacts.length" #meta>
+        <span v-for="f in heroFacts" :key="f.text" class="phero__fact">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/>
+          </svg>
+          {{ f.text }}
+        </span>
+      </template>
+      <template #cta>
+        <button class="btn btn--primary btn--lg" @click="scrollTo('cena')">Dołącz do kursu — {{ priceLabel }}</button>
+        <button v-if="modules.length" class="btn btn--secondary btn--lg" @click="scrollTo('program')">Zobacz program</button>
+      </template>
+    </DrwaPageHero>
 
     <!-- ===== Pas liczb ===== -->
     <section v-if="stats.length" class="kstats" aria-label="Kurs w liczbach">

@@ -3,17 +3,14 @@
     <DrwaNav />
 
     <!-- ===== Hero ===== -->
-    <section class="phero" id="top">
-      <div class="phero__bg">
+    <DrwaPageHero id="top">
+      <template #bg>
         <img src="/assets/warsztaty-band.avif" alt="Grupa uczestników przy stole warsztatowym w stolarni" />
-      </div>
-      <div class="phero__scrim" />
-      <div class="container phero__inner">
-        <span class="eyebrow eyebrow--ondark">STACJONARNIE</span>
-        <h1>Warsztaty {{ currentYear }}</h1>
-        <p class="phero__lead">Kilka dni wspólnej pracy przy realnym drewnie — w małej grupie, pod okiem cieśli i przy ognisku. Sprawdź terminy i zajmij miejsce.</p>
-      </div>
-    </section>
+      </template>
+      <template #eyebrow>STACJONARNIE</template>
+      <template #title>Warsztaty {{ currentYear }}</template>
+      <template #lead>Kilka dni wspólnej pracy przy realnym drewnie — w małej grupie, pod okiem cieśli i przy ognisku. Sprawdź terminy i zajmij miejsce.</template>
+    </DrwaPageHero>
 
     <main id="main-content">
       <!-- ===== Nadchodzące terminy ===== -->

@@ -3,45 +3,42 @@
     <DrwaNav />
 
     <!-- ===== Hero ===== -->
-    <section class="dhero" id="top">
-      <div class="dhero__bg">
+    <DrwaPageHero id="top">
+      <template #bg>
         <DrwaImg :src="heroImage" :alt="title" preset="hero" priority fallback="/assets/forest-1.avif" />
-      </div>
-      <div class="dhero__scrim" />
-      <div class="container dhero__inner">
-        <div class="dhero__crumb">
-          <NuxtLink to="/warsztaty">Warsztaty {{ currentYear }}</NuxtLink>
-          <span class="sep">·</span>
-          <span class="cur">{{ title }}</span>
-        </div>
-        <h1>{{ title }}</h1>
-        <p class="dhero__lead">{{ lead }}</p>
-        <div class="dhero__meta">
-          <span class="dhero__fact">
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
-            </svg>
-            {{ dateStr }}
-          </span>
-          <span class="dhero__fact">
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M14 12 3 23"/><path d="M18 2 8 12l4 4L22 6a2.83 2.83 0 0 0-4-4Z"/>
-            </svg>
-            poziom {{ levelLabel }}
-          </span>
-          <span class="dhero__fact">
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
-            </svg>
-            {{ location }}
-          </span>
-        </div>
-        <div class="dhero__cta" v-if="!isPast || hasProgram">
-          <button v-if="!isPast" class="btn btn--on-dark btn--lg" @click="jump('zapisy')">Zapisz się</button>
-          <button v-if="hasProgram" class="btn btn--accent btn--lg" @click="jump('program')">Zobacz program</button>
-        </div>
-      </div>
-    </section>
+      </template>
+      <template #crumb>
+        <NuxtLink to="/warsztaty">Warsztaty {{ currentYear }}</NuxtLink>
+        <span class="sep">·</span>
+        <span class="cur">{{ title }}</span>
+      </template>
+      <template #title>{{ title }}</template>
+      <template #lead>{{ lead }}</template>
+      <template #meta>
+        <span class="phero__fact">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+          </svg>
+          {{ dateStr }}
+        </span>
+        <span class="phero__fact">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 12 3 23"/><path d="M18 2 8 12l4 4L22 6a2.83 2.83 0 0 0-4-4Z"/>
+          </svg>
+          poziom {{ levelLabel }}
+        </span>
+        <span class="phero__fact">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          {{ location }}
+        </span>
+      </template>
+      <template v-if="!isPast || hasProgram" #cta>
+        <button v-if="!isPast" class="btn btn--on-dark btn--lg" @click="jump('zapisy')">Zapisz się</button>
+        <button v-if="hasProgram" class="btn btn--accent btn--lg" @click="jump('program')">Zobacz program</button>
+      </template>
+    </DrwaPageHero>
 
     <main id="main-content">
       <!-- ===== Treść + panel ===== -->

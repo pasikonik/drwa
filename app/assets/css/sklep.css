@@ -1,7 +1,6 @@
 /* DRWA — Sklep / Merch */
 
-/* Hero: strona używa wspólnego `.phero` z warsztat.css — te same style
-   co warsztaty/kursy/o-nas, dla spójnego wyglądu podstron. */
+/* Hero: wspólny <DrwaPageHero> (app/components/DrwaPageHero.vue). */
 
 /* ============ Shop body ============ */
 .shop { padding: var(--space-9) 0 var(--space-10); }

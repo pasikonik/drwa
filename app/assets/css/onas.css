@@ -1,7 +1,6 @@
 /* DRWA — O nas. Zbudowane na tokenach DRWA + site.css. */
 
-/* Hero: strona używa wspólnego `.phero` z warsztat.css — te same style
-   co warsztaty/kursy/sklep, dla spójnego wyglądu podstron. */
+/* Hero: wspólny <DrwaPageHero> (app/components/DrwaPageHero.vue). */
 
 /* ============ Historia (split) ============ */
 .story { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-8); align-items: center; }

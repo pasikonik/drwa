@@ -3,21 +3,17 @@
     <DrwaNav />
 
     <!-- ===== Hero ===== -->
-    <section class="phero phero--band" id="top">
-      <div class="phero__bg">
+    <DrwaPageHero id="top">
+      <template #bg>
         <img src="/assets/kursy-band.avif" alt="Cieśla przed samodzielnie zbudowaną chatą z gontowym dachem" />
-      </div>
-      <div class="phero__scrim" />
-      <div class="phero__inner">
-        <span class="eyebrow eyebrow--ondark">ONLINE • W SWOIM TEMPIE</span>
-        <h1>Kursy online</h1>
-        <span class="phero__rule" aria-hidden="true" />
-        <p class="phero__lead">
-          Ciesielstwo krok po kroku — ucz się z instrukcji wideo, kiedy chcesz i gdzie chcesz.<br />
-          Dostęp od razu po zakupie.
-        </p>
-      </div>
-    </section>
+      </template>
+      <template #eyebrow>ONLINE • W SWOIM TEMPIE</template>
+      <template #title>Kursy online</template>
+      <template #lead>
+        Ciesielstwo krok po kroku — ucz się z instrukcji wideo, kiedy chcesz i gdzie chcesz.<br />
+        Dostęp od razu po zakupie.
+      </template>
+    </DrwaPageHero>
 
     <main id="main-content">
       <!-- ===== O naszych kursach ===== -->

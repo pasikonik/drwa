@@ -3,15 +3,12 @@
     <DrwaNav />
 
     <!-- ===== Hero ===== -->
-    <section class="phero">
-      <div class="phero__bg"><img src="/assets/forest-1.avif" alt="Las świerkowy we mgle" /></div>
-      <div class="phero__scrim" />
-      <div class="container phero__inner">
-        <span class="eyebrow eyebrow--ondark">O nas · Ludzie · Drewno · Las</span>
-        <h1>Pracujemy z drewnem i z ludźmi.</h1>
-        <p class="phero__lead">Drwa to pracownia rzemiosła drzewnego i społeczność, która wokół niej rośnie. Uczymy pracy z drewnem, budujemy naturalne domy i zdrowe relacje z ludźmi, z naturą i z samymi sobą. I nie zapominamy chodzić do lasu!</p>
-      </div>
-    </section>
+    <DrwaPageHero>
+      <template #bg><img src="/assets/forest-1.avif" alt="Las świerkowy we mgle" /></template>
+      <template #eyebrow>O nas · Ludzie · Drewno · Las</template>
+      <template #title>Pracujemy z drewnem i z ludźmi.</template>
+      <template #lead>Drwa to pracownia rzemiosła drzewnego i społeczność, która wokół niej rośnie. Uczymy pracy z drewnem, budujemy naturalne domy i zdrowe relacje z ludźmi, z naturą i z samymi sobą. I nie zapominamy chodzić do lasu!</template>
+    </DrwaPageHero>
 
     <main id="main-content">
       <!-- ===== Historia ===== -->

@@ -3,17 +3,14 @@
     <DrwaNav />
 
     <!-- ===== Hero ===== -->
-    <section class="real-hero" id="top">
-      <div class="real-hero__bg">
+    <DrwaPageHero id="top">
+      <template #bg>
         <img src="/assets/forest-band.avif" alt="Las we mgle" />
-      </div>
-      <div class="real-hero__scrim" />
-      <div class="container real-hero__inner">
-        <span class="eyebrow eyebrow--ondark">Realizacje · DRWA</span>
-        <h1>To, co udało nam się zbudować</h1>
-        <p class="real-hero__lead">Wiaty, sauny, altany, domki — konstrukcje z drewna, które stanęły na warsztatach i zleceniach. Kliknij zdjęcie, żeby powiększyć.</p>
-      </div>
-    </section>
+      </template>
+      <template #eyebrow>Realizacje · DRWA</template>
+      <template #title>To, co udało nam się zbudować</template>
+      <template #lead>Wiaty, sauny, altany, domki — konstrukcje z drewna, które stanęły na warsztatach i zleceniach. Kliknij zdjęcie, żeby powiększyć.</template>
+    </DrwaPageHero>
 
     <main id="main-content">
       <section class="section container">

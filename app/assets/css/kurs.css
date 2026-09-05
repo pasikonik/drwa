@@ -1,87 +1,7 @@
 /* DRWA — strona produktowa kursu „Od wiaty do chaty".
    Buduje na tokenach DS + app/site.css. */
 
-/* ============ Hero ============ */
-.khero { position: relative; overflow: hidden; background: var(--surface-inverse); min-height: 78vh; display: flex; }
-.khero__bg { position: absolute; inset: 0; }
-.khero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
-.khero__scrim {
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(180deg, rgba(19,29,24,0.60) 0%, rgba(19,29,24,0.30) 42%, rgba(19,29,24,0.90) 100%),
-    rgba(19,29,24,0.42);
-}
-.khero__inner { position: relative; color: var(--cream-50); padding: var(--space-10) var(--space-6); width: 100%; }
-.khero__crumb {
-  display: flex; align-items: center; gap: 10px;
-  font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--pine-200); margin-bottom: var(--space-5);
-}
-.khero__crumb a { color: var(--pine-200); text-decoration: none; transition: color var(--dur-fast) var(--ease-standard); }
-.khero__crumb a:hover { color: var(--cream-50); }
-.khero__crumb .sep { color: var(--timber-300); }
-.khero__crumb .cur { color: var(--cream-100); }
-.khero__kicker {
-  font-family: var(--font-display); font-style: italic; font-size: var(--text-lg);
-  color: var(--timber-200); margin: 0 0 10px;
-}
-.khero h1 {
-  font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em;
-  font-size: clamp(40px, 5.2vw, 64px); line-height: 1.04; margin: 0; color: var(--cream-50); text-wrap: balance;
-}
-.khero__lead { font-size: var(--text-md); line-height: 1.65; color: var(--pine-100); max-width: 50ch; margin: var(--space-5) 0 0; }
-.khero__by {
-  font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--cream-100); margin-top: var(--space-5);
-}
-.khero__by .sep { color: var(--timber-300); }
-.khero__meta { display: flex; gap: var(--space-5); flex-wrap: wrap; margin-top: var(--space-5); }
-.khero__fact {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream-100);
-}
-.khero__fact svg { color: var(--timber-300); flex: none; }
-.khero__cta { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-7); }
-.khero__media { display: none; }
-@media (prefers-reduced-motion: no-preference) {
-  .khero__inner > div > * { animation: drwa-rise var(--dur-slower) var(--ease-out) both; }
-  .khero__inner > div > *:nth-child(2) { animation-delay: 80ms; }
-  .khero__inner > div > *:nth-child(3) { animation-delay: 160ms; }
-  .khero__inner > div > *:nth-child(4) { animation-delay: 240ms; }
-  .khero__inner > div > *:nth-child(5) { animation-delay: 320ms; }
-  .khero__inner > div > *:nth-child(6) { animation-delay: 400ms; }
-  .khero__inner > div > *:nth-child(7) { animation-delay: 480ms; }
-}
-
-/* wariant: podział — rejestr papierowy (domyślny) */
-.khero--paper { background: var(--surface-page); border-bottom: 1px solid var(--border-soft); min-height: 0; }
-.khero--paper .khero__bg,
-.khero--paper .khero__scrim { display: none; }
-.khero--paper .khero__inner {
-  display: grid; grid-template-columns: 1.06fr 1fr; gap: var(--space-8); align-items: center;
-  color: var(--text-body); padding: var(--space-9) var(--space-6);
-}
-.khero--paper .khero__media {
-  display: block; position: relative; border-radius: var(--radius-lg); overflow: hidden;
-  box-shadow: var(--shadow-md); min-height: 340px; height: 100%;
-}
-.khero--paper .khero__media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
-.khero--paper h1 { color: var(--text-strong); }
-.khero--paper .khero__kicker { color: var(--text-accent); }
-.khero--paper .khero__lead { color: var(--text-muted); }
-.khero--paper .khero__crumb,
-.khero--paper .khero__crumb a { color: var(--text-faint); }
-.khero--paper .khero__crumb a:hover { color: var(--text-brand); }
-.khero--paper .khero__crumb .cur { color: var(--text-strong); }
-.khero--paper .khero__crumb .sep { color: var(--accent); }
-.khero--paper .khero__by { color: var(--text-muted); }
-.khero--paper .khero__by .sep { color: var(--accent); }
-.khero--paper .khero__fact { color: var(--text-faint); }
-.khero--paper .khero__fact svg { color: var(--accent); }
-@media (max-width: 880px) {
-  .khero--paper .khero__inner { grid-template-columns: 1fr; }
-  .khero--paper .khero__media { min-height: 220px; order: -1; }
-}
+/* Hero: wspólny <DrwaPageHero> (app/components/DrwaPageHero.vue). */
 
 /* ============ Pas liczb ============ */
 .kstats { background: var(--surface-inverse-2); color: var(--cream-50); border-top: 1px solid var(--border-on-dark); }
@@ -259,8 +179,6 @@
 .klist-empty { font-size: var(--text-md); color: var(--text-muted); }
 
 /* ============ Szablon CMS kursu (/kursy/[slug]) ============ */
-/* Hero bez obrazka — jedna kolumna zamiast grida 2-kolumnowego. */
-.khero--paper .khero__inner--single { grid-template-columns: 1fr; }
 /* Pas liczb o zmiennej liczbie statów (od-wiaty ma sztywne 5 kolumn). */
 .kstats__row--auto { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
 /* Opis kursu (rich text z products.description) nad kafelkami. */
