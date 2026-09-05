@@ -27,7 +27,7 @@
       </template>
       <template #cta>
         <button class="btn btn--primary btn--lg" @click="scrollTo('cena')">Dołącz do kursu — {{ priceLabel }}</button>
-        <button v-if="modules.length" class="btn btn--secondary btn--lg" @click="scrollTo('program')">Zobacz program</button>
+        <button v-if="modules.length" class="btn btn--on-dark btn--lg" @click="scrollTo('program')">Zobacz program</button>
       </template>
     </DrwaPageHero>
 
