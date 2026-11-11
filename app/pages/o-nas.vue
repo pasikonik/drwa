@@ -123,8 +123,7 @@
         <div class="section container">
           <div class="founder founder--compact">
             <figure class="founder__photo io">
-              <!-- shortcut: brak zdjęcia — podmienić na <img class="founder__img"> jak u reszty, gdy przyjdzie -->
-              <div class="founder__placeholder" aria-hidden="true">KS</div>
+              <img class="founder__img" src="/Karol.avif" alt="Karol Sprawka" />
             </figure>
             <div class="founder__body io">
               <h3 class="founder__compact-name">Karol Sprawka</h3>
