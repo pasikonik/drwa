@@ -1,16 +1,5 @@
 /* DRWA — Kontakt. Zbudowane na tokenach DRWA + site.css. */
 
-/* ============ Pagehead (forest register) ============ */
-.contact-head {
-  background: var(--surface-inverse); color: var(--cream-50);
-  padding: var(--space-9) 0 var(--space-8);
-}
-.contact-head h1 {
-  font-family: var(--font-display); font-weight: 500; font-size: clamp(36px, 4.6vw, 54px);
-  color: var(--cream-50); margin: 12px 0 10px; letter-spacing: -0.02em; line-height: 1.05; text-wrap: balance;
-}
-.contact-head p { color: var(--pine-100); max-width: 52ch; margin: 0; font-size: var(--text-md); line-height: 1.6; }
-
 /* ============ Układ: info + formularz ============ */
 .contact { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-8); align-items: start; }
 @media (max-width: 900px) { .contact { grid-template-columns: 1fr; } }

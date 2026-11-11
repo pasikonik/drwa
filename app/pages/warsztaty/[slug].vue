@@ -50,14 +50,13 @@
             <span class="eyebrow">O warsztacie</span>
             <h2>{{ title }}</h2>
             <div v-if="descHtml" v-html="descHtml" class="dsec__content" />
-            <ul class="learn">
-              <li v-for="item in LEARN" :key="item">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5"/>
-                </svg>
-                {{ item }}
-              </li>
-            </ul>
+          </section>
+
+          <!-- Informacje organizacyjne — osobny blok z Directusa (workshops.organizational_info) -->
+          <section v-if="infoHtml" class="dsec dsec--info io" id="informacje">
+            <span class="eyebrow">Organizacja</span>
+            <h2>Informacje organizacyjne</h2>
+            <div v-html="infoHtml" class="dsec__content" />
           </section>
 
           <!-- Program -->
@@ -300,6 +299,7 @@ const lead = computed(() =>
   product.value?.short_description ?? (product.value?.description ? stripHtml(product.value.description, 260) : '')
 )
 const workshop = computed(() => product.value?.workshop ?? null)
+const infoHtml = computed(() => workshop.value?.organizational_info ?? '')
 
 const location = computed(() =>
   workshop.value?.location ?? 'Stolarnia pod lasem · Beskid Niski'
@@ -381,13 +381,6 @@ const instructors = computed(() =>
       photoUrl: assetUrl(i.photo, { width: 120, quality: 82 }),
     }))
 )
-
-const LEARN = [
-  'Trasowanie i wykonywanie łączeń czopowych — dłutem i piłą',
-  'Czytanie drewna: słoje, sęki i praca materiału w konstrukcji',
-  'Składanie ram i wspólne stawianie więźby dachowej',
-  'Plan konstrukcji, który zabierzesz do domu i powtórzysz u siebie',
-]
 
 // ─── Form ─────────────────────────────────────────────────────────────────────
 

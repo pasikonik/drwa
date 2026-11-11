@@ -22,12 +22,12 @@
           <span class="eyebrow">O naszych kursach</span>
           <h2>Drwa online</h2>
         </div>
-        <div class="course-intro">
-          <div class="course-intro__text io">
+        <div class="intro-split">
+          <div class="intro-split__text io">
             <p>Kursy online to rozwijająca się gałąź pracy edukacyjnej Drew. Wyrosła z myślą o osobach, które nie mają możliwości przyjazdu na warsztat, albo po prostu wolą pracować w pojedynkę i uczyć się na własnych błędach — ale też ograniczać ich ilość.</p>
             <p>W oparciu o kilkanaście lat doświadczeń budowania z drewna i nauczania tego fachu przygotowujemy programy kursów, które w przystępny i kompleksowy sposób wprowadzają w tematy ciesielstwa i pracy z drewnem.</p>
           </div>
-          <ul class="course-intro__list io">
+          <ul class="intro-split__list io">
             <li>Nagrania i objaśnienia każdego etapu, krok po kroku</li>
             <li>Wykłady i prezentacje o teorii ciesielstwa i drewna</li>
             <li>Projekty i rysunki wykonawcze</li>
@@ -37,7 +37,7 @@
             <li>Dodatki edukacyjne, rabaty na narzędzia i zniżki na warsztaty</li>
           </ul>
         </div>
-        <p class="course-intro__more io">
+        <p class="intro-split__more io">
           Oprócz tego tworzymy inne kursy, które rozwijają konkretne aspekty ciesielstwa (np. „Projektowanie konstrukcji drewnianych na własny użytek") lub przedstawiają projekt i wykonanie konkretnego obiektu (np. „Ośmiokątna altana z wieżyczką"). Zapisz się na
           <NuxtLink to="/#newsletter">Kurier Ciesielski</NuxtLink>, by dostawać informacje o nowych kursach.
         </p>
@@ -193,59 +193,3 @@ const openFaq = ref<number | null>(0)
 
 useScrollReveal()
 </script>
-
-<style scoped>
-.course-intro {
-  display: grid;
-  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-  gap: var(--space-8);
-  align-items: start;
-}
-.course-intro__text p {
-  font-family: var(--font-serif);
-  font-size: var(--text-base);
-  line-height: 1.75;
-  color: var(--text-body);
-  margin: 0 0 var(--space-5);
-  max-width: 58ch;
-}
-.course-intro__list {
-  list-style: none;
-  margin: 0;
-  padding: var(--space-6);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background: var(--surface-card);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-}
-.course-intro__list li {
-  position: relative;
-  padding-left: 26px;
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  color: var(--text-body);
-}
-.course-intro__list li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 7px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-.course-intro__more {
-  margin: var(--space-6) 0 0;
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-  max-width: 72ch;
-}
-.course-intro__more a { color: var(--text-brand); font-weight: 600; }
-@media (max-width: 880px) {
-  .course-intro { grid-template-columns: 1fr; }
-}
-</style>

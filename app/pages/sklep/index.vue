@@ -5,11 +5,11 @@
     <!-- ===== Hero ===== -->
     <DrwaPageHero>
       <template #bg>
-        <img src="/assets/forest-band.avif" alt="Las świerkowy we mgle" />
+        <img src="/assets/sklep-band.avif" alt="Bluza i koszulka z haftem DRWA" />
       </template>
       <template #eyebrow>Sklep · Merch DRWA</template>
-      <template #title>Noś las ze sobą.</template>
-      <template #lead>Bluzy, koszulki i koszule robocze z naszej stolarni — bawełna organiczna, spokojne kolory lasu i znak DRWA. Garść rzeczy, które naprawdę nosimy na warsztatach.</template>
+      <template #title>Ubierz się w Drwach i sięgnij po więcej</template>
+      <template #lead>Bluzy, koszulki i koszule robocze z haftem DRWA — gratka dla absolwentów i sympatyków naszej społeczności. Poza tym inne skarby z drewna i z lasu — nowe produkty co jakiś czas!</template>
     </DrwaPageHero>
 
     <main id="main-content">

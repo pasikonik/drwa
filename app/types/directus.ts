@@ -61,6 +61,7 @@ export interface Workshop {
   advance: number | null       // deposit charged at checkout (arrives as decimal string)
   level: WorkshopLevel | null
   blogpost_link: string | null // link to a related blog post (relacja)
+  organizational_info?: string | null // rich text (HTML): cena, zniżki, zasady — optional until the field exists in Directus
   days: WorkshopDay[]
   instructors: WorkshopInstructor[]
 }

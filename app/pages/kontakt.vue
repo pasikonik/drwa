@@ -2,14 +2,13 @@
   <div class="site">
     <DrwaNav />
 
-    <!-- ===== Pagehead ===== -->
-    <div class="contact-head">
-      <div class="container">
-        <span class="eyebrow eyebrow--ondark">Kontakt · DRWA</span>
-        <h1>Napisz, zadzwoń albo wpadnij.</h1>
-        <p>Pytania o warsztaty, zamówienia ze sklepu, współpraca — odpisujemy zwykle w dwa dni robocze. Telefon odbieramy, kiedy nie trzymamy dłuta.</p>
-      </div>
-    </div>
+    <!-- ===== Hero ===== -->
+    <DrwaPageHero>
+      <template #bg><img src="/assets/kontakt-band.avif" alt="Drewniane drzwi stolarni Drew z rzeźbionym szyldem" /></template>
+      <template #eyebrow>Kontakt · DRWA</template>
+      <template #title>Powiedz, co tam potrzebujesz.</template>
+      <template #lead>Pytania o warsztaty, zamówienia ze sklepu, współprace — odpisujemy zwykle do trzech dni roboczych. Prosimy o kontakt bezpośrednio na e-mail lub przez formularz.</template>
+    </DrwaPageHero>
 
     <main id="main-content">
       <!-- ===== Dane kontaktowe + formularz ===== -->
@@ -35,7 +34,7 @@
               </div>
               <div>
                 <p class="cinfo__t">Dolina Harmonii</p>
-                <p class="cinfo__d">Dolnośląskie, okolice Jeleniej Góry. Dokładny adres wysyłamy w potwierdzeniu zapisu na warsztat.</p>
+                <p class="cinfo__d"><a href="https://maps.app.goo.gl/TDNCoqz3i1zLxRHr6" target="_blank" rel="noopener noreferrer">Pokaż na mapie Google</a></p>
               </div>
             </div>
             <div class="cinfo__social" aria-label="Media społecznościowe">
@@ -57,7 +56,7 @@
               </a>
             </div>
             <div class="cinfo__note">
-              <p>„Jeśli nie odpisujemy od razu, pewnie coś heblujemy. Odezwiemy się — obiecane.” — Jędrzej</p>
+              <p>„Jeśli nie odpisuję od razu, to pewnie dlatego, że robię coś innego. Proszę o cierpliwość, a w pilnych sprawach — o przypomnienia. Dzięki 🙏” — Jędrzej</p>
             </div>
           </div>
 
@@ -69,7 +68,7 @@
                 </svg>
               </div>
               <h3>Wiadomość poszła w las.</h3>
-              <p>Dziękujemy! Odpiszemy zwykle w ciągu dwóch dni roboczych — na adres, który podałeś.</p>
+              <p>Dziękujemy! Odpiszemy zwykle do trzech dni roboczych — na adres, który podałeś.</p>
               <button class="btn btn--secondary btn--sm" @click="sendAnother">Wyślij kolejną</button>
             </div>
           </div>

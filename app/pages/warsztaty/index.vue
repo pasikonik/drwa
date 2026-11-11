@@ -7,9 +7,9 @@
       <template #bg>
         <img src="/assets/warsztaty-band.avif" alt="Grupa uczestników przy stole warsztatowym w stolarni" />
       </template>
-      <template #eyebrow>STACJONARNIE</template>
-      <template #title>Warsztaty {{ currentYear }}</template>
-      <template #lead>Kilka dni wspólnej pracy przy realnym drewnie — w małej grupie, pod okiem cieśli i przy ognisku. Sprawdź terminy i zajmij miejsce.</template>
+      <template #eyebrow>Przyjedź, odpocznij, zbuduj</template>
+      <template #title>Warsztaty stacjonarne</template>
+      <template #lead>Nauka rzemiosła u źródła — kilkudniowe spotkania z drewnem i z żywymi ludźmi. Zajęcia w stolarni, na sali wykładowej i na placu budowy, doświadczanie procesu od A do Z, praca w zespole, wieczory przy ogniu.</template>
     </DrwaPageHero>
 
     <main id="main-content">
@@ -17,8 +17,30 @@
       <section class="section container" id="lista">
         <div class="sec-head io">
           <span class="eyebrow">Nadchodzące terminy</span>
-          <h2>Trzy warsztaty, trzy konstrukcje</h2>
-          <p>Każdy warsztat to jeden realny budynek — od przygotowania drewna po gotową konstrukcję. Pracujemy w grupach do dziesięciu osób.</p>
+          <h2>Każdy warsztat jest inny</h2>
+        </div>
+        <div class="intro-split">
+          <div class="intro-split__text io">
+            <p>
+              Każdy projekt warsztatowy jest inny.<br />
+              Każdy warsztat to kompendium wiedzy o drewnie, praktyka i teoria.<br />
+              Zwykle tydzień, czasem kilka dni.<br />
+              W Górach Izerskich lub w innej leśnej krainie.<br />
+              W kameralnej grupie, pod okiem instruktorów.
+            </p>
+            <p><strong>Sprawdź terminy i zajmij miejsce.</strong></p>
+            <p v-if="pastWorkshops.length" class="intro-split__more"><a href="#archiwum">Zobacz minione wydarzenia ↓</a></p>
+          </div>
+          <div class="intro-split__list io">
+            <p class="intro-split__label">Organizujemy je w kilku różnych formatach:</p>
+            <ul>
+              <li>Warsztaty ciesielskie — budowanie konstrukcji od A do Z</li>
+              <li>Warsztaty Drewnianej Samodzielności — kilka mniejszych projektów i szeroki zakres wiedzy o rzemiośle drzewnym i o drzewach</li>
+              <li>Warsztaty stolarskie dla rodzin i dla par — budowanie przedmiotu na własny użytek</li>
+              <li>Warsztaty snycerskie — medytacyjna praktyka rzeźbienia w drewnie</li>
+              <li>Warsztaty slow wood — własny mały projekt, dłubanie i relaks na łonie natury</li>
+            </ul>
+          </div>
         </div>
         <div v-if="upcomingWorkshops.length" class="wlist">
           <article v-for="w in upcomingWorkshops" :key="w.id" class="wrow io">

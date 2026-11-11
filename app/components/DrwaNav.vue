@@ -155,6 +155,7 @@ const NAV: NavItem[] = [
     id: 'onas', label: 'O nas', children: [
       { route: '/o-nas', label: 'O nas', desc: 'Kim jesteśmy i skąd DRWA' },
       { route: '/realizacje', label: 'Realizacje', desc: 'Galeria tego, co zbudowaliśmy' },
+      { route: '/oferta', label: 'Oferta', desc: 'Warsztaty dla firm i grup, współprace, konsultacje' },
     ],
   },
   { id: 'kontakt', label: 'Kontakt', route: '/kontakt' },

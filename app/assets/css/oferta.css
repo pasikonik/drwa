@@ -1,0 +1,35 @@
+/* DRWA — Oferta. Hero: wspólny <DrwaPageHero>; CTA: .about-cta z onas.css. */
+
+.oferta-intro p,
+.oferta-item p,
+.oferta-note p {
+  font-family: var(--font-serif); font-size: var(--text-base); line-height: 1.75;
+  color: var(--text-body); margin: 0 0 var(--space-4); max-width: 62ch;
+}
+.oferta-intro a,
+.oferta-note a { color: var(--text-brand); font-weight: 600; }
+
+/* ============ Formy współpracy — numerowana lista ============ */
+.oferta-list { margin-top: var(--space-8); border-bottom: 1px solid var(--border-soft); }
+.oferta-item {
+  display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: var(--space-4);
+  padding: var(--space-6) 0 var(--space-2); border-top: 1px solid var(--border-soft);
+}
+.oferta-item__num { font-family: var(--font-mono); font-size: var(--text-sm); letter-spacing: 0.08em; color: var(--text-faint); padding-top: 6px; }
+.oferta-item__title {
+  font-family: var(--font-display); font-weight: 500; font-size: var(--text-xl);
+  letter-spacing: -0.01em; color: var(--text-strong); margin: 0 0 var(--space-3);
+}
+@media (max-width: 700px) { .oferta-item { grid-template-columns: 1fr; gap: 4px; } }
+
+/* ============ Ważne informacje ============ */
+.oferta-note {
+  margin-top: var(--space-8); padding: var(--space-7);
+  background: var(--surface-raised); border: 1px solid var(--border-soft); border-radius: var(--radius-lg);
+}
+.oferta-note h3 {
+  font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg);
+  color: var(--text-strong); margin: var(--space-5) 0 var(--space-2);
+}
+.oferta-note p:last-child { margin-bottom: 0; }
+@media (max-width: 700px) { .oferta-note { padding: var(--space-5); } }

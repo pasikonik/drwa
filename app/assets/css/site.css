@@ -334,6 +334,72 @@ picture { display: contents; }
 
 @media (max-width: 900px) { .tiles { grid-template-columns: 1fr; } .tile { aspect-ratio: 16 / 10; } }
 
+/* ============ Treść z edytora Directusa ============ */
+/* Tekst wklejony z Google Docs niesie inline style (Arial 11pt, czarny) —
+   !important to jedyny sposób, by przebić atrybut style i wrócić do typografii strony. */
+:is(.prose, .dsec__content, .kdesc, .mod__copy) span {
+  font-family: inherit !important; font-size: inherit !important;
+  color: inherit !important; background-color: transparent !important;
+}
+
+/* ============ Intro: tekst + karta z listą (kursy, warsztaty) ============ */
+.intro-split {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: var(--space-8);
+  align-items: start;
+}
+.intro-split__text p {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: 1.75;
+  color: var(--text-body);
+  margin: 0 0 var(--space-5);
+  max-width: 58ch;
+}
+.intro-split__list {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.intro-split__list li {
+  position: relative;
+  padding-left: 26px;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text-body);
+}
+.intro-split__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.intro-split__more {
+  margin: var(--space-6) 0 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  max-width: 72ch;
+}
+.intro-split__more a { color: var(--text-brand); font-weight: 600; }
+@media (max-width: 880px) {
+  .intro-split { grid-template-columns: 1fr; }
+}
+/* Wariant z nagłówkiem: karta to <div>, lista w środku. */
+.intro-split__list ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.intro-split__label { margin: 0; font-weight: 600; color: var(--text-strong); }
+
 /* ============ About ============ */
 .about { display: grid; grid-template-columns: 1fr 1.05fr; gap: var(--space-9); align-items: start; }
 .about__lead {

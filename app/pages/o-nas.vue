@@ -24,7 +24,7 @@
             <p>Kochamy smak lipowych wiórów o poranku, dźwięk ostrego hebla na suchym drewnie i zapach lasu po deszczu.</p>
           </div>
           <figure class="story__img io">
-            <img src="/assets/tile-o-nas.avif" alt="Znak DRWA na tle lasu w Górach Izerskich" />
+            <img src="/assets/onas-story.avif" alt="Cieśle Drew przy pracy w stolarni" />
           </figure>
         </div>
       </section>
@@ -59,7 +59,7 @@
             </figure>
             <div class="founder__body io">
               <h2>Gregory Paszyński</h2>
-              <p class="founder__role">Instruktor · nauczyciel pracy z drewnem</p>
+              <p class="founder__role">Instruktor · nauczyciel pracy z drewnem · gospodarz</p>
               <p>Nauczyciel pracy z drewnem, muzyki i języka angielskiego — współprowadzi warsztaty Drew od samego początku tej działalności. Miłośnik tradycyjnych metod, ostrych narzędzi i piękna w każdej postaci — najbardziej lubi je znajdować w harmonijnym krajobrazie, w rysunkach słojów i w swoim najbliższym otoczeniu. Sam wytwarza piękne przedmioty z drewna, od tradycyjnych konstrukcji, przez solidne, lite meble, po snycerskie majstersztyki.</p>
               <p>Oprócz tego rzeźbi w terenie i obsadza krawędzie leśnymi ogrodami. Absolwent studiów agroleśniczych i Permaculture Design Course, dzieli się tą wiedzą podczas warsztatów i pomaga innym planować funkcjonalne i estetyczne siedliska. Sam od lat remontuje stary poniemiecki dom i rozwija swoje gospodarstwo.</p>
               <p>Urodzony w Anglii native speaker, piewca polskiej mowy i nosiciel nietuzinkowego poczucia humoru. Głowa rodziny i gospodarz, członek dwóch zespołów muzycznych i lokalnych inicjatyw społecznych. Lubi pogadać — i dobrze gada!</p>
@@ -72,9 +72,9 @@
       <section class="founder-wrap" id="kadra">
         <div class="section container">
           <div class="founder founder--compact">
-            <div class="founder__photo founder__photo--avatar io">
-              <span class="founder__avatar founder__avatar--sm">{{ initials('Michał „Igła" Kiełbik') }}</span>
-            </div>
+            <figure class="founder__photo io">
+              <img class="founder__img" src="/Igla.avif" alt="Michał „Igła” Kiełbik" />
+            </figure>
             <div class="founder__body io">
               <h3 class="founder__compact-name">Michał „Igła" Kiełbik</h3>
               <p class="founder__role">Instruktor · złota rączka</p>
@@ -101,6 +101,41 @@
         </div>
       </section>
 
+      <!-- ===== Paweł „dulare" Dulak ===== -->
+      <section class="founder-wrap">
+        <div class="section container">
+          <div class="founder founder--compact">
+            <figure class="founder__photo io">
+              <img class="founder__img" src="/Pawel.avif" alt="Paweł „dulare” Dulak" />
+            </figure>
+            <div class="founder__body io">
+              <h3 class="founder__compact-name">Paweł „dulare" Dulak</h3>
+              <p class="founder__role">Programista · stolarz z zamiłowania</p>
+              <p>Programista, stolarz z zamiłowania. Programowaniem zajmował sie jeszcze w ubiegłym stuleciu i do dziś siedzi po uszy w dziwnych znaczkach na ciemnym tle. Drewno stało się jego sposobem na oderwanie od technologii – piła zamiast klawiatury, hebel zamiast terminala. Robi meble i inne drewniane przydasie na własne potrzeby, ucząc się rzemiosła, bo uczenie się nowych rzeczy to jego druga natura.</p>
+              <p>Poza pracą i drewnem – człowiek wielu równoległych zainteresowań: góry, fotografia, książki, podróże i pytania, na które nie ma łatwych odpowiedzi. Mąż i ojciec, dla którego bycie ciągle w ruchu (fizycznie i intelektualnie) jest naturalnym stanem.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Karol Sprawka ===== -->
+      <section class="founder-wrap founder-wrap--alt">
+        <div class="section container">
+          <div class="founder founder--compact">
+            <figure class="founder__photo io">
+              <!-- shortcut: brak zdjęcia — podmienić na <img class="founder__img"> jak u reszty, gdy przyjdzie -->
+              <div class="founder__placeholder" aria-hidden="true">KS</div>
+            </figure>
+            <div class="founder__body io">
+              <h3 class="founder__compact-name">Karol Sprawka</h3>
+              <p class="founder__role">Budowniczy · facylitator · łącznik światów</p>
+              <p>Wędrowny budowniczy, łącznik światów i skrzat o wielkim sercu. Od lat buduje z Drwami i wspiera prowadzenie warsztatów ciesielskich. Sam uczy pracy z emocjami i współtworzy leśne wyprawy męskie jako facylitator i wuefista, trzyma kręgi i przestrzeń dla procesów.</p>
+              <p>Przez wiele lat związany ze szkołą Possibility Management, obecnie czerpie z różnych nurtów, które wspierają rozwój osobisty, szczególnie z mądrości ludów rdzennych i z wielkiej księgi Natury. Uważny słuchacz dający oparcie w trudnych momentach, ale też psotnik i pląsacz, z którym można bawić się do rana. Do tańca, do różańca i do roboty. He-Hej!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- ===== Kadra — reszta ===== -->
       <section class="section container">
         <div class="crew-more io">
@@ -112,70 +147,15 @@
         <p class="crew-more__note io">Profile w przygotowaniu — już niedługo więcej o każdej z tych osób.</p>
       </section>
 
-      <!-- ===== Trzy nurty ===== -->
-      <section class="section--tight container">
-        <div class="sec-head sec-head--center io">
-          <span class="eyebrow">Co robimy</span>
-          <h2>Trzy nurty jednej rzeki</h2>
-        </div>
-        <div class="strands">
-          <NuxtLink class="strand io" to="/warsztaty">
-            <div class="strand__ic">
-              <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M14 12 3 23"/><path d="M18 2 8 12l4 4L22 6a2.83 2.83 0 0 0-4-4Z"/>
-              </svg>
-            </div>
-            <h3>Warsztaty stacjonarne</h3>
-            <p>Ciesielstwo od podstaw — w pracowni i w terenie, w małych grupach.</p>
-            <span class="strand__go">
-              Zobacz terminy
-              <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </span>
-          </NuxtLink>
-          <NuxtLink class="strand io" to="/sklep">
-            <div class="strand__ic">
-              <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
-              </svg>
-            </div>
-            <h3>Sklep · Merch</h3>
-            <p>Bluzy i koszulki z bawełny organicznej, ze znakiem DRWA.</p>
-            <span class="strand__go">
-              Do sklepu
-              <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </span>
-          </NuxtLink>
-          <NuxtLink class="strand io" to="/blog">
-            <div class="strand__ic">
-              <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/>
-              </svg>
-            </div>
-            <h3>Blog · Zapiski drzewne</h3>
-            <p>Notatki o drewnie, naturalnym budownictwie i ekologii.</p>
-            <span class="strand__go">
-              Poczytaj
-              <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </span>
-          </NuxtLink>
-        </div>
-      </section>
-
       <!-- ===== Zaproszenie ===== -->
       <section class="section container">
         <div class="about-cta io">
-          <div class="about-cta__bg"><img src="/assets/forest-3.avif" alt="Korony świerków we mgle" /></div>
+          <div class="about-cta__bg"><img src="/assets/poznaj-band.avif" alt="Cieśle Drew przy pracy w stolarni" /></div>
           <div class="about-cta__scrim" />
           <div class="about-cta__inner">
             <span class="eyebrow eyebrow--ondark">Poznajmy się</span>
             <h2>Najlepiej poznać nas przy pracy</h2>
-            <p>Przyjedź na warsztat — dzień przy stole z dłutem powie o DRWA więcej niż każda strona „o nas”.</p>
+            <p>Przyjedź na warsztat — dzień ze strugiem i dłutem powie o Drwach więcej niż wszystkie strony „o nas”.</p>
             <div class="about-cta__actions">
               <NuxtLink class="btn btn--on-dark btn--md" to="/warsztaty">
                 Zobacz warsztaty
@@ -199,13 +179,11 @@ useHead({
   title: 'O nas — DRWA',
 })
 
-// Profile Jędrzeja, Gregory'ego i Michałów są wpisane wprost w szablonie
+// Profile Jędrzeja, Gregory'ego, Michałów, Pawła i Karola są wpisane wprost w szablonie
 // (jak founder) — reszta kadry czeka na materiały, na razie tylko lista
 // nazwisk (patrz CREW_NAMES).
 const CREW_NAMES = [
-  'Karol Sprawka',
   'Grzegorz „Saper" Wieczorek',
-  'Paweł Dulak',
 ]
 
 function initials(name) {

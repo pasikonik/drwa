@@ -25,9 +25,10 @@ export const useProduct = (slugOrId: string | number) => {
           fields: [
             'id', 'title', 'slug', 'price', 'description', 'image', 'short_description',
             {
+              // '*' a nie lista pól: nowe pola (np. organizational_info) dochodzą bez
+              // zmian w kodzie, a brak pola w Directusie nie wywala zapytania.
               workshop: [
-                'id', 'product_id', 'date_start', 'date_end', 'location',
-                'spots_total', 'spots_booked', 'advance', 'level', 'blogpost_link', 'days',
+                '*',
                 { instructors: [{ instructors_id: ['id', 'name', 'photo', 'role', 'bio'] }] },
               ],
             },

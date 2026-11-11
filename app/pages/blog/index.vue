@@ -2,14 +2,13 @@
   <div class="site">
     <DrwaNav />
 
-    <!-- ===== Nagłówek strony ===== -->
-    <div class="pagehead">
-      <div class="container">
-        <span class="eyebrow eyebrow--ondark">Blog · Zapiski drzewne</span>
-        <h1>Notatki z warsztatu</h1>
-        <p>Historie o drzewach i ludziach, które piszą się w stolarni Drew — opisy konstrukcji, relacje z warsztatów, odkrycia, inspiracje i refleksje z pogranicza ciesielstwa, lasu i codziennego życia w drewnie.</p>
-      </div>
-    </div>
+    <!-- ===== Hero ===== -->
+    <DrwaPageHero>
+      <template #bg><img src="/assets/blog-band.avif" alt="Jesienny las i deski na leśnej ściółce" /></template>
+      <template #eyebrow>Blog · Zapiski drzewne</template>
+      <template #title>Notatki z warsztatu</template>
+      <template #lead>Historie o drzewach i ludziach, które piszą się w stolarni Drew — opisy konstrukcji, relacje z warsztatów, odkrycia, inspiracje i refleksje z pogranicza ciesielstwa, lasu i codziennego życia w drewnie.</template>
+    </DrwaPageHero>
 
     <main id="main-content" class="container">
       <!-- Filtry kategorii -->

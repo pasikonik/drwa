@@ -5,6 +5,7 @@
     <main id="main-content">
       <DrwaTiles />
       <DrwaAbout />
+      <DrwaSpolecznosc />
       <DrwaValues />
       <DrwaOpinie />
       <DrwaPartnerzy />

@@ -235,10 +235,11 @@ const quotes = course?.quotes ?? []
 const offerItems = course?.offer_items ?? []
 // `descHtml` jak na od-wiaty-do-chaty: opis bez znaczników (stary schemat —
 // zwykły tekst zamiast rich text) zawijamy w <p>, żeby złapał style .mod__body p.
+// Entery zamieniamy na <br>, żeby spis lekcji szedł punkt pod punktem.
 const modules = (course?.modules ?? [])
   .map((m) => {
     const desc = (m.description ?? '').trim()
-    return { ...m, descHtml: !desc || desc.startsWith('<') ? desc : `<p>${desc}</p>` }
+    return { ...m, descHtml: !desc || desc.startsWith('<') ? desc : `<p>${desc.replace(/\n/g, '<br>')}</p>` }
   })
 const hasMain = Boolean(product.description) || tiles.length > 0
 // Directus wysyła decimal jako string — Number() przed formatowaniem.
