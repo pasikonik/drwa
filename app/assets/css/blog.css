@@ -18,6 +18,8 @@
 
 /* Blog wyświetla .list-empty (site.css) bez filtrów nad nim — potrzebuje własnego odstępu od nagłówka strony. */
 main.container > .list-empty { margin: var(--space-7) 0; }
+/* Sam wyróżniony wpis (brak siatki pod nim) — odstęp, który normalnie daje sekcja siatki */
+main.container > .band:last-child { margin-bottom: var(--space-8); }
 
 /* ============ Tag (z design systemu) ============ */
 .drwa-tag {
