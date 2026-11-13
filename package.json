@@ -2,9 +2,6 @@
   "name": "drwa-frontend",
   "type": "module",
   "private": true,
-  "engines": {
-    "node": ">=26.0.0"
-  },
   "scripts": {
     "build": "NODE_OPTIONS=--dns-result-order=ipv4first nuxt build",
     "dev": "NODE_OPTIONS=--dns-result-order=ipv4first nuxt dev",
