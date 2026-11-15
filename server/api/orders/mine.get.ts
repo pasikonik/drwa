@@ -1,16 +1,14 @@
 import { readItems } from '@directus/sdk'
-import type { Order, OrderItem, OrderProductRef, OrderWithItems, OrderItemExpanded } from '~/types/directus'
-import { toOrderProductRef } from '~/utils/product'
+import type { Order, OrderWithItems } from '~/types/directus'
 import { directusAdmin } from '../../utils/directusAdmin'
+import { expandOrders } from '../../utils/orders'
 import { resolveUserId } from '../../utils/sessionUser'
 
 export default defineEventHandler(async (event): Promise<OrderWithItems[]> => {
   const userId = await resolveUserId(event)
   if (!userId) throw createError({ statusCode: 401, statusMessage: 'Zaloguj się, aby zobaczyć zamówienia.' })
 
-  const client = directusAdmin()
-
-  const orders = (await client.request(
+  const orders = (await directusAdmin().request(
     readItems('orders', {
       filter: { customer: { _eq: userId } },
       sort: ['-date_created'],
@@ -22,45 +20,5 @@ export default defineEventHandler(async (event): Promise<OrderWithItems[]> => {
     }),
   )) as Order[]
 
-  if (!orders.length) return []
-
-  const orderIds = orders.map((o) => o.id)
-  const allItems = (await client.request(
-    readItems('order_items', {
-      filter: { order_id: { _in: orderIds } },
-      fields: ['id', 'quantity', 'price_at_purchase', 'order_id', 'product_id', 'variant_id'],
-      limit: -1,
-    }),
-  )) as OrderItem[]
-
-  const productIds = [...new Set(allItems.map((i) => i.product_id).filter((v): v is number => v != null))]
-  const products: OrderProductRef[] = productIds.length
-    ? ((await client.request(
-        readItems('products', {
-          filter: { id: { _in: productIds } },
-          fields: [
-            'id', 'title', 'slug', 'image',
-            { workshop: ['id'] },
-            { course: ['id', 'course_access_url'] },
-          ],
-          limit: -1,
-        }),
-      )) as unknown[]).map(toOrderProductRef)
-    : []
-
-  const productById = new Map(products.map((p) => [p.id, p]))
-
-  const itemsByOrder = new Map<string, OrderItemExpanded[]>()
-  for (const item of allItems) {
-    const expanded: OrderItemExpanded = {
-      ...item,
-      product: item.product_id != null ? productById.get(item.product_id) ?? null : null,
-    }
-    const key = item.order_id ?? ''
-    const list = itemsByOrder.get(key) ?? []
-    list.push(expanded)
-    itemsByOrder.set(key, list)
-  }
-
-  return orders.map((o) => ({ ...o, items: itemsByOrder.get(o.id) ?? [] }))
+  return expandOrders(orders)
 })

@@ -8,9 +8,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 pnpm dev        # dev server at http://localhost:3000
 pnpm build      # production build (runs nuxt build)
 pnpm preview    # preview the production build locally
+pnpm typecheck  # nuxt typecheck (vue-tsc) — the real type check; `nuxt build` strips types without checking them
+pnpm test       # vitest — server logic only (tests/, currently computeOrder pricing)
 ```
 
-No lint or test commands exist — TypeScript (`nuxt build`) is the primary correctness check. After any structural change, run `pnpm build` to verify imports and templates compile.
+No lint command exists. CI (`.github/workflows/deploy.yml`) runs `typecheck` + `test` before every deploy. TypeScript is pinned to 6.x because vue-tsc 3.x does not work with TypeScript 7. After any structural change, run `pnpm typecheck` and `pnpm build` to verify types, imports and templates.
 
 Required environment variables (see `nuxt.config.ts` `runtimeConfig`):
 
@@ -80,7 +82,9 @@ Prices are always displayed with `formatPrice()` from [app/utils/format.ts](app/
 
 ### Checkout flow (server-side)
 
-`POST /api/checkout/create-intent` does **authoritative re-pricing** via `computeOrder()` (`server/utils/pricing.ts`) — never trusts client-sent prices. It creates a pending `orders` row, line items, a Stripe PaymentIntent, then persists the intent id. `POST /api/stripe/webhook` handles `payment_intent.succeeded` to mark the order paid.
+Public `POST /api/*` routes (except `/api/stripe/*`) are throttled per IP by `server/middleware/rateLimit.ts` (in-memory, per PM2 worker). SSR reads Directus via the server-only `directusUrl` (internal address, set in `ecosystem.config.cjs` as `NUXT_DIRECTUS_URL`); the browser uses `public.directusUrl`.
+
+`POST /api/checkout/create-intent` does **authoritative re-pricing** via `computeOrder()` (`server/utils/pricing.ts`) — never trusts client-sent prices. It creates a pending `orders` row, line items, a Stripe PaymentIntent, then persists the intent id. `POST /api/stripe/webhook` handles `payment_intent.succeeded`: it claims the order with one conditional `pending→paid` write and fulfills only if it won the claim (reverting to `pending` if fulfillment throws, so Stripe's retry works). Course access links (`course_access_url`) are only returned by `/api/orders/*` for paid orders (`server/utils/orders.ts`) and are not fetched by the public composables.
 
 ### CSS architecture
 

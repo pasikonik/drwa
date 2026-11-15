@@ -8,7 +8,9 @@ module.exports = {
       env_production: {
         PORT: 3000,
         NODE_ENV: 'production',
-        DIRECTUS_URL: 'http://127.0.0.1:8055' // Adres do Directusa na tym samym VPS
+        // Adres do Directusa na tym samym VPS. Prefiks NUXT_ jest wymagany — bez
+        // niego Nuxt nie nadpisuje runtimeConfig.directusUrl w runtime.
+        NUXT_DIRECTUS_URL: 'http://127.0.0.1:8055'
       }
     }
   ]

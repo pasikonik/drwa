@@ -10,7 +10,7 @@ export default defineEventHandler(async (event): Promise<CreateIntentResponse> =
   const body = await readBody<CreateIntentPayload>(event)
   const { items, email, firstName, lastName, shippingMethod, address } = body ?? ({} as CreateIntentPayload)
 
-  if (!email || !email.includes('@')) {
+  if (typeof email !== 'string' || !email.includes('@')) {
     throw createError({ statusCode: 400, statusMessage: 'Podaj poprawny adres e-mail.' })
   }
 

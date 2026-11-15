@@ -11,6 +11,17 @@ export const fileId = (
 ): string | null => (!file ? null : typeof file === 'object' ? file.id : file)
 
 /**
+ * A failed Directus read leaves `data` at its empty default, which a detail
+ * page would answer with 404 — telling crawlers a real page is gone. Call this
+ * before the 404 check so a failure is a 503 instead.
+ */
+export const failIfLoadError = (error: { value: unknown }): void => {
+  if (error.value) {
+    throw createError({ statusCode: 503, statusMessage: 'Nie udało się wczytać strony. Spróbuj ponownie za chwilę.', fatal: true })
+  }
+}
+
+/**
  * Is this error worth retrying?
  *
  * Transport failures (undici throws a bare `TypeError: fetch failed` when the

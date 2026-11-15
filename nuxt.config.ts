@@ -8,8 +8,16 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      // Site-wide favicon. Pages only set their own `title` via useHead.
+      htmlAttrs: { lang: 'pl' },
+      // Site-wide favicon. Pages set their own `title` via useHead; the
+      // description below is only the default for pages that set none.
       link: [{ rel: 'icon', href: '/assets/drwa-mark-ink.png' }],
+      meta: [
+        { name: 'description', content: 'DRWA — warsztaty stolarskie i ciesielskie, kursy online oraz blog o pracy z drewnem. Drewno · Rzemiosło · Szkolenia.' },
+        { property: 'og:site_name', content: 'DRWA' },
+        { property: 'og:locale', content: 'pl_PL' },
+        { property: 'og:type', content: 'website' },
+      ],
     },
   },
 
@@ -56,11 +64,18 @@ export default defineNuxtConfig({
   // Directus /assets/* are served by Directus itself — configure
   // ASSETS_CACHE_TTL (seconds) in the Directus environment for those.
   routeRules: {
-    // Bezpieczna konfiguracja pod webhook Stripe (brak cache + surowe body)
-    '/api/stripe/webhook': { 
-      cache: false,
-      experimentalNoDirectResponse: true 
+    // No CSP on purpose: Stripe Elements and GTM make a correct policy a project of its own.
+    '/**': {
+      headers: {
+        'strict-transport-security': 'max-age=31536000',
+        'x-content-type-options': 'nosniff',
+        'x-frame-options': 'SAMEORIGIN',
+        'referrer-policy': 'strict-origin-when-cross-origin',
+      },
     },
+
+    // Bezpieczna konfiguracja pod webhook Stripe (brak cache + surowe body)
+    '/api/stripe/webhook': { cache: false },
 
     '/assets/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     '/*.avif':    { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },

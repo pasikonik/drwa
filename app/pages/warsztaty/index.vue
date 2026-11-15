@@ -84,7 +84,7 @@
               </div>
             </div>
             <div class="wrow__img">
-              <DrwaImg :src="w.rawImage" :alt="w.title" preset="hero" :img-style="{ objectPosition: w.pos }" :fallback="w.img" />
+              <DrwaImg :src="w.rawImage" :alt="w.title" preset="card":img-style="{ objectPosition: w.pos }" :fallback="w.img" />
             </div>
           </article>
         </div>
@@ -215,54 +215,7 @@
           </div>
           <div class="io">
             <div class="card card--padded">
-              <div v-if="sent" class="signup__sent">
-                <h3>Dziękujemy za zgłoszenie.</h3>
-                <p>Odezwiemy się w ciągu dwóch dni roboczych z potwierdzeniem miejsca i szczegółami. Do zobaczenia w stolarni.</p>
-              </div>
-              <form v-else class="signup__form" @submit.prevent="submit">
-                <input
-                  v-model="form.website"
-                  type="text"
-                  name="website"
-                  tabindex="-1"
-                  autocomplete="off"
-                  class="signup__hp"
-                  aria-hidden="true"
-                />
-                <div class="field">
-                  <label class="field__label" for="sf-workshop">Warsztat</label>
-                  <select id="sf-workshop" v-model="form.workshopId" class="field__select">
-                    <option v-for="w in upcomingWorkshops" :key="w.id" :value="w.id">
-                      {{ w.title }} · {{ w.day }} {{ w.month }} {{ w.year }}
-                    </option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label class="field__label" for="sf-name">Imię i nazwisko</label>
-                  <input id="sf-name" v-model="form.name" class="field__input" :class="{ 'field__input--error': errors.name }" type="text" autocomplete="name" />
-                  <span v-if="errors.name" class="field__error" role="alert">{{ errors.name }}</span>
-                </div>
-                <div class="field">
-                  <label class="field__label" for="sf-email">E-mail</label>
-                  <input id="sf-email" v-model="form.email" class="field__input" :class="{ 'field__input--error': errors.email }" type="email" autocomplete="email" />
-                  <span v-if="errors.email" class="field__error" role="alert">{{ errors.email }}</span>
-                  <span class="field__hint">Tu wyślemy potwierdzenie.</span>
-                </div>
-                <div class="field">
-                  <label class="field__label" for="sf-msg">Wiadomość (opcjonalnie)</label>
-                  <textarea id="sf-msg" v-model="form.message" class="field__textarea" rows="3" placeholder="Pytania, doświadczenie, dieta…" />
-                </div>
-                <label class="field__check">
-                  <input v-model="form.newsletter" type="checkbox" />
-                  <span class="field__check-label">Zapisz mnie też do newslettera „Listy z lasu"</span>
-                </label>
-                <p v-if="errorMessage" class="signup__error">{{ errorMessage }}</p>
-                <div class="signup__actions">
-                  <button type="submit" class="btn btn--primary btn--lg" :disabled="sending">
-                    {{ sending ? 'Wysyłanie…' : 'Wyślij zgłoszenie' }}
-                  </button>
-                </div>
-              </form>
+              <WorkshopSignupForm :workshops="signupOptions" contact-email="warsztaty@drwa.pl" />
             </div>
           </div>
         </div>
@@ -275,7 +228,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch, nextTick } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { formatPrice, formatDateRange, stripHtml, workshopSpots } from '~/utils/format'
 import { isWorkshopPast } from '~/utils/product'
 import type { WorkshopInstructor } from '~/types/directus'
@@ -400,54 +353,14 @@ const FAQ = [
 ]
 
 const openFaq = ref<number | null>(0)
-const form = reactive({
-  workshopId: upcomingWorkshops.value[0]?.id ?? null as number | null,
-  name: '', email: '', message: '', newsletter: false, website: '',
-})
-const errors = reactive({ name: '', email: '' })
-const sent = ref(false)
-const sending = ref(false)
-const errorMessage = ref('')
-
-const selectedWorkshop = computed(() =>
-  upcomingWorkshops.value.find((w) => w.id === form.workshopId) ?? null
+const signupOptions = computed(() =>
+  upcomingWorkshops.value.map((w) => ({
+    id: w.id,
+    title: w.title,
+    slug: w.slug,
+    label: `${w.title} · ${w.day} ${w.month} ${w.year}`,
+  })),
 )
-
-// Data can land after setup (client-side recovery from a failed SSR fetch), so
-// the select would otherwise stay on its initial empty value.
-watch(upcomingWorkshops, (list) => {
-  if (form.workshopId == null) form.workshopId = list[0]?.id ?? null
-})
-
-async function submit() {
-  errors.name = form.name.trim() ? '' : 'Podaj imię i nazwisko.'
-  errors.email = form.email.trim() && form.email.includes('@') ? '' : 'Podaj poprawny adres e-mail.'
-  if (errors.name || errors.email) return
-
-  errorMessage.value = ''
-  sending.value = true
-  try {
-    await $fetch('/api/warsztaty-signup', {
-      method: 'POST',
-      body: {
-        name: form.name,
-        email: form.email,
-        message: form.message,
-        workshopTitle: selectedWorkshop.value?.title,
-        workshopSlug: selectedWorkshop.value?.slug,
-        website: form.website,
-      },
-    })
-    if (form.newsletter) {
-      $fetch('/api/newsletter', { method: 'POST', body: { email: form.email } }).catch(() => {})
-    }
-    sent.value = true
-  } catch (err: any) {
-    errorMessage.value = err?.data?.statusMessage || 'Nie udało się wysłać zgłoszenia, spróbuj ponownie lub napisz na warsztaty@drwa.pl.'
-  } finally {
-    sending.value = false
-  }
-}
 
 const { reobserve } = useScrollReveal()
 

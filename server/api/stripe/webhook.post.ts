@@ -1,4 +1,4 @@
-import { readItem, updateItem } from '@directus/sdk'
+import { readItem, updateItem, updateItems } from '@directus/sdk'
 import type Stripe from 'stripe'
 import type { Order } from '~/types/directus'
 import { getStripe } from '../../utils/stripe'
@@ -29,14 +29,28 @@ export default defineEventHandler(async (event) => {
   if (evt.type === 'payment_intent.succeeded') {
     const orderId = orderIdFrom(evt.data.object as Stripe.PaymentIntent)
     if (orderId) {
-      const order = (await client.request(readItem('orders', orderId, { fields: ['id', 'status'] }))) as Order | null
-      // Idempotency guard — only fulfill on the first pending→paid transition.
-      // Fulfill BEFORE flipping the status: if fulfillOrder throws, the order
-      // stays 'pending' so the next retry of this event re-enters the guard
-      // instead of being silently skipped as "already paid".
-      if (order && order.status !== 'paid' && order.status !== 'shipped') {
-        await fulfillOrder(orderId)
-        await client.request(updateItem('orders', orderId, { status: 'paid' }))
+      // Idempotency guard — claim the order with ONE conditional write, then
+      // fulfill only if this request flipped it. Checking the status first and
+      // writing later let two simultaneous deliveries (Stripe retries, PM2
+      // cluster) both pass the check and fulfill twice.
+      // shortcut: Directus resolves the filter and then updates by key, so the
+      // window is tiny but not zero — upgrade to a DB-level lock if it ever bites.
+      const claimed = (await client.request(
+        updateItems(
+          'orders',
+          { filter: { id: { _eq: orderId }, status: { _nin: ['paid', 'shipped'] } } },
+          { status: 'paid' },
+        ),
+      )) as Order[]
+      if (claimed.length) {
+        try {
+          await fulfillOrder(orderId)
+        } catch (err) {
+          // Give the order back so Stripe's retry of this event can try again
+          // instead of being skipped as "already paid".
+          await client.request(updateItem('orders', orderId, { status: 'pending' })).catch(() => {})
+          throw err
+        }
       }
     }
   } else if (evt.type === 'payment_intent.payment_failed') {

@@ -7,7 +7,7 @@
 //   • workshops — stationary events (dates, location, seats, level, program)
 //   • courses   — online courses (access url)
 // A product's *kind* is derived from which extension it carries (see
-// `deriveProductType` in ~/utils/product). Merch = a product with neither.
+// `normalizeProduct` in ~/utils/product). Merch = a product with neither.
 
 // ─── Directus system types ────────────────────────────────────────────────────
 

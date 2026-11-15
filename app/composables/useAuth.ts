@@ -28,6 +28,7 @@ export const useAuth = () => {
   const token = useCookie<string | null>(AUTH_COOKIE, {
     maxAge: 60 * 60 * 24 * 7,
     sameSite: 'lax',
+    secure: !import.meta.dev,
     path: '/',
   })
   const user = useState<AuthUser | null>('auth-user', () => null)

@@ -31,6 +31,13 @@ export async function computeOrder(
   // per-line capacity/stock checks below, overselling seats or stock.
   const mergedById = new Map<string, CheckoutItemInput>()
   for (const it of items) {
+    // Trust boundary: the body is client-controlled. A NaN quantity would slip
+    // past every `free < qty` / `stock < qty` check below (NaN comparisons are false).
+    if (
+      !Number.isInteger(it?.productId)
+      || !(it.variantId == null || Number.isInteger(it.variantId))
+      || !Number.isFinite(it.qty)
+    ) fail('Niepoprawna pozycja koszyka.')
     const key = `${it.productId}:${it.variantId ?? 'x'}`
     const existing = mergedById.get(key)
     const qty = Math.max(1, Math.floor(it.qty))

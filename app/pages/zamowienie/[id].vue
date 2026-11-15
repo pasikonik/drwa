@@ -162,7 +162,7 @@ const banner = computed<Banner>(() => {
       subtitle: 'Twoja płatność została przyjęta.',
       badge: 'Opłacone',
       badgeClass: 'badge--success',
-      note: 'Potwierdzenie wraz ze szczegółami wysłaliśmy na Twój adres e-mail.',
+      note: '',
     }
   }
   if (o.status === 'pending' && redirectStatus === 'succeeded') {

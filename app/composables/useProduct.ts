@@ -32,7 +32,7 @@ export const useProduct = (slugOrId: string | number) => {
                 { instructors: [{ instructors_id: ['id', 'name', 'photo', 'role', 'bio'] }] },
               ],
             },
-            { course: ['id', 'product_id', 'course_access_url', 'sort', 'subtitle'] },
+            { course: ['id', 'product_id', 'sort', 'subtitle'] },
           ],
         })
       )) as unknown[]

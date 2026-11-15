@@ -7,16 +7,30 @@ on:
   workflow_dispatch:
 
 jobs:
+  # Bramka przed deployem: typy i testy liczą się na runnerze, nie na VPS-ie.
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck
+      - run: pnpm run test
+
   deploy:
+    needs: check
     runs-on: ubuntu-latest
     environment:
       name: production
       url: https://drwa.pl
 
     steps:
-      - name: Checkout repository code
-        uses: actions/checkout@v4
-
       - name: Deploy via SSH and rebuild Nuxt on VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -25,14 +39,20 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd ~/apps/drwa-frontend
-            git pull origin main
-
             # Pewne załadowanie NVM i globalnych binariów NPM/PNPM na Debianie:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             export PATH="$HOME/.nvm/versions/node/$(node -v)/bin:$PATH"
 
-            pnpm install
+            # Dopiero po załadowaniu nvm (nvm.sh nie lubi `set -e`): każdy błąd
+            # poniżej przerywa deploy, zanim pm2 dotknie działającej strony.
+            set -e
+
+            cd ~/apps/drwa-frontend
+            git pull --ff-only origin main
+
+            pnpm install --frozen-lockfile
             pnpm run build
-            pm2 restart ecosystem.config.cjs --env production
+
+            # reload = po kolei, bez przerwy; restart ubijał wszystkie procesy naraz.
+            pm2 reload ecosystem.config.cjs --env production

@@ -11,7 +11,7 @@ export default defineNuxtPlugin(() => {
 
   const w = window as any
   w.dataLayer = w.dataLayer || []
-  function gtag() { w.dataLayer.push(arguments) }
+  function gtag(..._args: unknown[]) { w.dataLayer.push(arguments) }
 
   // 1) Consent Mode v2 — MUST be pushed before the container loads so tags
   //    respect it. Denied by default; GTM runs in cookieless "modeled" mode.

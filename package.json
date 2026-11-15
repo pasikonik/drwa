@@ -7,7 +7,9 @@
     "dev": "NODE_OPTIONS=--dns-result-order=ipv4first nuxt dev",
     "generate": "NODE_OPTIONS=--dns-result-order=ipv4first nuxt generate",
     "preview": "NODE_OPTIONS=--dns-result-order=ipv4first nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "test": "vitest run"
   },
   "dependencies": {
     "@directus/sdk": "^27.1.0",
@@ -19,6 +21,9 @@
     "vue-router": "^5.5.0"
   },
   "devDependencies": {
-    "@types/node": "^26.6.6"
+    "@types/node": "^26.6.6",
+    "typescript": "^6.0.3",
+    "vitest": "^5.1.0",
+    "vue-tsc": "^3.3.14"
   }
 }

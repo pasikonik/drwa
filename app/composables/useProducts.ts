@@ -45,7 +45,7 @@ export const useProducts = (type: ProductType) => {
                 { instructors: [{ instructors_id: ['id', 'name', 'photo', 'role', 'bio'] }] },
               ],
             },
-            { course: ['id', 'product_id', 'course_access_url', 'sort', 'subtitle'] },
+            { course: ['id', 'product_id', 'sort', 'subtitle'] },
           ],
         })
       )) as unknown[]

@@ -92,18 +92,7 @@
     </main>
 
     <!-- ===== Newsletter ===== -->
-    <section class="section container" style="padding-top: 0">
-      <div class="news io">
-        <span class="eyebrow eyebrow--ondark">Newsletter</span>
-        <h2>Kurier Ciesielski</h2>
-        <p>Raz na dwa tygodnie: nowe wpisy, terminy warsztatów i krótkie historie zza warsztatu.</p>
-        <p v-if="sent" class="news__sent">Dziękujemy — do zobaczenia w lesie.</p>
-        <form v-else class="news__form" @submit.prevent="subscribe">
-          <input v-model="email" type="email" required placeholder="twój@email.pl" aria-label="E-mail" />
-          <button class="btn btn--accent btn--md" type="submit">Zapisz się</button>
-        </form>
-      </div>
-    </section>
+    <DrwaNewsletter />
 
     <!-- ===== Stopka ===== -->
     <DrwaFooter />
@@ -158,13 +147,6 @@ const countLabel = computed(() => {
   if (count.value >= 2 && count.value <= 4) return 'wpisy'
   return 'wpisów'
 })
-
-const email = ref('')
-const sent = ref(false)
-
-function subscribe() {
-  if (email.value.trim()) sent.value = true
-}
 
 const { reobserve } = useScrollReveal()
 

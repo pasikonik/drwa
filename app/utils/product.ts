@@ -31,17 +31,6 @@ export const isWorkshopPast = (
   w: { date_start: string | null } | null | undefined,
 ): boolean => !!w?.date_start && new Date(w.date_start).getTime() < Date.now()
 
-/** Product kind is determined by which extension a product carries. */
-export const deriveProductType = (raw: {
-  workshop?: unknown
-  course?: unknown
-}): ProductType => {
-  if (firstRelation(raw.workshop as unknown[] | null | undefined)) return 'workshop'
-  if (firstRelation(raw.course as unknown[] | null | undefined)) return 'course'
-  return 'merch'
-}
-
-
 /**
  * The amount actually charged at checkout for one unit of a product.
  *

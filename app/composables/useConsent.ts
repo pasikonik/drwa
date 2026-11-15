@@ -8,7 +8,7 @@ export const useConsent = () => {
     if (!import.meta.client) return
     const w = window as any
     w.dataLayer = w.dataLayer || []
-    function gtag() { w.dataLayer.push(arguments) }
+    function gtag(..._args: unknown[]) { w.dataLayer.push(arguments) }
     const v = granted ? 'granted' : 'denied'
     gtag('consent', 'update', {
       ad_storage: v,

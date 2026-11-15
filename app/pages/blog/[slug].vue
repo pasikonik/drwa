@@ -74,8 +74,9 @@ import { computed } from 'vue'
 import { formatDate, stripHtml, readTime } from '~/utils/format'
 
 const route = useRoute()
-const { data } = await useBlogPost(String(route.params.slug))
+const { data, error: loadError } = await useBlogPost(String(route.params.slug))
 
+failIfLoadError(loadError)
 const post = data.value
 if (!post) {
   throw createError({ statusCode: 404, statusMessage: 'Wpis nie znaleziony', fatal: true })

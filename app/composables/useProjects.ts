@@ -23,7 +23,7 @@ export const useProjects = () => {
           sort: ['sort', '-date'],
           fields: [
             'id', 'status', 'title', 'date', 'description', 'sort',
-            { images: [{ directus_files_id: ['id'] }] },
+            { images: [{ directus_files_id: ['id'] }] } as never, // union type: SDK can't type the expansion
           ],
         })
       ) as Promise<Project[]>),

@@ -12,8 +12,6 @@ export function getStripe(): Stripe {
   if (!stripeSecretKey) {
     throw createError({ statusCode: 500, statusMessage: 'Stripe nie jest skonfigurowany (brak STRIPE_SECRET_KEY).' })
   }
-  _stripe = new Stripe(stripeSecretKey, {
-    apiVersion: '2026-05-27.dahlia',
-  })
+  _stripe = new Stripe(stripeSecretKey)
   return _stripe
 }

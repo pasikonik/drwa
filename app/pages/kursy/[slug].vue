@@ -209,9 +209,10 @@ import { ref } from 'vue'
 import { formatPrice, stripHtml } from '~/utils/format'
 
 const route = useRoute()
-const { data } = await useCourse(String(route.params.slug))
+const { data, error: loadError } = await useCourse(String(route.params.slug))
 
-// Wzorzec jak w sklep/[slug].vue — snapshot po awaicie + 404.
+// Wzorzec jak w sklep/[slug].vue — snapshot po awaicie + 404 (a przy awarii odczytu 503).
+failIfLoadError(loadError)
 const product = data.value
 if (!product || product.type !== 'course') {
   throw createError({ statusCode: 404, statusMessage: 'Kurs nie znaleziony', fatal: true })

@@ -136,9 +136,10 @@ import { formatPrice, stripHtml } from '~/utils/format'
 import type { ProductVariant } from '~/types/directus'
 
 const route = useRoute()
-const { data } = await useProducts('merch')
+const { data, error: loadError } = await useProducts('merch')
 
-const product = (data.value?.products ?? []).find((p) => p.slug === route.params.slug)
+failIfLoadError(loadError)
+const product =(data.value?.products ?? []).find((p) => p.slug === route.params.slug)
 if (!product) {
   throw createError({ statusCode: 404, statusMessage: 'Nie znaleziono produktu' })
 }
