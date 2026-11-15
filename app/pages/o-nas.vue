@@ -4,7 +4,7 @@
 
     <!-- ===== Hero ===== -->
     <DrwaPageHero>
-      <template #bg><img src="/assets/forest-1.avif" alt="Las świerkowy we mgle" /></template>
+      <template #bg><img src="/assets/poznaj-band.avif" alt="Cieśle Drew przy pracy w stolarni" /></template>
       <template #eyebrow>O nas · Ludzie · Drewno · Las</template>
       <template #title>Pracujemy z drewnem i z ludźmi.</template>
       <template #lead>Drwa to pracownia rzemiosła drzewnego i społeczność, która wokół niej rośnie. Uczymy pracy z drewnem, budujemy naturalne domy i zdrowe relacje z ludźmi, z naturą i z samymi sobą. I nie zapominamy chodzić do lasu!</template>
@@ -24,7 +24,7 @@
             <p>Kochamy smak lipowych wiórów o poranku, dźwięk ostrego hebla na suchym drewnie i zapach lasu po deszczu.</p>
           </div>
           <figure class="story__img io">
-            <img src="/assets/onas-story.avif" alt="Cieśle Drew przy pracy w stolarni" />
+            <img src="/assets/onas-las.avif" alt="Logo DRWA na tle lasu" />
           </figure>
         </div>
       </section>
@@ -135,6 +135,23 @@
         </div>
       </section>
 
+      <!-- ===== Bartek Knapik ===== -->
+      <section class="founder-wrap">
+        <div class="section container">
+          <div class="founder founder--compact">
+            <figure class="founder__photo io">
+              <img class="founder__img" src="/Bartek.avif" alt="Bartek Knapik" />
+            </figure>
+            <div class="founder__body io">
+              <h3 class="founder__compact-name">Bartek Knapik</h3>
+              <p class="founder__role">Skrzat do zadań specjalnych · wsparcie warsztatów</p>
+              <p>Pasjonat ręcznych narzędzi i innych ostrych przedmiotów. Od pierwszych Warsztatów Drewnianej Samodzielności zafascynowany tym, jak szybko amatorzy przy wsparciu instruktorów potrafią tworzyć piękne i wytrzymałe konstrukcje. W Dolince odcisnął ślady dłuta na świątyni, stolarni i altanie. Niegdyś początkujący, dziś skrzat do zadań specjalnych, wspierający instruktorów i uczestników podczas warsztatów stolarskich.</p>
+              <p>Prywatnie: mąż, koci i psi tata, programista w korporacji i ogarniacz logistyczno-stoiskowo-transportowy w firmie Żony. Miłośnik miejsc i przedmiotów powstałych przed 1945 rokiem.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- ===== Kadra — reszta ===== -->
       <section class="section container">
         <div class="crew-more io">
@@ -149,7 +166,7 @@
       <!-- ===== Zaproszenie ===== -->
       <section class="section container">
         <div class="about-cta io">
-          <div class="about-cta__bg"><img src="/assets/poznaj-band.avif" alt="Cieśle Drew przy pracy w stolarni" /></div>
+          <div class="about-cta__bg"><img src="/assets/onas-story.avif" alt="Cieśle Drew przy pracy w stolarni" /></div>
           <div class="about-cta__scrim" />
           <div class="about-cta__inner">
             <span class="eyebrow eyebrow--ondark">Poznajmy się</span>
@@ -178,7 +195,7 @@ useHead({
   title: 'O nas — DRWA',
 })
 
-// Profile Jędrzeja, Gregory'ego, Michałów, Pawła i Karola są wpisane wprost w szablonie
+// Profile Jędrzeja, Gregory'ego, Michałów, Pawła, Karola i Bartka są wpisane wprost w szablonie
 // (jak founder) — reszta kadry czeka na materiały, na razie tylko lista
 // nazwisk (patrz CREW_NAMES).
 const CREW_NAMES = [

@@ -8,8 +8,8 @@
         <img src="/assets/sklep-band.avif" alt="Bluza i koszulka z haftem DRWA" />
       </template>
       <template #eyebrow>Sklep · Merch DRWA</template>
-      <template #title>Ubierz się w Drwach i sięgnij po więcej</template>
-      <template #lead>Bluzy, koszulki i koszule robocze z haftem DRWA — gratka dla absolwentów i sympatyków naszej społeczności. Poza tym inne skarby z drewna i z lasu — nowe produkty co jakiś czas!</template>
+      <template #title>Noś Drwa do lasu (i wszędzie!)</template>
+      <template #lead>Bluzy, koszulki i koszule robocze z haftem Drwa – dla tych, którzy lubią drewno, rzemiosło i życie blisko natury. A od czasu do czasu także inne skarby z drewna i lasu.</template>
     </DrwaPageHero>
 
     <main id="main-content">

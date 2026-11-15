@@ -5,10 +5,10 @@
     <!-- ===== Hero ===== -->
     <DrwaPageHero id="top">
       <template #bg>
-        <img src="/assets/forest-band.avif" alt="Las we mgle" />
+        <img src="/assets/realizacje-band.avif" alt="Drewniana więźba dachowa w budowie na tle lasu" />
       </template>
       <template #eyebrow>Realizacje · DRWA</template>
-      <template #title>To, co udało nam się zbudować</template>
+      <template #title>To, co dotychczas zbudowaliśmy</template>
       <template #lead>Wiaty, sauny, altany, domki — konstrukcje z drewna, które stanęły na warsztatach i zleceniach. Kliknij zdjęcie, żeby powiększyć.</template>
     </DrwaPageHero>
 

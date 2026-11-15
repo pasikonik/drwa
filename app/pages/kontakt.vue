@@ -125,6 +125,8 @@
         </div>
       </section>
 
+      <DrwaNewsletter />
+
       <!-- ===== Częste pytania ===== -->
       <section class="section--tight container">
         <div class="contact-faq">
@@ -145,7 +147,7 @@
                   <path d="m6 9 6 6 6-6"/>
                 </svg>
               </button>
-              <p v-show="openFaq === i" class="faq__a">{{ item.a }}</p>
+              <p v-show="openFaq === i" class="faq__a" style="white-space: pre-line">{{ item.a }}</p>
             </div>
           </div>
         </div>
@@ -204,11 +206,12 @@ async function submitForm() {
   }
 }
 
-const currentYear = new Date().getFullYear()
-
 const FAQ = [
-  { q: 'Jak zapisać się na warsztat?', a: `Wybierz termin na stronie Warsztaty ${currentYear} i kliknij „Zapisz się”. Po zapisie dostaniesz e-mail z potwierdzeniem, dokładnym adresem pracowni i listą rzeczy do zabrania.` },
-  { q: 'Czy mogę zwrócić rzeczy ze sklepu?', a: 'Tak — masz 30 dni na zwrot bez podania przyczyny. Napisz na kontakt@drwa.pl, a odeślemy instrukcję i pokryjemy koszt pierwszej wysyłki zwrotnej.' },
-  { q: 'Robicie warsztaty na zamówienie?', a: 'Robimy — dla firm, szkół i grup znajomych od 6 osób. Opisz w formularzu, co chcecie zbudować, a przygotujemy program i wycenę.' },
+  { q: 'Czy można zlecić Wam wykonanie drewnianej konstrukcji lub innego projektu?', a: 'Obecnie nie przyjmujemy prywatnych zleceń wykonawczych. Jeśli planujesz własną budowę i potrzebujesz wsparcia, możemy pomóc w formie indywidualnych konsultacji dotyczących projektu, konstrukcji, doboru materiałów i rozwiązań ciesielskich.' },
+  { q: 'Czy podejmujecie współpracę z firmami, szkołami i organizacjami?', a: 'Tak! Jesteśmy otwarci na współpracę przy projektach edukacyjnych, wydarzeniach, warsztatach i inicjatywach społecznych. Możemy przygotować program zajęć dla grupy, wesprzeć wydarzenie lub wspólnie zrealizować projekt związany z drewnem i tradycyjnym rzemiosłem.\n\nNie organizujemy natomiast warsztatów dla osób prywatnych. Ta forma współpracy jest zarezerwowana dla organizacji społecznych oraz absolwentów i członków społeczności Drew.' },
+  { q: 'Gdzie znajduje się pracownia Drew?', a: 'Nasza pracownia i baza warsztatowa mieszczą się w Dolinie Harmonii, w Górach Izerskich, w okolicach Jeleniej Góry na Dolnym Śląsku. Możesz znaleźć nas na Google Maps. Nie przyjmujemy jednak odwiedzin bez wcześniejszego umówienia wizyty.' },
+  { q: 'Czy mogę zwrócić produkt kupiony w sklepie?', a: 'Tak. Jeśli kupujesz jako konsument, masz prawo odstąpić od umowy zawartej na odległość w ciągu 14 dni od otrzymania produktu, bez podawania przyczyny. Koszt odesłania produktu ponosi kupujący. Wystarczy napisać do nas na adres kontakt@drwa.pl, a prześlemy informacje dotyczące zwrotu.' },
+  { q: 'Jak szybko odpowiadacie na wiadomości?', a: 'Staramy się odpowiadać na wiadomości w ciągu 2–3 dni roboczych. Zdarza nam się jednak znikać na kilka dni w lesie i w projektach. Prosimy o wyrozumiałość, a w pilnych sprawach — o podkreślenie tego w temacie wiadomości i/lub przypomnienie.' },
+  { q: 'Czy mogę dołączyć do społeczności Drew?', a: 'Tak! Społeczność Drwa tworzą osoby, które uczestniczyły w naszych warsztatach stacjonarnych lub w kursach. To przestrzeń do utrzymywania kontaktu, wymiany doświadczeń, dzielenia się pomysłami i dalszego rozwijania ciesielskich umiejętności. Przyjedź, poznajmy się i zbudujmy coś razem.' },
 ]
 </script>
