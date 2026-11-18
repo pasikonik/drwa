@@ -186,3 +186,5 @@
 .kdesc { max-width: 68ch; font-size: var(--text-md); line-height: 1.7; color: var(--text-body); }
 .kdesc p { margin: 0 0 var(--space-4); }
 .kdesc > :last-child { margin-bottom: 0; }
+.kvideo { position: relative; aspect-ratio: 16 / 9; margin-top: var(--space-8); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface-inverse); }
+.kvideo iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }

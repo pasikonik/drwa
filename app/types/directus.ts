@@ -123,6 +123,7 @@ export interface Course {
   hero_facts?: CourseHeroFact[] | null
   stats?: CourseStat[] | null
   main_heading?: string | null
+  video_url?: string | null  // link do YouTube, osadzany w sekcji „O kursie”
   bonuses?: CourseBonus[] | null
   quotes?: CourseQuote[] | null
   offer_items?: CourseOfferItem[] | null

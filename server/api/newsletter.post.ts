@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
   const { mailerLiteApiKey, mailerLiteGroupId } = useRuntimeConfig()
-  const { email } = await readBody(event)
+  const { email, name } = await readBody(event)
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     throw createError({ statusCode: 400, message: 'Nieprawidłowy adres e-mail.' })
@@ -19,7 +19,12 @@ export default defineEventHandler(async (event) => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${mailerLiteApiKey}`,
         },
-        body: { email: String(email).trim(), groups: [mailerLiteGroupId] },
+        body: {
+          email: String(email).trim(),
+          groups: [mailerLiteGroupId],
+          // MailerLite's default first-name field is `name`; skip when empty.
+          ...(name && { fields: { name: String(name).trim().slice(0, 100) } }),
+        },
       }
     )
     return { ok: true, id: response.data?.id }

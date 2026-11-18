@@ -37,7 +37,7 @@
     </div>
     <label class="field__check">
       <input v-model="form.newsletter" type="checkbox" />
-      <span class="field__check-label">Zapisz mnie też do newslettera „Listy z lasu"</span>
+      <span class="field__check-label">Zapisz mnie też do newslettera „Kurier Ciesielski”</span>
     </label>
     <p v-if="errorMessage" class="signup__error">{{ errorMessage }}</p>
     <div class="signup__actions">
@@ -111,7 +111,7 @@ async function submit() {
       },
     })
     if (form.newsletter) {
-      $fetch('/api/newsletter', { method: 'POST', body: { email } }).catch(() => {})
+      $fetch('/api/newsletter', { method: 'POST', body: { email, name: form.name.trim().split(/\s+/)[0] } }).catch(() => {})
     }
     sent.value = true
   } catch (err) {

@@ -51,6 +51,16 @@
           <h2>{{ course?.main_heading || product.title }}</h2>
         </div>
         <div v-if="product.description" class="kdesc io" v-html="product.description" />
+        <div v-if="videoId" class="kvideo io">
+          <iframe
+            :src="`https://www.youtube-nocookie.com/embed/${videoId}?rel=0`"
+            :title="`Wideo: ${product.title}`"
+            loading="lazy"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          />
+        </div>
         <div v-if="tiles.length" class="builds io">
           <article v-for="t in tiles" :key="t.id" class="build">
             <div class="build__img">
@@ -148,7 +158,7 @@
       <section v-if="quotes.length" class="section container" id="opinie" style="padding-top:0">
         <div class="sec-head io">
           <span class="eyebrow">Opinie</span>
-          <h2>Listy od budujących</h2>
+          <h2>Wrażenia po kursie</h2>
         </div>
         <div class="quotes io">
           <figure v-for="q in quotes" :key="q.name" class="quote" style="margin:0">
@@ -207,6 +217,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { formatPrice, stripHtml } from '~/utils/format'
+import { youtubeId } from '~/utils/youtube'
 
 const route = useRoute()
 const { data, error: loadError } = await useCourse(String(route.params.slug))
@@ -242,7 +253,8 @@ const modules = (course?.modules ?? [])
     const desc = (m.description ?? '').trim()
     return { ...m, descHtml: !desc || desc.startsWith('<') ? desc : `<p>${desc.replace(/\n/g, '<br>')}</p>` }
   })
-const hasMain = Boolean(product.description) || tiles.length > 0
+const videoId = youtubeId(course?.video_url)
+const hasMain = Boolean(product.description) || tiles.length > 0 || Boolean(videoId)
 // Directus wysyła decimal jako string — Number() przed formatowaniem.
 const priceLabel = formatPrice(Number(product.price))
 

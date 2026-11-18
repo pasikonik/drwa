@@ -4,8 +4,17 @@
       <span class="eyebrow eyebrow--ondark">Newsletter</span>
       <h2>Kurier Ciesielski</h2>
       <p>Raz na dwa tygodnie: aktualności ciesielskie i materiały edukacyjne, inspiracje i historie z naszej stolarni.</p>
-      <p v-if="sent" class="news__sent">Dziękujemy — do zobaczenia w lesie.</p>
+      <p v-if="sent" class="news__sent">Dziękujemy — do zobaczenia na budowie!</p>
       <form v-else class="news__form" @submit.prevent="submit">
+        <input
+          v-model="name"
+          type="text"
+          autocomplete="given-name"
+          maxlength="100"
+          placeholder="Imię"
+          aria-label="Imię"
+          :disabled="loading"
+        />
         <input
           v-model="email"
           type="email"
@@ -24,6 +33,7 @@
 </template>
 
 <script setup>
+const name = ref('')
 const email = ref('')
 const sent = ref(false)
 const error = ref('')
@@ -33,7 +43,7 @@ async function submit() {
   error.value = ''
   loading.value = true
   try {
-    await $fetch('/api/newsletter', { method: 'POST', body: { email: email.value } })
+    await $fetch('/api/newsletter', { method: 'POST', body: { email: email.value, name: name.value } })
     sent.value = true
   } catch (e) {
     error.value = e?.data?.message ?? 'Coś poszło nie tak. Spróbuj ponownie.'

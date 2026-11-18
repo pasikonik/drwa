@@ -43,7 +43,7 @@ export const useCourse = (slugOrId: string | number) => {
               {
                 course: [
                   'id', 'product_id', 'sort',
-                  'subtitle', 'hero_kicker', 'hero_facts', 'stats', 'main_heading',
+                  'subtitle', 'hero_kicker', 'hero_facts', 'stats', 'main_heading', 'video_url',
                   'bonuses', 'quotes', 'offer_items', 'price_note',
                   { modules: ['id', 'title', 'description', 'sort', 'course'] },
                   { tiles: ['id', 'sort', 'eyebrow', 'title', 'description', 'image'] },

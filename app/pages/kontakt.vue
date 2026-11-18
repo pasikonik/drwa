@@ -111,8 +111,8 @@
             <p v-if="errorMessage" class="cform__error">{{ errorMessage }}</p>
             <div class="cform__foot">
               <label class="field__check">
-                <input type="checkbox" name="newsletter" />
-                <span class="field__check-label">Zapisz mnie też na newsletter „Listy z lasu”</span>
+                <input v-model="newsletter" type="checkbox" name="newsletter" />
+                <span class="field__check-label">Zapisz mnie też na newsletter „Kurier Ciesielski”</span>
               </label>
               <button class="btn btn--primary btn--md" type="submit" :disabled="sending">
                 {{ sending ? 'Wysyłanie…' : 'Wyślij wiadomość' }}
@@ -176,6 +176,7 @@ const name = ref('')
 const email = ref('')
 const message = ref('')
 const honeypot = ref('')
+const newsletter = ref(false)
 const sending = ref(false)
 const errorMessage = ref('')
 
@@ -198,6 +199,10 @@ async function submitForm() {
         website: honeypot.value,
       },
     })
+    if (newsletter.value && !honeypot.value) {
+      // Pole „Imię i nazwisko” — do MailerLite idzie samo imię (pole `name`).
+      $fetch('/api/newsletter', { method: 'POST', body: { email: email.value, name: name.value.trim().split(/\s+/)[0] } }).catch(() => {})
+    }
     sent.value = true
   } catch (err) {
     errorMessage.value = err?.data?.statusMessage || 'Nie udało się wysłać, spróbuj ponownie lub napisz na kontakt@drwa.pl.'
