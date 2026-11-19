@@ -14,13 +14,35 @@
           <!-- Zdjęcie -->
           <div class="pdp__gallery io">
             <div class="pdp__main">
-              <DrwaImg v-if="product.image" :src="product.image" :alt="product.title" preset="card" img-class="pdp__img" priority />
+              <button
+                v-if="images.length"
+                type="button"
+                class="pdp__zoom"
+                :aria-label="`Powiększ zdjęcie ${active + 1} z ${images.length}`"
+                @click="lightboxOpen = true"
+              >
+                <DrwaImg :key="images[active]" :src="images[active]" :alt="product.title" preset="card" img-class="pdp__img" priority />
+              </button>
               <div v-else class="mcard__placeholder">
                 <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" />
                 </svg>
                 <span>{{ product.title }}</span>
               </div>
+            </div>
+            <div v-if="images.length > 1" class="pdp__thumbs">
+              <button
+                v-for="(img, i) in images"
+                :key="img"
+                type="button"
+                class="pdp__thumb"
+                :class="{ 'is-on': i === active }"
+                :aria-label="`Pokaż zdjęcie ${i + 1} z ${images.length}`"
+                :aria-pressed="i === active"
+                @click="active = i"
+              >
+                <DrwaImg :src="img" alt="" preset="thumb" img-class="pdp__thumb-img" />
+              </button>
             </div>
           </div>
 
@@ -31,32 +53,21 @@
             <p class="pdp__price">{{ formatPrice(product.price) }}</p>
             <p class="pdp__desc">{{ stripHtml(product.description, 240) }}</p>
 
-            <template v-if="sizes.length">
-              <p class="pdp__label">
-                Rozmiar
-                <span v-if="selectedVariant" class="picked">{{ selectedVariant.size?.toUpperCase() }}</span>
-                <span v-else>wybierz</span>
-              </p>
-              <div class="sizes" role="group" aria-label="Rozmiar">
-                <button
-                  v-for="v in sizes"
-                  :key="v.id"
-                  class="size"
-                  :class="{ 'is-on': selectedVariant?.id === v.id, 'is-off': v.stock <= 0 }"
-                  :disabled="v.stock <= 0"
-                  @click="selectVariant(v)"
-                >{{ v.size?.toUpperCase() }}</button>
-              </div>
-            </template>
+            <VariantPicker
+              :variants="variants"
+              labelled
+              :model-value="selectedVariant"
+              @update:model-value="(v) => (picked = v)"
+            />
 
             <div class="pdp__cta">
               <AddToCartButton
                 :product="product"
                 :variant="selectedVariant"
-                :disabled="sizes.length > 0 && !selectedVariant"
+                :disabled="soldOut"
                 :label="`Do koszyka · ${formatPrice(product.price)}`"
               />
-              <p v-if="sizes.length > 0 && !selectedVariant" class="pdp__pick-hint">Wybierz rozmiar, aby dodać do koszyka.</p>
+              <p v-if="soldOut" class="pdp__pick-hint">Ten wariant jest chwilowo niedostępny.</p>
             </div>
 
             <div class="pdp__perks">
@@ -125,6 +136,14 @@
       </section>
     </main>
 
+    <DrwaLightbox
+      :open="lightboxOpen"
+      :images="images"
+      :start-index="active"
+      :caption="product.title"
+      @close="lightboxOpen = false"
+    />
+
     <DrwaFooter />
 
   </div>
@@ -133,6 +152,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { formatPrice, stripHtml } from '~/utils/format'
+import { fileId } from '~/utils/directus'
+import { defaultVariant } from '~/utils/product'
 import type { ProductVariant } from '~/types/directus'
 
 const route = useRoute()
@@ -148,22 +169,22 @@ useHead({
   title: `${product.title} — Sklep DRWA`,
 })
 
-const SIZE_ORDER = ['s', 'm', 'l', 'xl']
-const sizes = computed(() =>
-  (data.value?.variants ?? [])
-    .filter((v) => v.product_id === product!.id && v.size)
-    .sort((a, b) => SIZE_ORDER.indexOf(a.size ?? '') - SIZE_ORDER.indexOf(b.size ?? '')),
-)
+const variants = computed(() => (data.value?.variants ?? []).filter((v) => v.product_id === product!.id))
 const others = computed(() => (data.value?.products ?? []).filter((p) => p.id !== product!.id).slice(0, 3))
 
-const selectedVariant = ref<ProductVariant | null>(
-  sizes.value.find(v => v.size?.toUpperCase() === 'M' && v.stock > 0)
-    ?? sizes.value.find(v => v.stock > 0)
-    ?? null,
-)
-function selectVariant(v: ProductVariant): void {
-  selectedVariant.value = v
-}
+// Variant the visitor clicked; until then the default pick.
+const picked = ref<ProductVariant | null>(null)
+const selectedVariant = computed(() => picked.value ?? defaultVariant(variants.value))
+const soldOut = computed(() => variants.value.length > 0 && !(selectedVariant.value && selectedVariant.value.stock > 0))
+
+// Main photo first, then the merch gallery (deduped in case the cover is in it too).
+const images = computed(() => [...new Set(
+  [product!.image, ...(product!.merch?.gallery ?? []).map((g) => g.directus_files_id)]
+    .map(fileId)
+    .filter((id): id is string => !!id),
+)])
+const active = ref(0)
+const lightboxOpen = ref(false)
 
 useScrollReveal()
 </script>

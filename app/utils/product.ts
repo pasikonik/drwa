@@ -10,7 +10,9 @@ import type {
   ProductType,
   Workshop,
   Course,
+  Merch,
   OrderProductRef,
+  ProductVariant,
 } from '~/types/directus'
 
 const bySort = (a: { sort: number | null }, b: { sort: number | null }) =>
@@ -67,6 +69,7 @@ const normalizeCourse = (c: Course | null): Course | null => {
 export const normalizeProduct = (raw: any): Product => {
   const workshop = firstRelation<Workshop>(raw.workshop)
   const course = normalizeCourse(firstRelation<Course>(raw.course))
+  const merch = firstRelation<Merch>(raw.merch)
   return {
     id: raw.id,
     title: raw.title,
@@ -78,7 +81,42 @@ export const normalizeProduct = (raw: any): Product => {
     type: workshop ? 'workshop' : course ? 'course' : 'merch',
     workshop,
     course,
+    merch: merch && { ...merch, gallery: [...(merch.gallery ?? [])].sort(bySort) },
   }
+}
+
+// ─── Merch variant picking (shop listing + product page) ─────────────────────
+
+const SIZE_ORDER = ['s', 'm', 'l', 'xl']
+
+/** Distinct colours among a product's variants, in first-seen order. */
+export const variantColors = (variants: ProductVariant[]): string[] =>
+  [...new Set(variants.map((v) => v.color).filter((c): c is string => !!c))]
+
+/** Sized variants in one colour (`null` = products without colours), S → XL. */
+export const variantSizes = (variants: ProductVariant[], color: string | null): ProductVariant[] =>
+  variants
+    .filter((v) => v.size && (v.color ?? null) === color)
+    .sort((a, b) => SIZE_ORDER.indexOf(a.size!) - SIZE_ORDER.indexOf(b.size!))
+
+/** Initial selection: an in-stock M, else any in-stock variant, else the first one. */
+export const defaultVariant = (variants: ProductVariant[]): ProductVariant | null =>
+  variants.find((v) => v.size === 'm' && v.stock > 0)
+  ?? variants.find((v) => v.stock > 0)
+  ?? variants[0]
+  ?? null
+
+/** Switching colour keeps the current size if that colour has it in stock. */
+export const variantForColor = (
+  variants: ProductVariant[],
+  current: ProductVariant | null,
+  color: string,
+): ProductVariant | null => {
+  const inColor = variants.filter((v) => v.color === color)
+  return inColor.find((v) => v.size === current?.size && v.stock > 0)
+    ?? inColor.find((v) => v.stock > 0)
+    ?? inColor[0]
+    ?? null
 }
 
 /** Minimal product reference for an order line (course access flattened). */

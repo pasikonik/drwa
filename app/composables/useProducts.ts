@@ -46,6 +46,8 @@ export const useProducts = (type: ProductType) => {
               ],
             },
             { course: ['id', 'product_id', 'sort', 'subtitle'] },
+            // Needs Public read on `merch` + `merch_files`, else `merch` is silently omitted.
+            { merch: ['id', { gallery: ['id', 'sort', 'directus_files_id'] }] } as never, // SDK can't type the M2M expansion
           ],
         })
       )) as unknown[]

@@ -6,8 +6,9 @@
 // type-specific data, linked by `product_id`:
 //   • workshops — stationary events (dates, location, seats, level, program)
 //   • courses   — online courses (access url)
+//   • merch     — optional: gallery + sizes/colors that auto-generate variants
 // A product's *kind* is derived from which extension it carries (see
-// `normalizeProduct` in ~/utils/product). Merch = a product with neither.
+// `normalizeProduct` in ~/utils/product). Merch = neither workshop nor course.
 
 // ─── Directus system types ────────────────────────────────────────────────────
 
@@ -132,6 +133,21 @@ export interface Course {
   materials?: CourseMaterial[]
 }
 
+// Junction row for the merch ↔ files M2M (`gallery`), ordered by `sort`.
+export interface MerchImage {
+  id: string
+  sort: number | null
+  directus_files_id: string | DirectusFile
+}
+
+// Merch extension (merch collection) — 1:1 with a product. Its sizes / colors /
+// default_stock fields only feed the Directus flow that generates
+// product_variants; the shop reads the variants, so they are not typed here.
+export interface Merch {
+  id: string                   // UUID
+  gallery: MerchImage[]        // extra photos shown after `product.image`
+}
+
 // App-facing product: commerce fields + resolved 1:1 extension + derived kind.
 // Produced by `normalizeProduct` (Directus returns the extensions as arrays).
 export interface Product {
@@ -145,6 +161,7 @@ export interface Product {
   type: ProductType          // derived from which extension is present
   workshop: Workshop | null  // populated when type === 'workshop'
   course: Course | null      // populated when type === 'course'
+  merch: Merch | null        // optional for merch (gallery); null when not fetched
 }
 
 // Raw product as returned by the SDK before normalization — the 1:1 extensions
@@ -159,6 +176,7 @@ export interface RawProduct {
   short_description: string | null
   workshop: Workshop[]
   course: Course[]
+  merch?: Merch[]
 }
 
 export type VariantSize = 's' | 'm' | 'l' | 'xl'

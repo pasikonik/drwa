@@ -11,11 +11,17 @@
   background: var(--pine-50); aspect-ratio: 4 / 5; box-shadow: var(--shadow-sm);
   display: flex; align-items: center; justify-content: center;
 }
-.pdp__thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+.pdp__zoom { position: absolute; inset: 0; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.pdp__thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: var(--space-3); }
 .pdp__thumb {
-  border-radius: var(--radius-md); overflow: hidden; background: var(--pine-50); aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md); overflow: hidden; background: var(--pine-50); aspect-ratio: 1;
   display: flex; align-items: center; justify-content: center;
+  padding: 0; cursor: pointer; border: 2px solid transparent;
+  transition: border-color var(--dur-fast) var(--ease-standard);
 }
+.pdp__thumb:hover { border-color: var(--pine-300); }
+.pdp__thumb.is-on { border-color: var(--surface-inverse); }
+.pdp__thumb-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* ---- panel zakupu ---- */
 .pdp__buy { position: sticky; top: 90px; }

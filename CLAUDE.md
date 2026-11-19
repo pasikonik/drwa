@@ -40,7 +40,7 @@ All content comes from a **Directus** headless CMS. The schema is typed in [app/
 **Critical shape:** `products` is the commerce anchor. Two 1:1 extension collections hang off it via `product_id`:
 - `workshops` — stationary events (dates, spots, level, days/agenda, instructors M2M)
 - `courses` — online courses (access URL, modules)
-- Merch = a product with neither extension
+- Merch = a product with neither of the above. It may carry an optional 1:1 `merch` extension: `gallery` (M2M files via `merch_files`, shown on the product page after `product.image`) plus `sizes` / `colors` / `default_stock`. Those three are read only by the Directus flow **„Merch → generuj warianty”**, which on every `merch` save adds the missing size × colour rows to `product_variants` (never updates or deletes). The shop itself reads `product_variants`; colour/size picking lives in `<VariantPicker>` + `variantColors`/`variantSizes`/`defaultVariant`/`variantForColor` in `app/utils/product.ts`.
 
 There is **no `type` column** on `products`. The kind (`'workshop' | 'course' | 'merch'`) is derived by `normalizeProduct` in [app/utils/product.ts](app/utils/product.ts) based on which extension is present. Directus returns 1:1 extensions as arrays; `normalizeProduct` collapses them to a single item (or null).
 
