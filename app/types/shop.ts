@@ -107,5 +107,6 @@ export interface ComputedOrder {
 export interface CreateIntentResponse {
   clientSecret: string
   orderId: string
+  total: number          // PLN — the amount Stripe will charge
   publishableKey: string
 }

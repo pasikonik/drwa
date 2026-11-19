@@ -90,6 +90,7 @@ export default defineEventHandler(async (event): Promise<CreateIntentResponse> =
   return {
     clientSecret: intent.client_secret,
     orderId: order.id,
+    total: computed.total,
     publishableKey: config.public.stripePublishableKey,
   }
 })

@@ -79,7 +79,7 @@
                 :client-secret="clientSecret"
                 :publishable-key="publishableKey"
                 :return-url="returnUrl"
-                :amount-label="formatPrice(total)"
+                :amount-label="formatPrice(paymentTotal)"
               />
             </ClientOnly>
             <button class="checkout__back" @click="resetPayment">← Wróć do danych</button>
@@ -172,6 +172,7 @@ const checkoutError = ref<string | null>(null)
 const clientSecret = ref<string | null>(null)
 const publishableKey = ref('')
 const orderId = ref<string | null>(null)
+const paymentTotal = ref(0) // what Stripe charges, from the server
 const returnUrl = ref('')
 
 // Discount preview from the server. It doesn't depend on the shipping method,
@@ -231,6 +232,7 @@ async function startPayment(): Promise<void> {
   clientSecret.value = res.clientSecret
   publishableKey.value = res.publishableKey
   orderId.value = res.orderId
+  paymentTotal.value = res.total
   returnUrl.value = `${window.location.origin}/zamowienie/${res.orderId}`
 }
 
