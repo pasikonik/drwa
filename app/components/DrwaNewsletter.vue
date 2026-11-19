@@ -4,7 +4,7 @@
       <span class="eyebrow eyebrow--ondark">Newsletter</span>
       <h2>Kurier Ciesielski</h2>
       <p>Raz na dwa tygodnie: aktualności ciesielskie i materiały edukacyjne, inspiracje i historie z naszej stolarni.</p>
-      <p v-if="sent" class="news__sent">Dziękujemy — do zobaczenia na budowie!</p>
+      <p v-if="sent" class="news__sent">Dziękujemy! Na Twoją skrzynkę przyjdzie mail z potwierdzeniem zapisu — do zobaczenia na budowie!</p>
       <form v-else class="news__form" @submit.prevent="submit">
         <input
           v-model="name"
