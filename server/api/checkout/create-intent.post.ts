@@ -14,7 +14,7 @@ export default defineEventHandler(async (event): Promise<CreateIntentResponse> =
     throw createError({ statusCode: 400, statusMessage: 'Podaj poprawny adres e-mail.' })
   }
 
-  // Authoritative re-pricing + stock/capacity validation. Throws 400 on problems.
+  // Authoritative re-pricing + variant/capacity validation. Throws 400 on problems.
   const computed = await computeOrder(items, shippingMethod)
 
   if (computed.hasPhysical && !address) {

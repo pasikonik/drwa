@@ -25,7 +25,7 @@ function directus(products: unknown[], variants: unknown[] = []) {
     q().path.endsWith('/product_variants') ? variants : products)
 }
 
-const variant = (over = {}) => ({ id: 10, product_id: 1, size: 'm', stock: 5, ...over })
+const variant = (over = {}) => ({ id: 10, product_id: 1, size: 'm', ...over })
 const line = (productId: number, qty = 1, variantId: number | null = null) => ({ productId, variantId, qty })
 
 // Braces matter: a function returned from a hook is run by vitest as cleanup.
@@ -67,11 +67,11 @@ describe('computeOrder', () => {
     expect(order.hasCourse).toBe(true)
   })
 
-  it('checks variant ownership and stock', async () => {
+  it('checks variant ownership; merch quantity is not stock-limited', async () => {
     directus([merch], [variant({ product_id: 99 })])
     await expect(computeOrder([line(1, 1, 10)], 'kurier')).rejects.toThrow('niepoprawny')
-    directus([merch], [variant({ stock: 1 })])
-    await expect(computeOrder([line(1, 2, 10)], 'kurier')).rejects.toThrow('Za mało sztuk')
+    directus([merch], [variant()])
+    await expect(computeOrder([line(1, 20, 10)], 'kurier')).resolves.toMatchObject({ lines: [{ qty: 20 }] })
   })
 
   it('adds shipping below the free-shipping threshold and none at it', async () => {

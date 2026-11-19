@@ -99,24 +99,18 @@ export const variantSizes = (variants: ProductVariant[], color: string | null): 
     .filter((v) => v.size && (v.color ?? null) === color)
     .sort((a, b) => SIZE_ORDER.indexOf(a.size!) - SIZE_ORDER.indexOf(b.size!))
 
-/** Initial selection: an in-stock M, else any in-stock variant, else the first one. */
+/** Initial selection: size M if there is one, else the first variant. */
 export const defaultVariant = (variants: ProductVariant[]): ProductVariant | null =>
-  variants.find((v) => v.size === 'm' && v.stock > 0)
-  ?? variants.find((v) => v.stock > 0)
-  ?? variants[0]
-  ?? null
+  variants.find((v) => v.size === 'm') ?? variants[0] ?? null
 
-/** Switching colour keeps the current size if that colour has it in stock. */
+/** Switching colour keeps the current size if that colour has it. */
 export const variantForColor = (
   variants: ProductVariant[],
   current: ProductVariant | null,
   color: string,
 ): ProductVariant | null => {
   const inColor = variants.filter((v) => v.color === color)
-  return inColor.find((v) => v.size === current?.size && v.stock > 0)
-    ?? inColor.find((v) => v.stock > 0)
-    ?? inColor[0]
-    ?? null
+  return inColor.find((v) => v.size === current?.size) ?? inColor[0] ?? null
 }
 
 /** Minimal product reference for an order line (course access flattened). */

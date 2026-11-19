@@ -15,7 +15,7 @@ function fail(message: string): never {
 }
 
 /**
- * Re-price a cart authoritatively from Directus and validate stock / capacity.
+ * Re-price a cart authoritatively from Directus and validate variants / capacity.
  * The client's prices are ignored entirely — only product ids, variant ids and
  * quantities are trusted, and even those are validated here.
  */
@@ -27,12 +27,12 @@ export async function computeOrder(
 
   // Merge duplicate lines (same product + variant) so each is priced and
   // validated against its CUMULATIVE quantity. Without this, a crafted request
-  // could split a workshop/variant across several lines and slip past the
-  // per-line capacity/stock checks below, overselling seats or stock.
+  // could split a workshop across several lines and slip past the per-line
+  // capacity check below, overselling seats.
   const mergedById = new Map<string, CheckoutItemInput>()
   for (const it of items) {
     // Trust boundary: the body is client-controlled. A NaN quantity would slip
-    // past every `free < qty` / `stock < qty` check below (NaN comparisons are false).
+    // past the `free < qty` check below (NaN comparisons are false).
     if (
       !Number.isInteger(it?.productId)
       || !(it.variantId == null || Number.isInteger(it.variantId))
@@ -67,7 +67,7 @@ export async function computeOrder(
     ? ((await client.request(
         readItems('product_variants', {
           filter: { id: { _in: variantIds } },
-          fields: ['id', 'product_id', 'size', 'stock'],
+          fields: ['id', 'product_id'],
           limit: -1,
         }),
       )) as ProductVariant[])
@@ -90,7 +90,6 @@ export async function computeOrder(
       if (item.variantId != null) {
         const variant = variantById.get(item.variantId)
         if (!variant || variant.product_id !== product.id) fail(`Wariant produktu „${product.title}" jest niepoprawny.`)
-        if (variant.stock < qty) fail(`Za mało sztuk „${product.title}" (rozmiar ${variant.size ?? '—'}) na stanie.`)
       }
     } else if (product.type === 'workshop') {
       const w = product.workshop

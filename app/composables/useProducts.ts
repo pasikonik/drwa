@@ -61,7 +61,7 @@ export const useProducts = (type: ProductType) => {
           ? ((await directus.request(
               readItems('product_variants', {
                 filter: { product_id: { _in: ids } },
-                fields: ['id', 'product_id', 'sku', 'size', 'color', 'stock'],
+                fields: ['id', 'product_id', 'sku', 'size', 'color'],
                 sort: ['product_id', 'size'],
               })
             )) as ProductVariant[])

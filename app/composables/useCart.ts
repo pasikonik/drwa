@@ -6,14 +6,13 @@ import { chargePriceFor } from '~/utils/product'
 
 export const CART_STATE_KEY = 'drwa-cart'
 
-const maxQtyFor = (product: Product, variant: ProductVariant | null): number => {
+const maxQtyFor = (product: Product): number => {
   if (product.type === 'course') return 1
   if (product.type === 'workshop') {
     const w = product.workshop
     return Math.max(0, (w?.spots_total ?? 0) - (w?.spots_booked ?? 0))
   }
-  // merch
-  return variant ? variant.stock : 0
+  return 0 // merch: stock isn't tracked → no cap (0 = default 99)
 }
 
 /**
@@ -57,7 +56,7 @@ export const useCart = () => {
       qty: opts.qty ?? 1,
       image: fileId(product.image),
       size: opts.size ?? variant?.size ?? null,
-      maxQty: maxQtyFor(product, variant),
+      maxQty: maxQtyFor(product),
     })
   }
 

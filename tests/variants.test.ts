@@ -3,38 +3,37 @@ import { variantColors, variantSizes, defaultVariant, variantForColor, normalize
 import type { ProductVariant } from '~/types/directus'
 
 let nextId = 1
-const v = (size: ProductVariant['size'], color: string | null, stock: number): ProductVariant =>
-  ({ id: nextId++, product_id: 15, sku: '', size, color, stock })
+const v = (size: ProductVariant['size'], color: string | null): ProductVariant =>
+  ({ id: nextId++, product_id: 15, sku: '', size, color })
 
-const redM = v('m', 'czerwony', 0)
-const redL = v('l', 'czerwony', 3)
-const redS = v('s', 'czerwony', 2)
-const greenM = v('m', 'zielony', 5)
-const all = [redM, redL, redS, greenM]
+const redL = v('l', 'czerwony')
+const redM = v('m', 'czerwony')
+const redS = v('s', 'czerwony')
+const greenL = v('l', 'zielony')
+const all = [redL, redM, redS, greenL]
 
 describe('merch variant picking', () => {
   it('lists colours once, in first-seen order', () => {
     expect(variantColors(all)).toEqual(['czerwony', 'zielony'])
-    expect(variantColors([v('m', null, 1)])).toEqual([])
+    expect(variantColors([v('m', null)])).toEqual([])
   })
 
   it('lists sizes of one colour S → XL; null colour = colourless products', () => {
     expect(variantSizes(all, 'czerwony').map((x) => x.size)).toEqual(['s', 'm', 'l'])
-    const plain = [v('xl', null, 1), v('s', null, 1)]
+    const plain = [v('xl', null), v('s', null)]
     expect(variantSizes(plain, null).map((x) => x.size)).toEqual(['s', 'xl'])
   })
 
-  it('defaults to an in-stock M, else any in-stock, else the first', () => {
-    expect(defaultVariant(all)).toBe(greenM)              // red M is sold out
-    expect(defaultVariant([redM, redL])).toBe(redL)
-    expect(defaultVariant([redM])).toBe(redM)             // all sold out → still shows something
+  it('defaults to size M, else the first variant', () => {
+    expect(defaultVariant(all)).toBe(redM)
+    expect(defaultVariant([greenL, redS])).toBe(greenL)
     expect(defaultVariant([])).toBeNull()
   })
 
-  it('keeps the size when switching colour if it is in stock there', () => {
-    expect(variantForColor(all, greenM, 'czerwony')).toBe(redL) // red M sold out → first in-stock red
-    expect(variantForColor(all, redS, 'zielony')).toBe(greenM)  // no green S → first in-stock green
-    expect(variantForColor([redM, redL, greenM], redL, 'czerwony')).toBe(redL)
+  it('keeps the size when switching colour if that colour has it', () => {
+    expect(variantForColor(all, redL, 'zielony')).toBe(greenL)
+    expect(variantForColor(all, redM, 'zielony')).toBe(greenL) // no green M → first green
+    expect(variantForColor(all, greenL, 'czerwony')).toBe(redL)
   })
 })
 

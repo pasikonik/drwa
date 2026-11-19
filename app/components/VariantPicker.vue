@@ -22,8 +22,7 @@
         :key="v.id"
         type="button"
         class="size"
-        :class="{ 'is-on': model?.id === v.id, 'is-off': v.stock <= 0 }"
-        :disabled="v.stock <= 0"
+        :class="{ 'is-on': model?.id === v.id }"
         :aria-pressed="model?.id === v.id"
         @click="model = v"
       >{{ v.size?.toUpperCase() }}</button>

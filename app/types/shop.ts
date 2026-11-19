@@ -18,7 +18,7 @@ export interface CartItem {
   qty: number
   image: string | null   // Directus file id (or null)
   size: string | null    // variant size label, when applicable
-  /** Upper bound for qty — stock (merch) or free seats (workshop). */
+  /** Upper bound for qty — free seats (workshop), 1 (course); 0 = no cap (merch → 99). */
   maxQty: number
 }
 
@@ -44,7 +44,7 @@ export interface ShippingAddress {
 
 // ─── Checkout request / pricing ────────────────────────────────────────────────
 
-/** Minimal item the client sends — server re-resolves price/stock from Directus. */
+/** Minimal item the client sends — server re-resolves price/capacity from Directus. */
 export interface CheckoutItemInput {
   productId: number
   variantId: number | null

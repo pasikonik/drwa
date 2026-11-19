@@ -8,8 +8,8 @@ let _client: AdminClient | null = null
 
 /**
  * Server-only Directus client authenticated with the service token.
- * Has the elevated permissions needed to create orders and adjust stock /
- * workshop bookings. NEVER import this into client-side code.
+ * Has the elevated permissions needed to create orders and adjust workshop
+ * bookings. NEVER import this into client-side code.
  */
 export function directusAdmin(): AdminClient {
   if (_client) return _client

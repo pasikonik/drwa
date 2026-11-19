@@ -140,9 +140,9 @@ export interface MerchImage {
   directus_files_id: string | DirectusFile
 }
 
-// Merch extension (merch collection) — 1:1 with a product. Its sizes / colors /
-// default_stock fields only feed the Directus flow that generates
-// product_variants; the shop reads the variants, so they are not typed here.
+// Merch extension (merch collection) — 1:1 with a product. Its sizes / colors
+// fields only feed the Directus flow that generates product_variants; the shop
+// reads the variants, so they are not typed here.
 export interface Merch {
   id: string                   // UUID
   gallery: MerchImage[]        // extra photos shown after `product.image`
@@ -187,7 +187,6 @@ export interface ProductVariant {
   sku: string
   size: VariantSize | null
   color: string | null
-  stock: number
 }
 
 export type OrderStatus = 'pending' | 'paid' | 'shipped' | 'cancelled'

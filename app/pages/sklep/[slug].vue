@@ -64,10 +64,8 @@
               <AddToCartButton
                 :product="product"
                 :variant="selectedVariant"
-                :disabled="soldOut"
                 :label="`Do koszyka · ${formatPrice(product.price)}`"
               />
-              <p v-if="soldOut" class="pdp__pick-hint">Ten wariant jest chwilowo niedostępny.</p>
             </div>
 
             <div class="pdp__perks">
@@ -175,7 +173,6 @@ const others = computed(() => (data.value?.products ?? []).filter((p) => p.id !=
 // Variant the visitor clicked; until then the default pick.
 const picked = ref<ProductVariant | null>(null)
 const selectedVariant = computed(() => picked.value ?? defaultVariant(variants.value))
-const soldOut = computed(() => variants.value.length > 0 && !(selectedVariant.value && selectedVariant.value.stock > 0))
 
 // Main photo first, then the merch gallery (deduped in case the cover is in it too).
 const images = computed(() => [...new Set(

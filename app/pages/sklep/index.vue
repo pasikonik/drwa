@@ -52,7 +52,7 @@
                       v-if="variantsOf(p.id).length"
                       type="button"
                       class="btn btn--secondary btn--sm"
-                      :disabled="!selected(p.id) || selected(p.id)!.stock <= 0"
+                      :disabled="!selected(p.id)"
                       @click="addToCart(p)"
                     >
                       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -120,7 +120,7 @@ const { showToast } = useCartToast()
 
 function addToCart(p: Product): void {
   const variant = selected(p.id)
-  if (!variant || variant.stock <= 0) return
+  if (!variant) return
   addProduct(p, { variant })
   showToast({ title: p.title ?? '', price: chargePriceFor(p), image: fileId(p.image), size: variant.size })
 }
