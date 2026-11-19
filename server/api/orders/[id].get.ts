@@ -13,7 +13,7 @@ export default defineEventHandler(async (event): Promise<OrderWithItems> => {
   const order = (await client.request(
     readItem('orders', id, {
       fields: [
-        'id', 'status', 'total_price', 'subtotal', 'shipping_method', 'shipping_cost',
+        'id', 'status', 'total_price', 'subtotal', 'discount_amount', 'shipping_method', 'shipping_cost',
         'email', 'payment_intent_id', 'date_created', 'shpping_address', 'customer',
       ],
     }),

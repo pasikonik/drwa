@@ -8,14 +8,14 @@ import { resolveUserId } from '../../utils/sessionUser'
 
 export default defineEventHandler(async (event): Promise<CreateIntentResponse> => {
   const body = await readBody<CreateIntentPayload>(event)
-  const { items, email, firstName, lastName, shippingMethod, address } = body ?? ({} as CreateIntentPayload)
+  const { items, email, firstName, lastName, shippingMethod, address, discountCode } = body ?? ({} as CreateIntentPayload)
 
   if (typeof email !== 'string' || !email.includes('@')) {
     throw createError({ statusCode: 400, statusMessage: 'Podaj poprawny adres e-mail.' })
   }
 
   // Authoritative re-pricing + variant/capacity validation. Throws 400 on problems.
-  const computed = await computeOrder(items, shippingMethod)
+  const computed = await computeOrder(items, shippingMethod, discountCode)
 
   if (computed.hasPhysical && !address) {
     throw createError({ statusCode: 400, statusMessage: 'Podaj adres dostawy.' })
@@ -44,6 +44,8 @@ export default defineEventHandler(async (event): Promise<CreateIntentResponse> =
       status: 'pending',
       total_price: computed.total,
       subtotal: computed.subtotal,
+      discount_code: computed.discountCodeId,
+      discount_amount: computed.discount || null,
       shipping_method: computed.hasPhysical ? shippingMethod : null,
       shipping_cost: computed.shippingCost,
       email,
@@ -64,6 +66,7 @@ export default defineEventHandler(async (event): Promise<CreateIntentResponse> =
         variant_id: l.variantId,
         quantity: l.qty,
         price_at_purchase: l.unitPrice,
+        discount_amount: l.discount || null,
       })),
     ),
   )
@@ -74,7 +77,7 @@ export default defineEventHandler(async (event): Promise<CreateIntentResponse> =
     currency: 'pln',
     automatic_payment_methods: { enabled: true },
     receipt_email: email,
-    metadata: { order_id: order.id },
+    metadata: { order_id: order.id, ...(computed.discountCode ? { discount_code: computed.discountCode } : {}) },
   })
 
   // 4. Persist the intent id for webhook reconciliation

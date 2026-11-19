@@ -177,6 +177,7 @@ async function startPayment(): Promise<void> {
     lastName: hasCourse.value ? lastName.value.trim() : null,
     shippingMethod: hasPhysical.value ? shippingMethod.value : null,
     address: hasPhysical.value ? { ...address } : null,
+    discountCode: null,
   })
 
   if (!res) {

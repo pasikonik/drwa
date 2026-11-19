@@ -60,6 +60,23 @@ export interface CreateIntentPayload {
   lastName: string | null
   shippingMethod: ShippingMethod | null
   address: ShippingAddress | null
+  /** Discount code as typed by the buyer — validated and normalized server-side. */
+  discountCode: string | null
+}
+
+/** Price preview for the checkout page — same computeOrder, no side effects. */
+export interface QuotePayload {
+  items: CheckoutItemInput[]
+  shippingMethod: ShippingMethod | null
+  discountCode: string | null
+}
+
+export interface QuoteResponse {
+  subtotal: number       // PLN, before discount
+  discount: number       // PLN
+  discountCode: string | null
+  shippingCost: number   // PLN
+  total: number          // PLN
 }
 
 /** One priced line, computed server-side. */

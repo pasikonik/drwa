@@ -13,7 +13,7 @@ export default defineEventHandler(async (event): Promise<OrderWithItems[]> => {
       filter: { customer: { _eq: userId } },
       sort: ['-date_created'],
       fields: [
-        'id', 'status', 'total_price', 'subtotal', 'shipping_method', 'shipping_cost',
+        'id', 'status', 'total_price', 'subtotal', 'discount_amount', 'shipping_method', 'shipping_cost',
         'email', 'date_created', 'shpping_address', 'customer',
       ],
       limit: -1,

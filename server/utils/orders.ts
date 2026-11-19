@@ -15,7 +15,7 @@ export async function expandOrders(orders: Order[]): Promise<OrderWithItems[]> {
   const items = (await client.request(
     readItems('order_items', {
       filter: { order_id: { _in: orders.map((o) => o.id) } },
-      fields: ['id', 'quantity', 'price_at_purchase', 'order_id', 'product_id', 'variant_id'],
+      fields: ['id', 'quantity', 'price_at_purchase', 'discount_amount', 'order_id', 'product_id', 'variant_id'],
       limit: -1,
     }),
   )) as OrderItem[]
