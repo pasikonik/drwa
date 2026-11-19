@@ -97,10 +97,46 @@
                 <span class="checkout__item-p">{{ formatPrice(it.price * it.qty) }}</span>
               </li>
             </ul>
-            <OrderSummary :subtotal="subtotal" :shipping-cost="shippingCost" :total="total" :show-shipping="hasPhysical" />
-            <p v-if="hasPhysical && subtotal < FREE_SHIPPING_THRESHOLD" class="checkout__hint">
-              Do darmowej dostawy brakuje {{ formatPrice(FREE_SHIPPING_THRESHOLD - subtotal) }}.
+            <OrderSummary
+              :subtotal="subtotal"
+              :discount="discount"
+              :discount-code="applied?.discountCode"
+              :shipping-cost="shippingCost"
+              :total="total"
+              :show-shipping="hasPhysical"
+            />
+            <p v-if="hasPhysical && afterDiscount < FREE_SHIPPING_THRESHOLD" class="checkout__hint">
+              Do darmowej dostawy brakuje {{ formatPrice(FREE_SHIPPING_THRESHOLD - afterDiscount) }}.
             </p>
+
+            <div v-if="!clientSecret" class="field promo">
+              <template v-if="applied">
+                <p class="promo__applied">
+                  Kod <strong>{{ applied.discountCode }}</strong> zastosowany.
+                  <button type="button" class="checkout__back promo__remove" @click="removeCode">Usuń</button>
+                </p>
+              </template>
+              <template v-else>
+                <label class="field__label" for="co-promo">Kod rabatowy</label>
+                <div class="promo__row">
+                  <input
+                    id="co-promo"
+                    v-model="codeInput"
+                    class="field__input"
+                    :class="{ 'field__input--error': quoteError }"
+                    type="text"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                    @keydown.enter.prevent="applyCode"
+                  />
+                  <button type="button" class="btn btn--secondary btn--md" :disabled="quoting || !codeInput.trim()" @click="applyCode">
+                    {{ quoting ? 'Sprawdzam…' : 'Zastosuj' }}
+                  </button>
+                </div>
+                <span v-if="quoteError" class="field__error" role="alert">{{ quoteError }}</span>
+              </template>
+            </div>
           </div>
         </aside>
       </div>
@@ -114,7 +150,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { formatPrice } from '~/utils/format'
 import { shippingOptions, FREE_SHIPPING_THRESHOLD } from '~/utils/shipping'
-import type { ShippingAddress, ShippingMethod } from '~/types/shop'
+import type { QuoteResponse, ShippingAddress, ShippingMethod } from '~/types/shop'
 
 useHead({
   title: 'Zamówienie — DRWA',
@@ -122,7 +158,7 @@ useHead({
 
 const { items, subtotal, hasPhysical, hasCourse, isEmpty, toCheckoutItems } = useCart()
 const { user } = useAuth()
-const { createIntent, creating, error: createError } = useCheckout()
+const { createIntent, creating, error: createError, quote, quoting, quoteError } = useCheckout()
 
 const email = ref(user.value?.email ?? '')
 const firstName = ref(user.value?.first_name ?? '')
@@ -138,12 +174,19 @@ const publishableKey = ref('')
 const orderId = ref<string | null>(null)
 const returnUrl = ref('')
 
-const shipOptions = computed(() => shippingOptions(subtotal.value))
+// Discount preview from the server. It doesn't depend on the shipping method,
+// so switching paczkomat/kurier recomputes shipping locally without a re-quote.
+const codeInput = ref('')
+const applied = ref<QuoteResponse | null>(null)
+const discount = computed(() => applied.value?.discount ?? 0)
+const afterDiscount = computed(() => subtotal.value - discount.value)
+
+const shipOptions = computed(() => shippingOptions(afterDiscount.value))
 const shippingCost = computed(() => {
   if (!hasPhysical.value) return 0
   return shipOptions.value.find((o) => o.method === shippingMethod.value)?.cost ?? 0
 })
-const total = computed(() => subtotal.value + shippingCost.value)
+const total = computed(() => Math.round((afterDiscount.value + shippingCost.value) * 100) / 100)
 
 onMounted(() => {
   if (!email.value && user.value?.email) email.value = user.value.email
@@ -177,7 +220,7 @@ async function startPayment(): Promise<void> {
     lastName: hasCourse.value ? lastName.value.trim() : null,
     shippingMethod: hasPhysical.value ? shippingMethod.value : null,
     address: hasPhysical.value ? { ...address } : null,
-    discountCode: null,
+    discountCode: applied.value?.discountCode ?? null,
   })
 
   if (!res) {
@@ -189,6 +232,21 @@ async function startPayment(): Promise<void> {
   publishableKey.value = res.publishableKey
   orderId.value = res.orderId
   returnUrl.value = `${window.location.origin}/zamowienie/${res.orderId}`
+}
+
+async function applyCode(): Promise<void> {
+  if (!codeInput.value.trim() || quoting.value) return
+  applied.value = await quote({
+    items: toCheckoutItems(),
+    shippingMethod: hasPhysical.value ? shippingMethod.value : null,
+    discountCode: codeInput.value,
+  })
+}
+
+function removeCode(): void {
+  applied.value = null
+  codeInput.value = ''
+  quoteError.value = null
 }
 
 function resetPayment(): void {

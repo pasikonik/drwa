@@ -51,6 +51,7 @@
 
           <OrderSummary
             :subtotal="Number(order.subtotal) || 0"
+            :discount="Number(order.discount_amount) || 0"
             :shipping-cost="Number(order.shipping_cost) || 0"
             :total="Number(order.total_price)"
             :show-shipping="!!order.shipping_method"
