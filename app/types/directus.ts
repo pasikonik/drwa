@@ -206,6 +206,21 @@ export interface Order {
   stripe_session_id: string | null
   customer: string | null         // relation → directus_users (nullable for guests)
   shpping_address: string | null  // intentional typo — matches DB column; holds JSON address
+  discount_code: number | null    // relation → discount_codes
+  discount_amount: number | string | null  // PLN, whole order (decimal → may arrive as string)
+}
+
+// Server-only: Public has no read access (codes must not leak).
+export interface DiscountCode {
+  id: number
+  code: string
+  active: boolean
+  type: 'percent' | 'fixed'
+  value: number | string          // percent or PLN (decimal → string)
+  valid_from: string | null
+  valid_until: string | null
+  max_uses: number | null         // null = unlimited; uses = paid/shipped orders with this code
+  products?: { products_id: number }[]  // empty = whole shop (workshops never)
 }
 
 // Expanded order with its line items + product info — used by confirmation/panel.
@@ -235,6 +250,7 @@ export interface OrderItem {
   order_id: string | null
   product_id: number | null
   variant_id: number | null
+  discount_amount?: number | string | null  // PLN, this line's share of the order discount
 }
 
 export type ProjectStatus = 'draft' | 'published' | 'archived'
@@ -288,5 +304,6 @@ export interface Schema {
   projects_files: ProjectImage[]
   orders: Order[]
   order_items: OrderItem[]
+  discount_codes: DiscountCode[]
   blog_posts: BlogPost[]
 }

@@ -8,7 +8,7 @@ vi.mock('../server/utils/directusAdmin', () => ({ directusAdmin: () => ({ reques
 vi.stubGlobal('createError', (o: { statusCode: number; statusMessage: string }) =>
   Object.assign(new Error(o.statusMessage), o))
 
-import { computeOrder } from '../server/utils/pricing'
+import { computeOrder, splitDiscount } from '../server/utils/pricing'
 
 const future = new Date(Date.now() + 30 * 864e5).toISOString()
 const past = new Date(Date.now() - 30 * 864e5).toISOString()
@@ -20,10 +20,17 @@ const workshop = (over = {}) => ({
   workshop: [{ id: 'w1', date_start: future, spots_total: 10, spots_booked: 8, advance: '300.00', ...over }],
 })
 
-function directus(products: unknown[], variants: unknown[] = []) {
-  request.mockImplementation(async (q: () => { path: string }) =>
-    q().path.endsWith('/product_variants') ? variants : products)
+function directus(products: unknown[], variants: unknown[] = [], codes: unknown[] = [], uses = 0) {
+  request.mockImplementation(async (q: () => { path: string }) => {
+    const p = q().path
+    if (p.endsWith('/product_variants')) return variants
+    if (p.endsWith('/discount_codes')) return codes
+    if (p.endsWith('/orders')) return [{ count: String(uses) }]
+    return products
+  })
 }
+const code = (over = {}) => ({ id: 7, code: 'JESIEN', active: true, type: 'percent', value: '10.00',
+  valid_from: null, valid_until: null, max_uses: null, products: [], ...over })
 
 const variant = (over = {}) => ({ id: 10, product_id: 1, size: 'm', ...over })
 const line = (productId: number, qty = 1, variantId: number | null = null) => ({ productId, variantId, qty })
@@ -88,5 +95,73 @@ describe('computeOrder', () => {
     await expect(computeOrder([line(1, 1, 10)], null)).rejects.toThrow('metodę dostawy')
     directus([course])
     await expect(computeOrder([line(3)], null)).resolves.toMatchObject({ shippingCost: 0 })
+  })
+})
+
+describe('discount codes', () => {
+  it('applies a percent code to merch, normalizes input, and checks free shipping after the discount', async () => {
+    directus([merch], [variant()], [code()])
+    const o = await computeOrder([line(1, 3, 10)], 'kurier', ' jesien ')
+    expect(o.subtotal).toBe(300)
+    expect(o.discount).toBe(30)
+    expect(o.shippingCost).toBe(16.99) // threshold is checked after the discount: 270 < 300
+    expect(o.total).toBe(286.99)
+    expect(o.totalGrosze).toBe(28699)
+    expect(o.lines[0]!.discount).toBe(30)
+    expect(o.discountCode).toBe('JESIEN')
+    expect(o.discountCodeId).toBe(7)
+  })
+
+  it('caps a fixed code at the eligible lines', async () => {
+    directus([merch, course], [variant()], [code({ type: 'fixed', value: '1000.00', products: [{ products_id: 1 }] })])
+    const o = await computeOrder([line(1, 1, 10), line(3)], 'kurier', 'JESIEN')
+    expect(o.discount).toBe(100)
+    expect(o.lines.find((l) => l.productId === 3)!.discount).toBe(0)
+    expect(o.lines.find((l) => l.productId === 1)!.discount).toBe(100)
+    expect(o.total).toBe(800) // 900 − 100 is still over the free-shipping threshold
+  })
+
+  it('never discounts workshops', async () => {
+    directus([merch, workshop()], [variant()], [code()])
+    const o = await computeOrder([line(1, 1, 10), line(2)], 'kurier', 'JESIEN')
+    expect(o.discount).toBe(10)
+    directus([workshop()], [], [code()])
+    await expect(computeOrder([line(2)], null, 'JESIEN')).rejects.toThrow('Kod nie dotyczy produktów w koszyku.')
+  })
+
+  it('rejects unknown, inactive, expired, not-yet-valid and used-up codes', async () => {
+    directus([course], [], [])
+    await expect(computeOrder([line(3)], null, 'NIEMA')).rejects.toThrow('Nieprawidłowy kod rabatowy.')
+    directus([course], [], [code({ active: false })])
+    await expect(computeOrder([line(3)], null, 'JESIEN')).rejects.toThrow('Nieprawidłowy kod rabatowy.')
+    directus([course], [], [code({ valid_until: past })])
+    await expect(computeOrder([line(3)], null, 'JESIEN')).rejects.toThrow('Kod rabatowy jest nieaktywny lub wygasł.')
+    directus([course], [], [code({ valid_from: future })])
+    await expect(computeOrder([line(3)], null, 'JESIEN')).rejects.toThrow('Kod rabatowy jest nieaktywny lub wygasł.')
+    directus([course], [], [code({ max_uses: 3 })], 3)
+    await expect(computeOrder([line(3)], null, 'JESIEN')).rejects.toThrow('Kod rabatowy został już wykorzystany.')
+    directus([course], [], [code({ max_uses: 3 })], 2)
+    await expect(computeOrder([line(3)], null, 'JESIEN')).resolves.toMatchObject({ discount: 80 })
+  })
+
+  it('rejects a total below 2 zł', async () => {
+    directus([{ ...course, price: '100.00' }], [], [code({ value: '99.00' })])
+    await expect(computeOrder([line(3)], null, 'JESIEN')).rejects.toThrow('Kwota po rabacie jest za niska.')
+  })
+
+  it('ignores an empty code', async () => {
+    directus([course], [], [code()])
+    const o = await computeOrder([line(3)], null, '  ')
+    expect(o.discount).toBe(0)
+    expect(o.discountCodeId).toBeNull()
+    expect(request.mock.calls.some(([q]) => (q as () => { path: string })().path.endsWith('/discount_codes'))).toBe(false)
+  })
+
+  it('splitDiscount sums to the total to the grosz', () => {
+    const grosze = (xs: number[]) => xs.reduce((s, x) => s + Math.round(x * 100), 0)
+    expect(grosze(splitDiscount([33.33, 33.33, 33.34], 10))).toBe(1000)
+    expect(grosze(splitDiscount([19.99, 0.01, 7], 3.33))).toBe(333)
+    expect(splitDiscount([100], 5)).toEqual([5])
+    expect(splitDiscount([50, 0], 5)).toEqual([5, 0])
   })
 })

@@ -70,14 +70,18 @@ export interface ComputedLine {
   title: string
   unitPrice: number      // PLN
   qty: number
-  lineTotal: number      // PLN
+  lineTotal: number      // PLN, before discount
+  discount: number       // PLN, this line's share of the order discount (0 if not eligible)
 }
 
 export interface ComputedOrder {
   lines: ComputedLine[]
-  subtotal: number       // PLN
+  subtotal: number       // PLN, before discount
+  discount: number       // PLN
+  discountCodeId: number | null
+  discountCode: string | null   // normalized (upper-case)
   shippingCost: number   // PLN
-  total: number          // PLN
+  total: number          // PLN, after discount
   totalGrosze: number    // Stripe minor units
   hasPhysical: boolean
   hasCourse: boolean
