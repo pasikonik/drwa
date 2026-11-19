@@ -166,7 +166,7 @@
               <p>Zapisy na tę edycję są zamknięte. Sprawdź <NuxtLink to="/warsztaty">nadchodzące terminy</NuxtLink> albo napisz do nas — chętnie damy znać o kolejnej odsłonie.</p>
             </template>
             <template v-else>
-              <h2 class="signup__heading">Zajmij miejsce przy drewnie</h2>
+              <h2 class="signup__heading">Dołącz!"</h2>
               <p>Wyślij zgłoszenie, a w ciągu dwóch dni odezwiemy się z potwierdzeniem miejsca i szczegółami dojazdu. <template v-if="hasAdvance">Zaliczka {{ advanceStr }} rezerwuje miejsce.</template></p>
             </template>
             <div class="signup__contact">
