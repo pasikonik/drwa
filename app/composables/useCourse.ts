@@ -42,7 +42,7 @@ export const useCourse = (slugOrId: string | number) => {
               'id', 'title', 'slug', 'price', 'description', 'image', 'short_description',
               {
                 course: [
-                  'id', 'product_id', 'sort',
+                  'id', 'product_id', 'sort', 'zanfia_url',
                   'subtitle', 'hero_kicker', 'hero_facts', 'stats', 'main_heading', 'video_url',
                   'bonuses', 'quotes', 'offer_items', 'price_note',
                   { modules: ['id', 'title', 'description', 'sort', 'course'] },
@@ -68,7 +68,7 @@ export const useCourse = (slugOrId: string | number) => {
               'id', 'title', 'slug', 'price', 'description', 'image', 'short_description',
               {
                 course: [
-                  'id', 'product_id', 'sort',
+                  'id', 'product_id', 'sort', 'zanfia_url',
                   { modules: ['id', 'title', 'description', 'sort', 'course'] },
                 ],
               },

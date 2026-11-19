@@ -201,9 +201,11 @@
                 <span v-if="course?.price_note" class="offer__per">{{ course.price_note }}</span>
               </div>
               <div class="offer__cta">
-                <AddToCartButton :product="product" label="Dodaj do koszyka" />
+                <a v-if="course?.zanfia_url" :href="course.zanfia_url" class="btn btn--primary btn--lg">Kup kurs</a>
+                <AddToCartButton v-else :product="product" label="Dodaj do koszyka" />
               </div>
-              <p class="offer__note">Bezpieczna płatność online · dostęp do kursu w <NuxtLink to="/konto">Twoim koncie</NuxtLink></p>
+              <p v-if="course?.zanfia_url" class="offer__note">Bezpieczna płatność online · dostęp do kursu na platformie Zanfia</p>
+              <p v-else class="offer__note">Bezpieczna płatność online · dostęp do kursu w <NuxtLink to="/konto">Twoim koncie</NuxtLink></p>
             </div>
           </div>
         </div>

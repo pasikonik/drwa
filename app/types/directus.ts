@@ -116,6 +116,7 @@ export interface Course {
   id: string                   // UUID
   product_id: number | null
   course_access_url: string | null  // link to external course platform
+  zanfia_url?: string | null   // zakup kursu na Zanfii — zastępuje koszyk na /kursy/[slug]
   sort: number | null
   modules: CourseModule[]
   // CMS-driven template sections — absent until the Directus schema has them.
